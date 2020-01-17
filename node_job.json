@@ -1,0 +1,26 @@
+{
+  "initiators": [
+    {
+      "type": "cron",
+      "params": {
+        "schedule": "0 */10 * * * *"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "type": "ethtx",
+      "params": {
+          "address": "DEPLOYED_FLANNEL_HERE",
+          "functionSelector": "0x61ff4fac"
+      }
+    },
+    {
+        "type": "ethtx",
+        "params": {
+            "address": "DEPLOYED_FLANNEL_HERE",
+            "functionSelector": "0x5bac1e0d"
+        }
+    }
+  ]
+}
