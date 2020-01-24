@@ -4,14 +4,12 @@
   "description": "Management interface for Chainlink oracle contract",
   "scripts": {
     "remix": "npx remixd -s . --remix-ide https://remix.ethereum.org",
-    "remix:chainlink": "npx remixd -s ./node_modules/chainlink/contracts --remix-ide https://remix.ethereum.org",
     "start": "npm run truffle:migrate-ganache && npm run truffle:init-setup",
     "test": "npm run truffle:test",
-    "truffle:add-jobs": "cd ./truffle && npx truffle exec ./scripts/add-jobs.js --network ganache && cd ..",
-    "truffle:init-setup": "npm run truffle:prep-oracle && npm run remix",
+    "truffle:init-setup": "npm run truffle:contract-prep && npm run remix",
     "truffle:migrate-ganache": "cd ./truffle/ && npx truffle migrate --network ganache && cd ..",
-    "truffle:prep-oracle": "cd ./truffle && npx truffle exec ./scripts/prep-oracle.js --network ganache && cd ..",
-    "truffle:test": "cd ./truffle/ && npx truffle test && cd .."
+    "truffle:contract-prep": "cd ./truffle && npx truffle exec ./scripts/contract-prep.js --network ganache && cd ..",
+    "truffle:test": "cd ./truffle/ && npx truffle test --network ganache && cd .."
   },
   "repository": {
     "type": "git",
@@ -25,9 +23,11 @@
   "homepage": "https://github.com/hill399/flannel#readme",
   "dependencies": {
     "chainlink": "^0.7.8",
+    "chainlink-test-helpers": "^0.6.0-6",
     "ganache-cli": "^6.7.0",
     "link_token": "^1.0.6",
     "remixd": "^0.1.8-alpha.14",
-    "truffle": "^5.0.43"
+    "truffle": "^5.0.43",
+    "truffle-assertions": "^0.9.2"
   }
 }

@@ -1,10 +1,10 @@
-pragma solidity 0.4.24;
+pragma solidity ^0.5.0;
 
-import "chainlink/contracts/ChainlinkClient.sol";
-import "chainlink/contracts/vendor/Ownable.sol";
+import "chainlink/v0.5/contracts/ChainlinkClient.sol";
+import "chainlink/v0.5/contracts/vendor/Ownable.sol";
 
 contract TestnetConsumer is ChainlinkClient, Ownable {
-  uint256 constant private ORACLE_PAYMENT = 1 * LINK;
+  uint256 constant private ORACLE_PAYMENT = 5 * LINK;
 
   uint256 public currentPrice;
   int256 public changeDay;
@@ -29,33 +29,33 @@ contract TestnetConsumer is ChainlinkClient, Ownable {
     setChainlinkToken(_link);
   }
 
-  function requestEthereumPrice(address _oracle, string _jobId)
+  function requestEthereumPrice(address _oracle, string memory _jobId)
     public
     onlyOwner
   {
-    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillEthereumPrice.selector);
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), address(this), this.fulfillEthereumPrice.selector);
     req.add("get", "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD");
     req.add("path", "USD");
     req.addInt("times", 100);
     sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
   }
 
-  function requestEthereumChange(address _oracle, string _jobId)
+  function requestEthereumChange(address _oracle, string memory _jobId)
     public
     onlyOwner
   {
-    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillEthereumChange.selector);
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), address(this), this.fulfillEthereumChange.selector);
     req.add("get", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD");
     req.add("path", "RAW.ETH.USD.CHANGEPCTDAY");
     req.addInt("times", 1000000000);
     sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
   }
 
-  function requestEthereumLastMarket(address _oracle, string _jobId)
+  function requestEthereumLastMarket(address _oracle, string memory _jobId)
     public
     onlyOwner
   {
-    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillEthereumLastMarket.selector);
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), address(this), this.fulfillEthereumLastMarket.selector);
     req.add("get", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD");
     string[] memory path = new string[](4);
     path[0] = "RAW";

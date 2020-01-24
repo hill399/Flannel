@@ -5,6 +5,7 @@ module.exports = {
      port: 8545,
      network_id: "*",
      gas: 4612388,
+     skipDryRun: true,
     },
   },
   compilers: {
@@ -15,7 +16,7 @@ module.exports = {
           runs: 200
         },
        },
-      version: "0.4.24",
+      version: "0.5.12",
     }
   }
 }

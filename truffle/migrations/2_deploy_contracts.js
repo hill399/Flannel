@@ -1,16 +1,52 @@
-const LinkToken = artifacts.require('LinkToken');
 const Oracle = artifacts.require('Oracle');
 const Flannel = artifacts.require('Flannel');
-const Consumer = artifacts.require('TestnetConsumer')
+const TestnetConsumer = artifacts.require('TestnetConsumer')
+const LinkToken = artifacts.require('LinkTokenInterface')
+const UniswapInterface = artifacts.require('UniswapExchangeInterface')
+const AaveLendingInterface = artifacts.require('LendingPool')
+const AToken = artifacts.require('AToken')
 
-/* Dummy for uniswap until suitable test can be defined - local deployment (?) */
-const addressDummy = '0x0000000000000000000000000000000000000000';
-const userThreshold = 10e18;
+const uniswapRopsten = '0x4426F644f5999Aef8A7d87F0Af6e0755E94a2588'
+const addressDummy = '0x0000000000000000000000000000000000000000'
 
-module.exports = async (deployer, accounts) => {
-  await deployer.deploy(LinkToken);
-  await deployer.deploy(Oracle, LinkToken.address);
-  await deployer.deploy(Flannel, addressDummy, LinkToken.address, addressDummy, Oracle.address, userThreshold.toString());
-  await deployer.deploy(Consumer, LinkToken.address);
+const stdLinkTokenRopsten = '0x20fe562d797a42dcb3399062ae9546cd06f63280'
+
+const aaveLinkTokenRopsten = '0x1a906E71FF9e28d8E01460639EB8CF0a6f0e2486'
+const aaveApprovalRopsten = '0x4295Ee704716950A4dE7438086d6f0FBC0BA9472'
+const aaveLendingPoolRopsten = '0x9E5C7835E4b13368fd628196C4f1c6cEc89673Fa'
+const aLinkTokenRopsten = '0x52fd99c15e6FFf8D4CF1B83b2263a501FDd78973'
+
+const threshold = (2e18).toString();
+
+module.exports = async (deployer) => {
+  const stdLinkToken = await LinkToken.at(stdLinkTokenRopsten);
+  const aaveLinkToken = await LinkToken.at(aaveLinkTokenRopsten);
+  const aLinkToken = await AToken.at(aLinkTokenRopsten);
+  const lendingPool = await AaveLendingInterface.at(aaveLendingPoolRopsten);
+  const uniswap = await UniswapInterface.at(uniswapRopsten);
+
+ // console.log(`Threshold: ${threshold}`);
+ // console.log(`StdLinkToken Address: ${stdLinkToken.address}`);
+ // console.log(`AaveLinkToken Address: ${aaveLinkToken.address}`);
+ // console.log(`LendingPool Address: ${lendingPool.address}`);
+ // console.log(`Uniswap Addresss: ${uniswap.address}`);
+  
+  const oracle = await deployer.deploy(Oracle, stdLinkToken.address);
+  await deployer.deploy(TestnetConsumer, stdLinkToken.address);
+  await deployer.deploy(Flannel, uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkToken.address, oracle.address, addressDummy, lendingPool.address, aaveApprovalRopsten, threshold);
 };
 
+/*
+    constructor
+    (
+    address _uniswapExchange,
+    address _stdLinkToken,
+    address _aaveLinkToken,
+    address _linkNode,
+    address _oracle,
+    address _linkNode,
+    address _lendingPool,
+    address _lendingPoolApproval,
+    uint256 _userThreshold
+    )
+*/
