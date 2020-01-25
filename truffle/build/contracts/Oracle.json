@@ -12090,9 +12090,114 @@
     "name": "solc",
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
-  "networks": {},
-  "schemaVersion": "3.0.21",
-  "updatedAt": "2020-01-24T15:35:16.983Z",
+  "networks": {
+    "3": {
+      "events": {
+        "0xa7842b9ec549398102c0d91b1b9919b2f20558aefdadf57528a95c6cd3292e93": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32"
+            }
+          ],
+          "name": "CancelOracleRequest",
+          "type": "event",
+          "signature": "0xa7842b9ec549398102c0d91b1b9919b2f20558aefdadf57528a95c6cd3292e93"
+        },
+        "0xd8d7ecc4800d25fa53ce0372f13a416d98907a7ef3d8d3bdd79cf4fe75529c65": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "specId",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "requester",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "payment",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "callbackAddr",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes4",
+              "name": "callbackFunctionId",
+              "type": "bytes4"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "cancelExpiration",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "dataVersion",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "name": "OracleRequest",
+          "type": "event",
+          "signature": "0xd8d7ecc4800d25fa53ce0372f13a416d98907a7ef3d8d3bdd79cf4fe75529c65"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0x34FEfaBcE9031a62a2FaE9B30206F3CF76F01716",
+      "transactionHash": "0x63f17a37e99c0a2f8b21bd147f10505aeef0114a171a03e2806cfd5203cc1eba"
+    }
+  },
+  "schemaVersion": "3.0.20",
+  "updatedAt": "2020-01-25T13:35:32.499Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "cancelOracleRequest(bytes32,uint256,bytes4,uint256)": {

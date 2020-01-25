@@ -4060,8 +4060,9 @@
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.21",
-  "updatedAt": "2020-01-24T15:35:16.950Z",
+  "schemaVersion": "3.0.20",
+  "updatedAt": "2020-01-25T13:35:32.581Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "allowInterestRedirectionTo(address)": {

@@ -16,8 +16,6 @@ const aaveApprovalRopsten = '0x4295Ee704716950A4dE7438086d6f0FBC0BA9472'
 const aaveLendingPoolRopsten = '0x9E5C7835E4b13368fd628196C4f1c6cEc89673Fa'
 const aLinkTokenRopsten = '0x52fd99c15e6FFf8D4CF1B83b2263a501FDd78973'
 
-const threshold = (2e18).toString();
-
 module.exports = async (deployer) => {
   const stdLinkToken = await LinkToken.at(stdLinkTokenRopsten);
   const aaveLinkToken = await LinkToken.at(aaveLinkTokenRopsten);
@@ -33,7 +31,7 @@ module.exports = async (deployer) => {
   
   const oracle = await deployer.deploy(Oracle, stdLinkToken.address);
   await deployer.deploy(TestnetConsumer, stdLinkToken.address);
-  await deployer.deploy(Flannel, uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkToken.address, oracle.address, addressDummy, lendingPool.address, aaveApprovalRopsten, threshold);
+  await deployer.deploy(Flannel, uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkToken.address, oracle.address, addressDummy, lendingPool.address, aaveApprovalRopsten);
 };
 
 /*
@@ -46,7 +44,6 @@ module.exports = async (deployer) => {
     address _oracle,
     address _linkNode,
     address _lendingPool,
-    address _lendingPoolApproval,
-    uint256 _userThreshold
+    address _lendingPoolApproval
     )
 */

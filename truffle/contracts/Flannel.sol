@@ -10,6 +10,8 @@ import "../contracts/ATokenInterface.sol";
 /// @notice Extension of Chainlink oracle contract to allow for additional features.
 contract Flannel is Ownable {
 
+    using SafeMath for uint256;
+
     Oracle oracle;
     UniswapExchangeInterface internal linkExchangeInterface;
     LendingPool internal lendingPool;
@@ -18,14 +20,30 @@ contract Flannel is Ownable {
     LinkTokenInterface internal aaveLinkTokenInterface;
     AToken internal aLinkTokenInterface;
 
+    uint256 constant FINNEY = 1 * 10 ** 15;
+    uint256 constant ETHER = 1 * 10 ** 18;
+
     /* Address of user node */
     address linkNode;
 
     /* Lending pool approval address */
     address lendingPoolApproval;
 
-    /* Link threshold to trigger action */
-    uint256 userThreshold;
+    /* Struct to customise and store allowances */
+    struct thresholds {
+        string paramsName;
+        uint256 pcUntouched;
+        uint256 pcAave;
+        uint256 pcTopUp;
+        uint256 linkThreshold;
+        uint256 ethThreshold;
+        uint256 ethTopUp;
+    }
+
+    /* Mapping to hold customised allowances */
+    mapping(uint => thresholds) public userStoredParams;
+    uint256 public paramCounter;
+    uint256 public paramsInUse;
 
     /// @notice Constructor to set default contract values.
     /// @param _uniswapExchange address of Uniswap exchange contract.
@@ -33,7 +51,6 @@ contract Flannel is Ownable {
     /// @param _aaveLinkToken address of Aave Link token.
     /// @param _aLinkToken address for the aLink Interest Bearing Token.
     /// @param _oracle address of user-deployed oracle contract.
-    /// @param _userThreshold limit in LINK (wei) in which features will trigger
     constructor
     (
     address _uniswapExchange,
@@ -43,8 +60,7 @@ contract Flannel is Ownable {
     address _oracle,
     address _linkNode,
     address _lendingPool,
-    address _lendingPoolApproval,
-    uint256 _userThreshold
+    address _lendingPoolApproval
     )
     public
     {
@@ -53,11 +69,16 @@ contract Flannel is Ownable {
         aaveLinkTokenInterface = LinkTokenInterface(_aaveLinkToken);
         aLinkTokenInterface = AToken(_aLinkToken);
         oracle = Oracle(_oracle);
-        userThreshold = _userThreshold;
         linkNode = _linkNode;
 
         lendingPool = LendingPool(_lendingPool);
         lendingPoolApproval = _lendingPoolApproval;
+
+        /* Create default param account */
+        /* Fix those token mod values */
+        userStoredParams[0] = thresholds("Default", 20, 60, 20, 10 * ETHER, 10 * FINNEY, 50 * FINNEY);
+        paramCounter = 1;
+        paramsInUse = 0;
     }
 
     /// @notice Restricts certain calls to node address only.
@@ -66,6 +87,36 @@ contract Flannel is Ownable {
         require(msg.sender == linkNode, "Only node address can call this");
         _;
     }
+
+    /// @notice Create new parameter settings to distribute withdrawn LINK.
+    /// @param _paramsName Reference name of params.
+    /// @param _pcUntouched % to leave untouched in contract.
+    /// @param _pcAave % to deposited to Aave.
+    /// @param _pcTopUp % to allocate to node top-up.
+    /// @param _linkThreshold LINK value in wei to determine when to withdraw from Oracle contract.
+    /// @param _ethThreshold ETH value in wei to determine when to top-up LINK node.
+    /// @param _ethTopUp ETH value in wei to top-up LINK node when triggered.
+    /// @dev Only owner can call this.
+    /// @dev Function selector :
+    function createNewAllowance(
+    string memory _paramsName,
+    uint256 _pcUntouched,
+    uint256 _pcAave,
+    uint256 _pcTopUp,
+    uint256 _linkThreshold,
+    uint256 _ethThreshold,
+    uint256 _ethTopUp)
+    public
+    onlyOwner
+    {
+        uint256 pcTemp = _pcUntouched.add(_pcAave);
+        pcTemp = pcTemp.add(_pcTopUp);
+        require(pcTemp == 100, "Percent parameters do not equal 100");
+        userStoredParams[paramCounter] = thresholds(_paramsName, _pcUntouched, _pcAave, _pcTopUp, _linkThreshold, _ethThreshold, _ethTopUp);
+        paramsInUse = paramCounter;
+        paramCounter = paramCounter.add(1);
+    }
+
 
     /// @notice Withdraw earned LINK balance from deployed oracle contract.
     /// @dev Only node address can call this.
@@ -129,15 +180,14 @@ contract Flannel is Ownable {
         linkNode = _linkNode;
     }
 
-
-    // This threshold needs to be better aligned to handle deposits as percentages.
-    /// @notice Change threshold trigger level for withdrawals.
-    /// @param _newThreshold new trigger threshold (in wei).
-    function setUserThreshold(uint256 _newThreshold)
+    /// @notice Set threshold parameter set to use.
+    /// @param _paramNo new address of oracle contract.
+    function setParametersInUse(uint256 _paramNo)
     public
     onlyOwner
     {
-        userThreshold = _newThreshold;
+        require(_paramNo < paramCounter, "Invalid parameter set");
+        paramsInUse = _paramNo;
     }
 
     /// @notice Renounce ownership of oracle contract back to owner of this contract.

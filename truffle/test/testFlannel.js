@@ -23,8 +23,6 @@ contract('Flannel', accounts => {
   const oracleNode = accounts[1]
   const stranger = accounts[2]
 
-  const userThreshold = web3.utils.toWei('1', 'ether');
-
   const jobId = '4c7b7ffb66b344fbaa64995af81e355a'
   const dummyResponse = web3.utils.numberToHex('12345');
   const costOfReq = (web3.utils.toWei('5', 'ether'));
@@ -40,7 +38,7 @@ contract('Flannel', accounts => {
 
     oracle = await Oracle.new(stdLinkToken.address);
     testnetConsumer = await TestnetConsumer.new(stdLinkToken.address);
-    flannel = await Flannel.new(uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkIntToken.address, oracle.address, oracleNode, lendingPool.address, aaveApprovalRopsten, userThreshold.toString());
+    flannel = await Flannel.new(uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkIntToken.address, oracle.address, oracleNode, lendingPool.address, aaveApprovalRopsten);
 
     await flannel.configureOracleSetup(oracle.address, oracleNode);
 
@@ -53,6 +51,67 @@ contract('Flannel', accounts => {
     tx = await testnetConsumer.requestEthereumPrice(oracle.address, jobId)
     request = h.decodeRunRequest(tx.receipt.rawLogs[3])
     await h.fulfillOracleRequest(oracle, request, dummyResponse, { from: oracleNode })
+  })
+
+  context('Flannel - Threshold Functions', () => {
+    const newName = "Test Set";
+    const newpcUntouched = 40;
+    const newpcAave = 40;
+    const newpcTopUp = 20;
+    const newLinkThreshold = web3.utils.toWei('10', 'ether');
+    const newEthThreshold = web3.utils.toWei('2', 'finney');
+    const newEthTopUp = web3.utils.toWei('5', 'finney');
+
+
+    it('Checks that the default thresholds have been applied at deployment', async () => {
+      defUserStoredParams = await flannel.userStoredParams.call(0);
+      assert.equal(defUserStoredParams[0], "Default"); 
+      assert.equal(defUserStoredParams[1], 20);
+      assert.equal(defUserStoredParams[2], 60);
+      assert.equal(defUserStoredParams[3], 20);
+      assert.equal(defUserStoredParams[4], web3.utils.toWei('10', 'ether'));
+      assert.equal(defUserStoredParams[5], web3.utils.toWei('10', 'finney'));
+      assert.equal(defUserStoredParams[6], web3.utils.toWei('50', 'finney'));
+    })
+
+    it('Can add a new parameter set', async() => {
+      await flannel.createNewAllowance(newName, newpcUntouched, newpcAave, newpcTopUp, newLinkThreshold, newEthThreshold, newEthTopUp);
+      newUserStoredParams = await flannel.userStoredParams.call(1);
+      assert.equal(newUserStoredParams[0], newName); 
+      assert.equal(newUserStoredParams[1], newpcUntouched);
+      assert.equal(newUserStoredParams[2], newpcAave);
+      assert.equal(newUserStoredParams[3], newpcTopUp);
+      assert.equal(newUserStoredParams[4], newLinkThreshold);
+      assert.equal(newUserStoredParams[5], newEthThreshold);
+      assert.equal(newUserStoredParams[6], newEthTopUp);
+    })
+
+    it('Can track new addition counters correctly', async() => {
+      pCounter = await flannel.paramCounter.call();
+      pInUse = await flannel.paramsInUse.call();
+      assert.equal(pCounter, 1, "Default paramCounter is incorrect");
+      assert.equal(pInUse, 0, "Current params in use is incorrect");
+      await flannel.createNewAllowance(newName, newpcUntouched, newpcAave, newpcTopUp, newLinkThreshold, newEthThreshold, newEthTopUp);
+      pCounter = await flannel.paramCounter.call();
+      pInUse = await flannel.paramsInUse.call();
+      assert.equal(pCounter, 2, "Addition paramCounter is incorrect");
+      assert.equal(pInUse, 1, "Addition params in use is incorrect");
+    })
+
+    it('Ensures percentage variables calculate to 100', async() => {
+      badpcAave = 10;
+      await truffleAssert.reverts(
+        flannel.createNewAllowance(newName, newpcUntouched, badpcAave, newpcTopUp, newLinkThreshold, newEthThreshold, newEthTopUp),
+        "Percent parameters do not equal 100");
+    })
+
+    it('Allows for different parameter sets to be selected', async() => {
+      await flannel.createNewAllowance(newName, newpcUntouched, newpcAave, newpcTopUp, newLinkThreshold, newEthThreshold, newEthTopUp);
+      pInUse = await flannel.paramsInUse.call();
+      await flannel.setParametersInUse(pInUse -1);
+      pInUse = await flannel.paramsInUse.call();
+      assert.equal(pInUse, 0, "Params in use have not been changed");
+    })
   })
 
   context('Flannel - Oracle Functions', () => {

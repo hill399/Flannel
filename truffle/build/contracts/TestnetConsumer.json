@@ -10154,9 +10154,140 @@
     "name": "solc",
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
-  "networks": {},
-  "schemaVersion": "3.0.21",
-  "updatedAt": "2020-01-24T15:35:16.964Z",
+  "networks": {
+    "3": {
+      "events": {
+        "0xe1fe3afa0f7f761ff0a8b89086790efd5140d2907ebd5b7ff6bfcb5e075fd4c5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "name": "ChainlinkCancelled",
+          "type": "event",
+          "signature": "0xe1fe3afa0f7f761ff0a8b89086790efd5140d2907ebd5b7ff6bfcb5e075fd4c5"
+        },
+        "0x7cc135e0cebb02c3480ae5d74d377283180a2601f8f644edf7987b009316c63a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "name": "ChainlinkFulfilled",
+          "type": "event",
+          "signature": "0x7cc135e0cebb02c3480ae5d74d377283180a2601f8f644edf7987b009316c63a"
+        },
+        "0xb5e6e01e79f91267dc17b4e6314d5d4d03593d2ceee0fbb452b750bd70ea5af9": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "name": "ChainlinkRequested",
+          "type": "event",
+          "signature": "0xb5e6e01e79f91267dc17b4e6314d5d4d03593d2ceee0fbb452b750bd70ea5af9"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        },
+        "0x36f03c766dbeb725bf2a1e6cf2d934a02bf3cd9644b55767c8f41ef2d4af0612": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "int256",
+              "name": "change",
+              "type": "int256"
+            }
+          ],
+          "name": "RequestEthereumChangeFulfilled",
+          "type": "event",
+          "signature": "0x36f03c766dbeb725bf2a1e6cf2d934a02bf3cd9644b55767c8f41ef2d4af0612"
+        },
+        "0x1a7783cfc5355cd0706abec2229662cda9cefcfc8aeb31fec8b391ba5eb67cbe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "market",
+              "type": "bytes32"
+            }
+          ],
+          "name": "RequestEthereumLastMarket",
+          "type": "event",
+          "signature": "0x1a7783cfc5355cd0706abec2229662cda9cefcfc8aeb31fec8b391ba5eb67cbe"
+        },
+        "0x794eb9e29f6750ede99e05248d997a9ab9fa23c4a7eaff8afa729080eb7c6428": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "requestId",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "name": "RequestEthereumPriceFulfilled",
+          "type": "event",
+          "signature": "0x794eb9e29f6750ede99e05248d997a9ab9fa23c4a7eaff8afa729080eb7c6428"
+        }
+      },
+      "links": {},
+      "address": "0xDc1a303e3f134C501108B4cA538ceA63803049B5",
+      "transactionHash": "0x6bfd7a9a614bef9a348868e84f2fb476cafc86511ec099562385b4345d973332"
+    }
+  },
+  "schemaVersion": "3.0.20",
+  "updatedAt": "2020-01-25T13:35:32.538Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "isOwner()": {
