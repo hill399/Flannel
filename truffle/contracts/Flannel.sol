@@ -37,6 +37,7 @@ contract Flannel is Ownable {
         uint256 pcTopUp;
         uint256 linkThreshold;
         uint256 ethThreshold;
+        uint256 aaveThreshold;
         uint256 ethTopUp;
     }
 
@@ -44,6 +45,10 @@ contract Flannel is Ownable {
     mapping(uint => thresholds) public userStoredParams;
     uint256 public paramCounter;
     uint256 public paramsInUse;
+
+    uint256 public storeBalance;
+    uint256 public aaveBalance;
+    uint256 public topUpBalance;
 
     /// @notice Constructor to set default contract values.
     /// @param _uniswapExchange address of Uniswap exchange contract.
@@ -76,7 +81,7 @@ contract Flannel is Ownable {
 
         /* Create default param account */
         /* Fix those token mod values */
-        userStoredParams[0] = thresholds("Default", 20, 60, 20, 10 * ETHER, 10 * FINNEY, 50 * FINNEY);
+        userStoredParams[0] = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 10 * ETHER, 300 * FINNEY);
         paramCounter = 1;
         paramsInUse = 0;
     }
@@ -88,6 +93,94 @@ contract Flannel is Ownable {
         _;
     }
 
+    function flannelCoordinator()
+    public
+    onlyNodeAddress()
+    {
+        uint256 availableFunds = oracle.withdrawable();
+        if(availableFunds >= userStoredParams[paramsInUse].linkThreshold){
+           withdrawFromOracle(availableFunds);
+        }
+
+        if(linkNode.balance <= userStoredParams[paramsInUse].ethThreshold){
+           require(linkNode != address(0), "Invalid LinkNode Address");
+           linkToEthTopUp(topUpBalance);
+        }
+
+        if(aaveBalance <= userStoredParams[paramsInUse].aaveThreshold){
+           depositToAave(aaveBalance);
+        }
+    }
+
+    /// @notice Withdraw earned LINK balance from deployed oracle contract.
+    /// @dev Only node address can call this.
+    /// @dev Function selector : 0x61ff4fac
+    function withdrawFromOracle(uint256 _amount)
+    public
+    onlyNodeAddress()
+    {
+        require(_amount <= oracle.withdrawable(), "Not enough LINK in oracle to withdraw");
+        oracle.withdraw(address(this), _amount);
+        storeBalance = storeBalance.add(_percentHelper(_amount, userStoredParams[paramsInUse].pcUntouched));
+        aaveBalance = aaveBalance.add(_percentHelper(_amount, userStoredParams[paramsInUse].pcAave));
+        topUpBalance = topUpBalance.add(_percentHelper(_amount, userStoredParams[paramsInUse].pcTopUp));
+    }
+
+    /// @notice Deposit withdrawn LINK into Aave Protocol
+    /// @dev On testnet, Aave utilise their own LINK token. On test launch, a given amount is send to Flannel so that "representative"
+    ///      transactions can be made.
+    /// @dev Only node address can call this.
+    /// @dev Function selector : 0x06197c1c
+    function depositToAave(uint256 _amount)
+    public
+    onlyNodeAddress()
+    {
+        require(_amount >= aaveBalance, "Not enough allocated Aave Deposit funds");
+        // Approve for aaveLINK tokens to be moved by the lending interface.
+        aaveLinkTokenInterface.approve(lendingPoolApproval, _amount + 100);
+        // Deposit aaveLINK into interest bearing contract.
+        lendingPool.deposit(address(aaveLinkTokenInterface), _amount, 0);
+        aaveBalance = aaveBalance.sub(_amount);
+    }
+
+    /// @notice Withdraw deposited LINK into Aave Protocol
+    /// @dev Only node address can call this.
+    /// @dev Function selector : 0xd26106e3
+    function withdrawFromAave(uint256 _amount)
+    public
+    onlyNodeAddress()
+    {
+        // Catch that _amount is greater thzan contract aLINK balance.
+        require(_amount <= aLinkTokenInterface.balanceOf(address(this)), "Not enough aLINK in contract");
+        // Redeem LINK using aLINK redeem function.
+        aLinkTokenInterface.redeem(_amount);
+    }
+
+    /// @notice Convert LINK balance to ETH via Uniswap and send to node.
+    /// @dev Only node address can call this.
+    /// @dev Function selector : 0x5bac1e0d
+    function linkToEthTopUp(uint256 _amount)
+    public
+    onlyNodeAddress()
+    {
+        require(_amount <= topUpBalance, "Not enough LINK to top-up");
+        // Catch if topUpBalance is less than ethTopUp
+        uint256 topBalance;
+        if(_amount >= userStoredParams[paramsInUse].ethTopUp) {
+            topBalance = userStoredParams[paramsInUse].ethTopUp;
+        } else {
+            topBalance = _amount;
+        }
+        // Get current LINK -> ETH conversion rate
+        uint256 exchangeRate = linkExchangeInterface.getTokenToEthInputPrice(topBalance);
+        // Approve uniswap for transfer
+        stdLinkTokenInterface.approve(address(linkExchangeInterface), topBalance);
+        // Send to node address
+        linkExchangeInterface.tokenToEthTransferOutput(exchangeRate, topBalance, (now + 1 hours), linkNode);
+        // Reset topUpBalance
+        topUpBalance = topUpBalance.sub(topBalance);
+    }
+
     /// @notice Create new parameter settings to distribute withdrawn LINK.
     /// @param _paramsName Reference name of params.
     /// @param _pcUntouched % to leave untouched in contract.
@@ -95,6 +188,7 @@ contract Flannel is Ownable {
     /// @param _pcTopUp % to allocate to node top-up.
     /// @param _linkThreshold LINK value in wei to determine when to withdraw from Oracle contract.
     /// @param _ethThreshold ETH value in wei to determine when to top-up LINK node.
+    /// @param _aaveThreshold LINK value in wei to determine when to trigger Aave deposit.
     /// @param _ethTopUp ETH value in wei to top-up LINK node when triggered.
     /// @dev Only owner can call this.
     /// @dev Function selector :
@@ -105,6 +199,7 @@ contract Flannel is Ownable {
     uint256 _pcTopUp,
     uint256 _linkThreshold,
     uint256 _ethThreshold,
+    uint256 _aaveThreshold,
     uint256 _ethTopUp)
     public
     onlyOwner
@@ -112,63 +207,12 @@ contract Flannel is Ownable {
         uint256 pcTemp = _pcUntouched.add(_pcAave);
         pcTemp = pcTemp.add(_pcTopUp);
         require(pcTemp == 100, "Percent parameters do not equal 100");
-        userStoredParams[paramCounter] = thresholds(_paramsName, _pcUntouched, _pcAave, _pcTopUp, _linkThreshold, _ethThreshold, _ethTopUp);
+        userStoredParams[paramCounter] = thresholds(_paramsName, _pcUntouched, _pcAave, _pcTopUp, _linkThreshold, _ethThreshold, _aaveThreshold, _ethTopUp);
         paramsInUse = paramCounter;
         paramCounter = paramCounter.add(1);
     }
 
 
-    /// @notice Withdraw earned LINK balance from deployed oracle contract.
-    /// @dev Only node address can call this.
-    /// @dev Function selector : 0x61ff4fac
-    function withdrawFromOracle()
-    public
-    onlyNodeAddress()
-    {
-        uint256 availableFunds = oracle.withdrawable();
-        oracle.withdraw(address(this), availableFunds);
-    }
-
-    /// @notice Deposit withdrawn LINK into Aave Protocol
-    /// @dev Only node address can call this.
-    /// @dev Function selector : 0x06197c1c
-    function depositToAave()
-    public
-    onlyNodeAddress()
-    {
-        uint256 contractLinkBalance = stdLinkTokenInterface.balanceOf(address(this));
-        aaveLinkTokenInterface.approve(lendingPoolApproval, contractLinkBalance + 100);
-
-        lendingPool.deposit(address(aaveLinkTokenInterface), contractLinkBalance, 0);
-    }
-
-    /// @notice Withdraw deposited LINK into Aave Protocol
-    /// @dev Only node address can call this.
-    /// @dev Function selector : 0xd26106e3
-    function withdrawFromAave()
-    public
-    onlyNodeAddress()
-    {
-        uint256 contractaLinkBalance = aLinkTokenInterface.balanceOf(address(this));
-        aLinkTokenInterface.redeem(contractaLinkBalance);
-    }
-
-    /// @notice Convert LINK balance to ETH via Uniswap and send to node.
-    /// @dev Only node address can call this.
-    /// @dev Function selector : 0x5bac1e0d
-    function linkToEthTopUp()
-    public
-    onlyNodeAddress()
-    {
-        // get link balance from erc20 contract
-        uint256 contractLinkBalance = stdLinkTokenInterface.balanceOf(address(this));
-
-        uint256 exchangeRate = linkExchangeInterface.getTokenToEthInputPrice(contractLinkBalance);
-        // Approve uniswap for transfer
-        stdLinkTokenInterface.approve(address(linkExchangeInterface), contractLinkBalance);
-        // Send to node address
-        linkExchangeInterface.tokenToEthTransferOutput(exchangeRate, contractLinkBalance, (now + 1 hours), linkNode);
-    }
 
     /// @notice Change address of oracle contract (in case of re-deployment).
     /// @param _liveOracle new address of oracle contract.
@@ -197,5 +241,16 @@ contract Flannel is Ownable {
     onlyOwner
     {
         oracle.transferOwnership(msg.sender);
+    }
+
+    function _percentHelper(uint256 _value, uint256 _percentage)
+    public
+    pure
+    returns
+    (uint256)
+    {
+        uint256 tmpPer = _value.div(100);
+        tmpPer = tmpPer.mul(_percentage);
+        return tmpPer;
     }
 }

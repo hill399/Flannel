@@ -23,12 +23,6 @@ module.exports = async (deployer) => {
   const lendingPool = await AaveLendingInterface.at(aaveLendingPoolRopsten);
   const uniswap = await UniswapInterface.at(uniswapRopsten);
 
- // console.log(`Threshold: ${threshold}`);
- // console.log(`StdLinkToken Address: ${stdLinkToken.address}`);
- // console.log(`AaveLinkToken Address: ${aaveLinkToken.address}`);
- // console.log(`LendingPool Address: ${lendingPool.address}`);
- // console.log(`Uniswap Addresss: ${uniswap.address}`);
-  
   const oracle = await deployer.deploy(Oracle, stdLinkToken.address);
   await deployer.deploy(TestnetConsumer, stdLinkToken.address);
   await deployer.deploy(Flannel, uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkToken.address, oracle.address, addressDummy, lendingPool.address, aaveApprovalRopsten);
