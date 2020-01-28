@@ -113,19 +113,19 @@ contract('Flannel', accounts => {
   context('Flannel - Oracle Functions', () => {
     it('Flannel can withdraw LINK from the oracle contract', async () => {
       ob = await stdLinkToken.balanceOf.call(oracle.address);
-      await flannel.withdrawFromOracle(ob, {from: oracleNode});
+      await flannel.manualWithdrawFromOracle(ob, {from: owner});
       nb = await stdLinkToken.balanceOf.call(flannel.address);
       assert.equal(Number(ob), Number(nb), "LINK has not been successfully withdrawn from oracle");
     })
-
+/*
     it('Percent helper works as expected', async() => {
       answer = await flannel._percentHelper(100, 10);
       assert.equal(answer, 10, "Percent helper doesn't work");
     })
-
+*/
     it('Correctly portions the withdrawn funds into three allocations', async() => {
       ob = await stdLinkToken.balanceOf.call(oracle.address);
-      await flannel.withdrawFromOracle(ob, {from: oracleNode});
+      await flannel.manualWithdrawFromOracle(ob, {from: owner});
       aaveBal = await flannel.aaveBalance.call();
       assert.equal((ob/100) * 60, aaveBal, "Aave balance incorrect");
       topUpBal = await flannel.topUpBalance.call();
@@ -148,10 +148,10 @@ contract('Flannel', accounts => {
   context('Flannel - Uniswap Functions', () => {
     it('Flannel can convert LINK funds to eth and transfer to node', async () => {
       init = await stdLinkToken.balanceOf.call(oracle.address);
-      await flannel.withdrawFromOracle(init, {from: oracleNode});
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
       topUpAllocation = await flannel.topUpBalance.call();
       ob = await web3.eth.getBalance(oracleNode);
-      await flannel.linkToEthTopUp(topUpAllocation, {from: oracleNode});
+      await flannel.manualLinkToEthTopUp(topUpAllocation, {from: owner});
       nb = await web3.eth.getBalance(oracleNode);
       assert.notEqual(Number(nb), Number(ob), "Uniswap transaction has not been successful");
     })
@@ -160,10 +160,10 @@ contract('Flannel', accounts => {
   context('Flannel - Aave Functions', () => {
     it('Flannel can deposit aaveLINK into Aave and redeem aLINK', async() => {
       init = await stdLinkToken.balanceOf.call(oracle.address);
-      await flannel.withdrawFromOracle(init, {from: oracleNode});
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
       ob = await aaveLinkToken.balanceOf.call(flannel.address);
       aaveAllocation = await flannel.aaveBalance.call();
-      await flannel.depositToAave(aaveAllocation, {from: oracleNode});
+      await flannel.manualDepositToAave(aaveAllocation, {from: owner});
       nb = await aaveLinkToken.balanceOf.call(flannel.address);
       diff = ob - nb;
       alinkb = await aLinkIntToken.balanceOf.call(flannel.address);
@@ -173,11 +173,11 @@ contract('Flannel', accounts => {
 
     it('Flannel can withdraw deposited aaveLink from Aave', async() => {
       init = await stdLinkToken.balanceOf.call(oracle.address);
-      await flannel.withdrawFromOracle(init, {from: oracleNode});
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
       aaveAllocation = await flannel.aaveBalance.call();
-      await flannel.depositToAave(aaveAllocation, {from: oracleNode});
+      await flannel.manualDepositToAave(aaveAllocation, {from: owner});
       ob = await aLinkIntToken.balanceOf.call(flannel.address);
-      await flannel.withdrawFromAave(ob, {from: oracleNode});
+      await flannel.manualWithdrawFromAave(ob, {from: owner});
       nb = await aLinkIntToken.balanceOf.call(flannel.address);
       assert.notEqual(Number(nb), Number(ob), "Aave withdrawal has not been successful");
     })

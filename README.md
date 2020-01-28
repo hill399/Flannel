@@ -1,17 +1,17 @@
 
 # Flannel
-## Chainlink oracle extension interface.
-- Working project for Truffle U 2020 enrolment.
-- Currently a work in progress, for testnet use only!
+
+> Chainlink oracle extension interface. Working project for Truffle U 2020 enrolment.
+> Currently a work in progress, for testnet use only!
 
 ## Overview
 
 Flannel is a smart contract which acts a a management interface for a node operators oracle contract. Controlled by function calls from the user's node, Flannel can provide the following features (Work in Progress):
 
-- Withdraw earned LINK from oracle contract at given threshold levels. (To be revised)
+- Withdraw earned LINK from oracle contract at given threshold levels. (Complete)
 - Top-up the users node address with ETH - converting withdrawn LINK to ETH via Uniswap. (Complete)
-- Option to deposit LINK into the Aave lending pool and earn interest. (Complete)
-- Front-end management interface for configuration. (To-Do)
+- Option to deposit LINK into the Aave lending pool and earn interest (Awaiting Aave LINK reserve on Ropsten).
+- Front-end management interface for configuration (To-Do).
 
 ## Getting started
 
@@ -29,7 +29,6 @@ Flannel is a smart contract which acts a a management interface for a node opera
 Local testing currently available for Oracle and Flannel triggering. Clone repo then run:
 
 ```
-ganache-cli --fork https://ropsten.infura.io/v3/{Project-ID}@{latest-block-no} -u 0x1A4A8483564e7d1Be536cDc39B3958b79F6F7015 -p 8545
 npm install
 npm test
 ```
