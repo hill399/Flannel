@@ -23,8 +23,6 @@ contract('Flannel', accounts => {
   const oracleNode = accounts[1]
   const stranger = accounts[2]
 
-  const userThreshold = web3.utils.toWei('1', 'ether');
-
   const jobId = '4c7b7ffb66b344fbaa64995af81e355a'
   const dummyResponse = web3.utils.numberToHex('12345');
   const costOfReq = (web3.utils.toWei('5', 'ether'));
@@ -40,7 +38,7 @@ contract('Flannel', accounts => {
 
     oracle = await Oracle.new(stdLinkToken.address);
     testnetConsumer = await TestnetConsumer.new(stdLinkToken.address);
-    flannel = await Flannel.new(uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkIntToken.address, oracle.address, oracleNode, lendingPool.address, aaveApprovalRopsten, userThreshold.toString());
+    flannel = await Flannel.new(uniswap.address, stdLinkToken.address, aaveLinkToken.address, aLinkIntToken.address, oracle.address, oracleNode, lendingPool.address, aaveApprovalRopsten);
 
     await flannel.configureOracleSetup(oracle.address, oracleNode);
 
@@ -55,11 +53,85 @@ contract('Flannel', accounts => {
     await h.fulfillOracleRequest(oracle, request, dummyResponse, { from: oracleNode })
   })
 
+  context('Flannel - Threshold Functions', () => {
+    // [0] = Name
+    // [1] = Percent Untouched
+    // [2] = Percent Aave
+    // [3] = Percent Top-Up
+    // [4] = Link Threshold
+    // [5] = Eth Threshold
+    // [6] = Aave Threshold (LINK)
+    // [7] = Eth Top-Up
+    let defTestSet = ["Default",  20, 60, 20, web3.utils.toWei('5', 'ether'), web3.utils.toWei('1', 'ether'), web3.utils.toWei('10', 'ether'), web3.utils.toWei('300', 'finney')];
+    let newTestSet = ["Test Set", 40, 40, 20, web3.utils.toWei('10', 'ether'), web3.utils.toWei('2', 'finney'),web3.utils.toWei('5', 'ether'),  web3.utils.toWei('5', 'finney')];
+    let badTestSet = ["Test Set", 40, 50, 20, web3.utils.toWei('10', 'ether'), web3.utils.toWei('2', 'finney'), web3.utils.toWei('10', 'ether'), web3.utils.toWei('5', 'finney')];
+
+
+    it('Checks that the default thresholds have been applied at deployment', async () => {
+      defUserStoredParams = await flannel.userStoredParams.call(0);
+      defTestSet.forEach(function(item, index) {
+        assert.equal(defUserStoredParams[index], item);
+      })
+    })
+
+    it('Can add a new parameter set', async() => {
+      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
+      newUserStoredParams = await flannel.userStoredParams.call(1);
+      newTestSet.forEach(function(item, index) {
+        assert.equal(newUserStoredParams[index], item);
+      })
+    })
+
+    it('Can track new addition counters correctly', async() => {
+      pCounter = await flannel.paramCounter.call();
+      pInUse = await flannel.paramsInUse.call();
+      assert.equal(pCounter, 1, "Default paramCounter is incorrect");
+      assert.equal(pInUse, 0, "Current params in use is incorrect");
+      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
+      pCounter = await flannel.paramCounter.call();
+      pInUse = await flannel.paramsInUse.call();
+      assert.equal(pCounter, 2, "Addition paramCounter is incorrect");
+      assert.equal(pInUse, 1, "Addition params in use is incorrect");
+    })
+
+    it('Ensures percentage variables calculate to 100', async() => {
+      badpcAave = 10;
+      await truffleAssert.reverts(
+        flannel.createNewAllowance(badTestSet[0], badTestSet[1], badTestSet[2], badTestSet[3], badTestSet[4], badTestSet[5], badTestSet[6], newTestSet[7]),
+        "Percent parameters do not equal 100");
+    })
+
+    it('Allows for different parameter sets to be selected', async() => {
+      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
+      pInUse = await flannel.paramsInUse.call();
+      await flannel.setParametersInUse(pInUse -1);
+      pInUse = await flannel.paramsInUse.call();
+      assert.equal(pInUse, 0, "Params in use have not been changed");
+    })
+  })
+
   context('Flannel - Oracle Functions', () => {
     it('Flannel can withdraw LINK from the oracle contract', async () => {
-      await flannel.withdrawFromOracle({from: oracleNode});
+      ob = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(ob, {from: owner});
       nb = await stdLinkToken.balanceOf.call(flannel.address);
-      assert.equal(Number(nb), costOfReq, "LINK has not been successfully withdrawn from oracle");
+      assert.equal(Number(ob), Number(nb), "LINK has not been successfully withdrawn from oracle");
+    })
+/*
+    it('Percent helper works as expected', async() => {
+      answer = await flannel._percentHelper(100, 10);
+      assert.equal(answer, 10, "Percent helper doesn't work");
+    })
+*/
+    it('Correctly portions the withdrawn funds into three allocations', async() => {
+      ob = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(ob, {from: owner});
+      aaveBal = await flannel.aaveBalance.call();
+      assert.equal((ob/100) * 60, aaveBal, "Aave balance incorrect");
+      topUpBal = await flannel.topUpBalance.call();
+      assert.equal((ob/100) * 20, topUpBal, "Top-up balance incorrect");
+      storeBal = await flannel.storeBalance.call();
+      assert.equal((ob/100) * 20, storeBal, "Store balance incorrect");
     })
 
     it('Only owner can revert ownership of oracle contract from Flannel', async() => {
@@ -75,9 +147,11 @@ contract('Flannel', accounts => {
 
   context('Flannel - Uniswap Functions', () => {
     it('Flannel can convert LINK funds to eth and transfer to node', async () => {
-      await flannel.withdrawFromOracle({from: oracleNode});
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      topUpAllocation = await flannel.topUpBalance.call();
       ob = await web3.eth.getBalance(oracleNode);
-      await flannel.linkToEthTopUp({from: oracleNode});
+      await flannel.manualLinkToEthTopUp(topUpAllocation, {from: owner});
       nb = await web3.eth.getBalance(oracleNode);
       assert.notEqual(Number(nb), Number(ob), "Uniswap transaction has not been successful");
     })
@@ -85,9 +159,11 @@ contract('Flannel', accounts => {
 
   context('Flannel - Aave Functions', () => {
     it('Flannel can deposit aaveLINK into Aave and redeem aLINK', async() => {
-      await flannel.withdrawFromOracle({from: oracleNode});
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
       ob = await aaveLinkToken.balanceOf.call(flannel.address);
-      await flannel.depositToAave({from: oracleNode});
+      aaveAllocation = await flannel.aaveBalance.call();
+      await flannel.manualDepositToAave(aaveAllocation, {from: owner});
       nb = await aaveLinkToken.balanceOf.call(flannel.address);
       diff = ob - nb;
       alinkb = await aLinkIntToken.balanceOf.call(flannel.address);
@@ -96,12 +172,53 @@ contract('Flannel', accounts => {
     })
 
     it('Flannel can withdraw deposited aaveLink from Aave', async() => {
-      await flannel.withdrawFromOracle({from: oracleNode});
-      await flannel.depositToAave({from: oracleNode});
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      aaveAllocation = await flannel.aaveBalance.call();
+      await flannel.manualDepositToAave(aaveAllocation, {from: owner});
       ob = await aLinkIntToken.balanceOf.call(flannel.address);
-      await flannel.withdrawFromAave({from: oracleNode});
+      await flannel.manualWithdrawFromAave(ob, {from: owner});
       nb = await aLinkIntToken.balanceOf.call(flannel.address);
       assert.notEqual(Number(nb), Number(ob), "Aave withdrawal has not been successful");
+    })
+  })
+
+  context('Flannel - Function Co-ordinator', () => {
+    it('Withdraws from the oracle contract correctly', async () => {
+      ob = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.flannelCoordinator({from: oracleNode});
+      nb = await stdLinkToken.balanceOf.call(flannel.address);
+      assert.equal(Number(ob), Number(nb), "LINK has not been successfully withdrawn from oracle");
+    })
+
+    it('Tops up the node correctly', async() => {
+      preLink = await stdLinkToken.balanceOf.call(oracle.address);
+      await web3.eth.sendTransaction({from: oracleNode, to: stranger, value: web3.utils.toWei('99', 'ether')})
+      await web3.eth.sendTransaction({from: oracleNode, to: stranger, value: web3.utils.toWei('500', 'finney')})
+      ob = await web3.eth.getBalance(oracleNode);
+      await flannel.flannelCoordinator({from: oracleNode});
+      nb = await web3.eth.getBalance(oracleNode);
+      topUpPost = await flannel.topUpBalance.call();
+      assert.isBelow(Number(ob), Number(nb), "Balance has not increased");
+      assert.isBelow(Number(topUpPost), (preLink/100) * 20, "topUpBalance has not decremented correctly");
+    })
+
+    it('Deposits to Aave correctly', async () => {
+      await stdLinkToken.transfer(testnetConsumer.address, `${15e18}`, {from: unlockedTestAccount})
+      await aaveLinkToken.transfer(flannel.address, `${15e18}`, {from: unlockedTestAccount})
+
+      let i;
+      for (i = 0; i < 3; i++) {
+        tx = await testnetConsumer.requestEthereumPrice(oracle.address, jobId)
+        request = h.decodeRunRequest(tx.receipt.rawLogs[3])
+        await h.fulfillOracleRequest(oracle, request, dummyResponse, { from: oracleNode })
+      }
+
+      ob = await aLinkIntToken.balanceOf(flannel.address);
+      await flannel.flannelCoordinator({from: oracleNode});
+      nb = await aLinkIntToken.balanceOf(flannel.address);
+
+      assert.equal(Number(ob + nb), Number(nb), "Unexpected amount of aLINK in Flannel contract");
     })
   })
 

@@ -4061,7 +4061,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.21",
-  "updatedAt": "2020-01-24T15:35:16.950Z",
+  "updatedAt": "2020-01-28T08:50:38.023Z",
   "devdoc": {
     "methods": {
       "allowInterestRedirectionTo(address)": {
