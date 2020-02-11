@@ -8,10 +8,14 @@
 
 Flannel is a smart contract which acts a a management interface for a node operators oracle contract. Controlled by function calls from the user's node, Flannel can provide the following features (Work in Progress):
 
-- Withdraw earned LINK from oracle contract at given threshold levels. (Complete)
-- Top-up the users node address with ETH - converting withdrawn LINK to ETH via Uniswap. (Complete)
-- Option to deposit LINK into the Aave lending pool and earn interest. (Complete)
-- Front-end management interface for configuration. (To-Do)
+- [X] Withdraw earned LINK from oracle contract at given threshold levels.
+- [X] Top-up the users node address with ETH - converting withdrawn LINK to ETH via Uniswap.
+- [X] Option to deposit LINK into the Aave lending pool and earn interest.
+- [ ] Front-end management interface for configuration.
+
+<p align="center">
+  <img src="https://i.ibb.co/TWh8kSq/screen-poc-rs.png">
+</p>
 
 ## Getting started
 
