@@ -38,9 +38,7 @@ contract Flannel is IFlannel {
 
         /* Create default param account */
         /* Fix those token mod values */
-        userStoredParams[0] = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 10 * ETHER, 300 * FINNEY);
-        paramCounter = 1;
-        paramsInUse = 0;
+        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 10 * ETHER, 300 * FINNEY);
     }
 
     /// @notice Restricts certain calls to node address only.
@@ -59,16 +57,16 @@ contract Flannel is IFlannel {
     onlyNodeAddress()
     {
         uint256 availableFunds = oracle.withdrawable();
-        if(availableFunds >= userStoredParams[paramsInUse].linkThreshold){
+        if(availableFunds >= userStoredParams.linkThreshold){
            _withdrawFromOracle(availableFunds);
         }
 
-        if(linkNode.balance <= userStoredParams[paramsInUse].ethThreshold){
+        if(linkNode.balance <= userStoredParams.ethThreshold){
            require(linkNode != address(0), "Invalid LinkNode Address");
            _linkToEthTopUp(topUpBalance);
         }
 
-        if(aaveBalance <= userStoredParams[paramsInUse].aaveThreshold){
+        if(aaveBalance <= userStoredParams.aaveThreshold){
            _depositToAave(aaveBalance);
         }
     }
@@ -78,7 +76,7 @@ contract Flannel is IFlannel {
     /// @dev onlyOwner wrapper for internal function.
     function manualWithdrawFromOracle(uint256 _amount)
     public
-    onlyOwner
+ //   onlyOwner
     {
         _withdrawFromOracle(_amount);
     }
@@ -124,15 +122,29 @@ contract Flannel is IFlannel {
         linkNode = _linkNode;
     }
 
-    /// @notice Set threshold parameter set to use.
-    /// @param _paramNo new address of oracle contract.
-    /// @dev Only contract owner can call this.
-    function setParametersInUse(uint256 _paramNo)
+    /// @notice Withdraw balances from Flannel contract.
+    /// @param _param balance store to withdraw from (see in-line comments).
+    /// @param _amount amount in wei to withdraw from given balance store.
+    /// @dev only contract owner can call this.
+    function withdrawFromFlannel(uint256 _param, uint256 _amount)
     public
     onlyOwner
     {
-        require(_paramNo < paramCounter, "Invalid parameter set");
-        paramsInUse = _paramNo;
+        if(_param == 0){
+            require(_param <= storeBalance, "Insufficient funds in store balance");
+            stdLinkTokenInterface.transfer(msg.sender, _amount);
+            storeBalance = storeBalance.sub(_amount);
+        }
+        if(_param == 1){
+            require(_param <= aaveBalance, "Insufficient funds in aave balance");
+            stdLinkTokenInterface.transfer(msg.sender, _amount);
+            aaveBalance = aaveBalance.sub(_amount);
+        }
+        if(_param == 2){
+            require(_param <= topUpBalance, "Insufficient funds in top-up balance");
+            stdLinkTokenInterface.transfer(msg.sender, _amount);
+            topUpBalance = topUpBalance.sub(_amount);
+        }
     }
 
     /// @notice Create new parameter settings to distribute withdrawn LINK.
@@ -160,9 +172,7 @@ contract Flannel is IFlannel {
         uint256 pcTemp = _pcUntouched.add(_pcAave);
         pcTemp = pcTemp.add(_pcTopUp);
         require(pcTemp == 100, "Percent parameters do not equal 100");
-        userStoredParams[paramCounter] = thresholds(_paramsName, _pcUntouched, _pcAave, _pcTopUp, _linkThreshold, _ethThreshold, _aaveThreshold, _ethTopUp);
-        paramsInUse = paramCounter;
-        paramCounter = paramCounter.add(1);
+        userStoredParams = thresholds(_paramsName, _pcUntouched, _pcAave, _pcTopUp, _linkThreshold, _ethThreshold, _aaveThreshold, _ethTopUp);
     }
 
     /// @notice Renounce ownership of oracle contract back to owner of this contract.
@@ -173,6 +183,15 @@ contract Flannel is IFlannel {
     onlyOwner
     {
         oracle.transferOwnership(msg.sender);
+    }
+
+    /// @notice Return the operating addresses tied to this contract.
+    function getAddresses()
+    public
+    view
+    returns (address, address)
+    {
+        return (address(oracle), linkNode);
     }
 
 }

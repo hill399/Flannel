@@ -68,7 +68,7 @@ contract('Flannel', accounts => {
 
 
     it('Checks that the default thresholds have been applied at deployment', async () => {
-      defUserStoredParams = await flannel.userStoredParams.call(0);
+      defUserStoredParams = await flannel.userStoredParams.call();
       defTestSet.forEach(function(item, index) {
         assert.equal(defUserStoredParams[index], item);
       })
@@ -76,22 +76,10 @@ contract('Flannel', accounts => {
 
     it('Can add a new parameter set', async() => {
       await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
-      newUserStoredParams = await flannel.userStoredParams.call(1);
+      newUserStoredParams = await flannel.userStoredParams.call();
       newTestSet.forEach(function(item, index) {
         assert.equal(newUserStoredParams[index], item);
       })
-    })
-
-    it('Can track new addition counters correctly', async() => {
-      pCounter = await flannel.paramCounter.call();
-      pInUse = await flannel.paramsInUse.call();
-      assert.equal(pCounter, 1, "Default paramCounter is incorrect");
-      assert.equal(pInUse, 0, "Current params in use is incorrect");
-      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
-      pCounter = await flannel.paramCounter.call();
-      pInUse = await flannel.paramsInUse.call();
-      assert.equal(pCounter, 2, "Addition paramCounter is incorrect");
-      assert.equal(pInUse, 1, "Addition params in use is incorrect");
     })
 
     it('Ensures percentage variables calculate to 100', async() => {
@@ -101,13 +89,6 @@ contract('Flannel', accounts => {
         "Percent parameters do not equal 100");
     })
 
-    it('Allows for different parameter sets to be selected', async() => {
-      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
-      pInUse = await flannel.paramsInUse.call();
-      await flannel.setParametersInUse(pInUse -1);
-      pInUse = await flannel.paramsInUse.call();
-      assert.equal(pInUse, 0, "Params in use have not been changed");
-    })
   })
 
   context('Flannel - Oracle Functions', () => {
@@ -117,12 +98,8 @@ contract('Flannel', accounts => {
       nb = await stdLinkToken.balanceOf.call(flannel.address);
       assert.equal(Number(ob), Number(nb), "LINK has not been successfully withdrawn from oracle");
     })
-/*
-    it('Percent helper works as expected', async() => {
-      answer = await flannel._percentHelper(100, 10);
-      assert.equal(answer, 10, "Percent helper doesn't work");
-    })
-*/
+
+
     it('Correctly portions the withdrawn funds into three allocations', async() => {
       ob = await stdLinkToken.balanceOf.call(oracle.address);
       await flannel.manualWithdrawFromOracle(ob, {from: owner});

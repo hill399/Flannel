@@ -1,0 +1,426 @@
+{
+  "contractName": "WithdrawalInterface",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "withdrawable",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"withdrawable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"withdraw(address,uint256)\":{\"params\":{\"amount\":\"is the amount of LINK to send\",\"recipient\":\"is the address to send the LINK to\"}}}},\"userdoc\":{\"methods\":{\"withdraw(address,uint256)\":{\"notice\":\"transfer LINK held by the contract belonging to msg.sender to another address\"},\"withdrawable()\":{\"notice\":\"query the available amount of LINK to withdraw by msg.sender\"}}}},\"settings\":{\"compilationTarget\":{\"chainlink/v0.5/contracts/interfaces/WithdrawalInterface.sol\":\"WithdrawalInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"chainlink/v0.5/contracts/interfaces/WithdrawalInterface.sol\":{\"keccak256\":\"0x39d6b613dafa8377db39b9fe3a05e83652579ba60ff4609229f0b65a034d80e3\",\"urls\":[\"bzz-raw://7c73c21a71490bf7a691d1bef3199a73fe6f331afc7937bd3c7ecd5fdc65dc45\",\"dweb:/ipfs/QmRyz25oWAYxL8atXAogLQxjsEgJTyDy5aXTkw3jvJURsW\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.0;\n\ninterface WithdrawalInterface {\n  /**\n   * @notice transfer LINK held by the contract belonging to msg.sender to\n   * another address\n   * @param recipient is the address to send the LINK to\n   * @param amount is the amount of LINK to send\n   */\n  function withdraw(address recipient, uint256 amount) external;\n\n  /**\n   * @notice query the available amount of LINK to withdraw by msg.sender\n   */\n  function withdrawable() external view returns (uint256);\n}\n",
+  "sourcePath": "chainlink/v0.5/contracts/interfaces/WithdrawalInterface.sol",
+  "ast": {
+    "absolutePath": "chainlink/v0.5/contracts/interfaces/WithdrawalInterface.sol",
+    "exportedSymbols": {
+      "WithdrawalInterface": [
+        3418
+      ]
+    },
+    "id": 3419,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3405,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:18"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 3418,
+        "linearizedBaseContracts": [
+          3418
+        ],
+        "name": "WithdrawalInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@notice transfer LINK held by the contract belonging to msg.sender to\nanother address\n@param recipient is the address to send the LINK to\n@param amount is the amount of LINK to send",
+            "id": 3412,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdraw",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3410,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3407,
+                  "name": "recipient",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3412,
+                  "src": "291:17:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3406,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "291:7:18",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3409,
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3412,
+                  "src": "310:14:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3408,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "310:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "290:35:18"
+            },
+            "returnParameters": {
+              "id": 3411,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "334:0:18"
+            },
+            "scope": 3418,
+            "src": "273:62:18",
+            "stateMutability": "nonpayable",
+            "superFunction": 3389,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice query the available amount of LINK to withdraw by msg.sender",
+            "id": 3417,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdrawable",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3413,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "446:2:18"
+            },
+            "returnParameters": {
+              "id": 3416,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3415,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3417,
+                  "src": "472:7:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3414,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "472:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "471:9:18"
+            },
+            "scope": 3418,
+            "src": "425:56:18",
+            "stateMutability": "view",
+            "superFunction": 3394,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3419,
+        "src": "25:458:18"
+      }
+    ],
+    "src": "0:484:18"
+  },
+  "legacyAST": {
+    "absolutePath": "chainlink/v0.5/contracts/interfaces/WithdrawalInterface.sol",
+    "exportedSymbols": {
+      "WithdrawalInterface": [
+        3418
+      ]
+    },
+    "id": 3419,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3405,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:18"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 3418,
+        "linearizedBaseContracts": [
+          3418
+        ],
+        "name": "WithdrawalInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@notice transfer LINK held by the contract belonging to msg.sender to\nanother address\n@param recipient is the address to send the LINK to\n@param amount is the amount of LINK to send",
+            "id": 3412,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdraw",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3410,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3407,
+                  "name": "recipient",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3412,
+                  "src": "291:17:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3406,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "291:7:18",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3409,
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3412,
+                  "src": "310:14:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3408,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "310:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "290:35:18"
+            },
+            "returnParameters": {
+              "id": 3411,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "334:0:18"
+            },
+            "scope": 3418,
+            "src": "273:62:18",
+            "stateMutability": "nonpayable",
+            "superFunction": 3389,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@notice query the available amount of LINK to withdraw by msg.sender",
+            "id": 3417,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdrawable",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3413,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "446:2:18"
+            },
+            "returnParameters": {
+              "id": 3416,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3415,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3417,
+                  "src": "472:7:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3414,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "472:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "471:9:18"
+            },
+            "scope": 3418,
+            "src": "425:56:18",
+            "stateMutability": "view",
+            "superFunction": 3394,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3419,
+        "src": "25:458:18"
+      }
+    ],
+    "src": "0:484:18"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.12+commit.7709ece9.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.23",
+  "updatedAt": "2020-02-17T09:20:49.062Z",
+  "devdoc": {
+    "methods": {
+      "withdraw(address,uint256)": {
+        "params": {
+          "amount": "is the amount of LINK to send",
+          "recipient": "is the address to send the LINK to"
+        }
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "withdraw(address,uint256)": {
+        "notice": "transfer LINK held by the contract belonging to msg.sender to another address"
+      },
+      "withdrawable()": {
+        "notice": "query the available amount of LINK to withdraw by msg.sender"
+      }
+    }
+  }
+}

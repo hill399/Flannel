@@ -9,7 +9,11 @@
     "truffle:init-setup": "npm run truffle:contract-prep && npm run remix",
     "truffle:migrate-ganache": "cd ./truffle/ && npx truffle migrate --network ganache && cd ..",
     "truffle:contract-prep": "cd ./truffle && npx truffle exec ./scripts/contract-prep.js --network ganache && cd ..",
-    "truffle:test": "cd ./truffle/ && npx truffle test --network ganache && cd .."
+    "truffle:test": "cd ./truffle/ && npx truffle test --network ganache && cd ..",
+    "react": "npm run truffle:migrate-ganache && npm run react:react-prep",
+    "react:react-prep": "cd ./truffle && npx truffle exec ./scripts/react-prep.js --network ganache && npm run react:unlock",
+    "react:unlock": "cd ./truffle && npx truffle exec ./scripts/unlock-account.js --network ganache && npm run react:start-server",
+    "react:start-server": "cd ./truffle/client && npm run start"
   },
   "repository": {
     "type": "git",
@@ -28,6 +32,7 @@
     "link_token": "^1.0.6",
     "remixd": "^0.1.8-alpha.14",
     "truffle": "^5.0.43",
-    "truffle-assertions": "^0.9.2"
+    "truffle-assertions": "^0.9.2",
+    "truffle-security": "^1.7.0"
   }
 }

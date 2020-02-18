@@ -1,0 +1,2385 @@
+{
+    "compiler": {
+        "name": "solc",
+        "version": "0.5.12+commit.7709ece9.Emscripten.clang"
+    },
+    "updatedAt": "2020-02-02T12:23:28.827Z",
+    "sources": {
+        "C:/Users/CHILL/truffle_u/react-play/flannel-react/truffle/contracts/LinkToken.sol": {
+            "contracts": [
+                {
+                    "contractName": "LinkTokenInterface",
+                    "bytecode": "0x",
+                    "deployedBytecode": "0x",
+                    "sourceMap": "",
+                    "deployedSourceMap": ""
+                }
+            ],
+            "ast": {
+                "absolutePath": "C:/Users/CHILL/truffle_u/react-play/flannel-react/truffle/contracts/LinkToken.sol",
+                "exportedSymbols": {
+                    "LinkTokenInterface": [
+                        94
+                    ]
+                },
+                "id": 95,
+                "nodeType": "SourceUnit",
+                "nodes": [
+                    {
+                        "id": 1,
+                        "literals": [
+                            "solidity",
+                            "^",
+                            "0.5",
+                            ".0"
+                        ],
+                        "nodeType": "PragmaDirective",
+                        "src": "0:23:0"
+                    },
+                    {
+                        "baseContracts": [],
+                        "contractDependencies": [],
+                        "contractKind": "interface",
+                        "documentation": null,
+                        "fullyImplemented": false,
+                        "id": 94,
+                        "linearizedBaseContracts": [
+                            94
+                        ],
+                        "name": "LinkTokenInterface",
+                        "nodeType": "ContractDefinition",
+                        "nodes": [
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 10,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "allowance",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 6,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 3,
+                                            "name": "owner",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 10,
+                                            "src": "77:13:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 2,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "77:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 5,
+                                            "name": "spender",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 10,
+                                            "src": "92:15:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 4,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "92:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "76:32:0"
+                                },
+                                "returnParameters": {
+                                    "id": 9,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 8,
+                                            "name": "remaining",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 10,
+                                            "src": "132:17:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 7,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "132:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "131:19:0"
+                                },
+                                "scope": 94,
+                                "src": "58:93:0",
+                                "stateMutability": "view",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 19,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "approve",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 15,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 12,
+                                            "name": "spender",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 19,
+                                            "src": "171:15:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 11,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "171:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 14,
+                                            "name": "value",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 19,
+                                            "src": "188:13:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 13,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "188:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "170:32:0"
+                                },
+                                "returnParameters": {
+                                    "id": 18,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 17,
+                                            "name": "success",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 19,
+                                            "src": "221:12:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 16,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "221:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "220:14:0"
+                                },
+                                "scope": 94,
+                                "src": "154:81:0",
+                                "stateMutability": "nonpayable",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 26,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "balanceOf",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 22,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 21,
+                                            "name": "owner",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 26,
+                                            "src": "257:13:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 20,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "257:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "256:15:0"
+                                },
+                                "returnParameters": {
+                                    "id": 25,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 24,
+                                            "name": "balance",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 26,
+                                            "src": "295:15:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 23,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "295:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "294:17:0"
+                                },
+                                "scope": 94,
+                                "src": "238:74:0",
+                                "stateMutability": "view",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 31,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "decimals",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 27,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [],
+                                    "src": "332:2:0"
+                                },
+                                "returnParameters": {
+                                    "id": 30,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 29,
+                                            "name": "decimalPlaces",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 31,
+                                            "src": "358:19:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint8",
+                                                "typeString": "uint8"
+                                            },
+                                            "typeName": {
+                                                "id": 28,
+                                                "name": "uint8",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "358:5:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint8",
+                                                    "typeString": "uint8"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "357:21:0"
+                                },
+                                "scope": 94,
+                                "src": "315:64:0",
+                                "stateMutability": "view",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 40,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "decreaseApproval",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 36,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 33,
+                                            "name": "spender",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 40,
+                                            "src": "408:15:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 32,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "408:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 35,
+                                            "name": "addedValue",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 40,
+                                            "src": "425:18:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 34,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "425:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "407:37:0"
+                                },
+                                "returnParameters": {
+                                    "id": 39,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 38,
+                                            "name": "success",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 40,
+                                            "src": "463:12:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 37,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "463:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "462:14:0"
+                                },
+                                "scope": 94,
+                                "src": "382:95:0",
+                                "stateMutability": "nonpayable",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 47,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "increaseApproval",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 45,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 42,
+                                            "name": "spender",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 47,
+                                            "src": "506:15:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 41,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "506:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 44,
+                                            "name": "subtractedValue",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 47,
+                                            "src": "523:23:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 43,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "523:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "505:42:0"
+                                },
+                                "returnParameters": {
+                                    "id": 46,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [],
+                                    "src": "556:0:0"
+                                },
+                                "scope": 94,
+                                "src": "480:77:0",
+                                "stateMutability": "nonpayable",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 52,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "name",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 48,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [],
+                                    "src": "573:2:0"
+                                },
+                                "returnParameters": {
+                                    "id": 51,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 50,
+                                            "name": "tokenName",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 52,
+                                            "src": "599:23:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "memory",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_string_memory_ptr",
+                                                "typeString": "string"
+                                            },
+                                            "typeName": {
+                                                "id": 49,
+                                                "name": "string",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "599:6:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_string_storage_ptr",
+                                                    "typeString": "string"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "598:25:0"
+                                },
+                                "scope": 94,
+                                "src": "560:64:0",
+                                "stateMutability": "view",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 57,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "symbol",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 53,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [],
+                                    "src": "642:2:0"
+                                },
+                                "returnParameters": {
+                                    "id": 56,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 55,
+                                            "name": "tokenSymbol",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 57,
+                                            "src": "668:25:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "memory",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_string_memory_ptr",
+                                                "typeString": "string"
+                                            },
+                                            "typeName": {
+                                                "id": 54,
+                                                "name": "string",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "668:6:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_string_storage_ptr",
+                                                    "typeString": "string"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "667:27:0"
+                                },
+                                "scope": 94,
+                                "src": "627:68:0",
+                                "stateMutability": "view",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 62,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "totalSupply",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 58,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [],
+                                    "src": "718:2:0"
+                                },
+                                "returnParameters": {
+                                    "id": 61,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 60,
+                                            "name": "totalTokensIssued",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 62,
+                                            "src": "744:25:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 59,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "744:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "743:27:0"
+                                },
+                                "scope": 94,
+                                "src": "698:73:0",
+                                "stateMutability": "view",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 71,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "transfer",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 67,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 64,
+                                            "name": "to",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 71,
+                                            "src": "792:10:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 63,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "792:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 66,
+                                            "name": "value",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 71,
+                                            "src": "804:13:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 65,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "804:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "791:27:0"
+                                },
+                                "returnParameters": {
+                                    "id": 70,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 69,
+                                            "name": "success",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 71,
+                                            "src": "837:12:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 68,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "837:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "836:14:0"
+                                },
+                                "scope": 94,
+                                "src": "774:77:0",
+                                "stateMutability": "nonpayable",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 82,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "transferAndCall",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 78,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 73,
+                                            "name": "to",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 82,
+                                            "src": "879:10:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 72,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "879:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 75,
+                                            "name": "value",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 82,
+                                            "src": "891:13:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 74,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "891:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 77,
+                                            "name": "data",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 82,
+                                            "src": "906:19:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "calldata",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bytes_calldata_ptr",
+                                                "typeString": "bytes"
+                                            },
+                                            "typeName": {
+                                                "id": 76,
+                                                "name": "bytes",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "906:5:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bytes_storage_ptr",
+                                                    "typeString": "bytes"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "878:48:0"
+                                },
+                                "returnParameters": {
+                                    "id": 81,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 80,
+                                            "name": "success",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 82,
+                                            "src": "945:12:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 79,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "945:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "944:14:0"
+                                },
+                                "scope": 94,
+                                "src": "854:105:0",
+                                "stateMutability": "nonpayable",
+                                "superFunction": null,
+                                "visibility": "external"
+                            },
+                            {
+                                "body": null,
+                                "documentation": null,
+                                "id": 93,
+                                "implemented": false,
+                                "kind": "function",
+                                "modifiers": [],
+                                "name": "transferFrom",
+                                "nodeType": "FunctionDefinition",
+                                "parameters": {
+                                    "id": 89,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 84,
+                                            "name": "from",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 93,
+                                            "src": "984:12:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 83,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "984:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 86,
+                                            "name": "to",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 93,
+                                            "src": "998:10:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            },
+                                            "typeName": {
+                                                "id": 85,
+                                                "name": "address",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "998:7:0",
+                                                "stateMutability": "nonpayable",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        },
+                                        {
+                                            "constant": false,
+                                            "id": 88,
+                                            "name": "value",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 93,
+                                            "src": "1010:13:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            },
+                                            "typeName": {
+                                                "id": 87,
+                                                "name": "uint256",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "1010:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "983:41:0"
+                                },
+                                "returnParameters": {
+                                    "id": 92,
+                                    "nodeType": "ParameterList",
+                                    "parameters": [
+                                        {
+                                            "constant": false,
+                                            "id": 91,
+                                            "name": "success",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 93,
+                                            "src": "1043:12:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 90,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "1043:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }
+                                    ],
+                                    "src": "1042:14:0"
+                                },
+                                "scope": 94,
+                                "src": "962:95:0",
+                                "stateMutability": "nonpayable",
+                                "superFunction": null,
+                                "visibility": "external"
+                            }
+                        ],
+                        "scope": 95,
+                        "src": "25:1034:0"
+                    }
+                ],
+                "src": "0:1060:0"
+            },
+            "legacyAST": {
+                "attributes": {
+                    "absolutePath": "C:/Users/CHILL/truffle_u/react-play/flannel-react/truffle/contracts/LinkToken.sol",
+                    "exportedSymbols": {
+                        "LinkTokenInterface": [
+                            94
+                        ]
+                    }
+                },
+                "children": [
+                    {
+                        "attributes": {
+                            "literals": [
+                                "solidity",
+                                "^",
+                                "0.5",
+                                ".0"
+                            ]
+                        },
+                        "id": 1,
+                        "name": "PragmaDirective",
+                        "src": "0:23:0"
+                    },
+                    {
+                        "attributes": {
+                            "baseContracts": [
+                                null
+                            ],
+                            "contractDependencies": [
+                                null
+                            ],
+                            "contractKind": "interface",
+                            "documentation": null,
+                            "fullyImplemented": false,
+                            "linearizedBaseContracts": [
+                                94
+                            ],
+                            "name": "LinkTokenInterface",
+                            "scope": 95
+                        },
+                        "children": [
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "allowance",
+                                    "scope": 94,
+                                    "stateMutability": "view",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "owner",
+                                                    "scope": 10,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 2,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "77:7:0"
+                                                    }
+                                                ],
+                                                "id": 3,
+                                                "name": "VariableDeclaration",
+                                                "src": "77:13:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "spender",
+                                                    "scope": 10,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 4,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "92:7:0"
+                                                    }
+                                                ],
+                                                "id": 5,
+                                                "name": "VariableDeclaration",
+                                                "src": "92:15:0"
+                                            }
+                                        ],
+                                        "id": 6,
+                                        "name": "ParameterList",
+                                        "src": "76:32:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "remaining",
+                                                    "scope": 10,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 7,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "132:7:0"
+                                                    }
+                                                ],
+                                                "id": 8,
+                                                "name": "VariableDeclaration",
+                                                "src": "132:17:0"
+                                            }
+                                        ],
+                                        "id": 9,
+                                        "name": "ParameterList",
+                                        "src": "131:19:0"
+                                    }
+                                ],
+                                "id": 10,
+                                "name": "FunctionDefinition",
+                                "src": "58:93:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "approve",
+                                    "scope": 94,
+                                    "stateMutability": "nonpayable",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "spender",
+                                                    "scope": 19,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 11,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "171:7:0"
+                                                    }
+                                                ],
+                                                "id": 12,
+                                                "name": "VariableDeclaration",
+                                                "src": "171:15:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "value",
+                                                    "scope": 19,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 13,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "188:7:0"
+                                                    }
+                                                ],
+                                                "id": 14,
+                                                "name": "VariableDeclaration",
+                                                "src": "188:13:0"
+                                            }
+                                        ],
+                                        "id": 15,
+                                        "name": "ParameterList",
+                                        "src": "170:32:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "success",
+                                                    "scope": 19,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "bool",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "bool",
+                                                            "type": "bool"
+                                                        },
+                                                        "id": 16,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "221:4:0"
+                                                    }
+                                                ],
+                                                "id": 17,
+                                                "name": "VariableDeclaration",
+                                                "src": "221:12:0"
+                                            }
+                                        ],
+                                        "id": 18,
+                                        "name": "ParameterList",
+                                        "src": "220:14:0"
+                                    }
+                                ],
+                                "id": 19,
+                                "name": "FunctionDefinition",
+                                "src": "154:81:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "balanceOf",
+                                    "scope": 94,
+                                    "stateMutability": "view",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "owner",
+                                                    "scope": 26,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 20,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "257:7:0"
+                                                    }
+                                                ],
+                                                "id": 21,
+                                                "name": "VariableDeclaration",
+                                                "src": "257:13:0"
+                                            }
+                                        ],
+                                        "id": 22,
+                                        "name": "ParameterList",
+                                        "src": "256:15:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "balance",
+                                                    "scope": 26,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 23,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "295:7:0"
+                                                    }
+                                                ],
+                                                "id": 24,
+                                                "name": "VariableDeclaration",
+                                                "src": "295:15:0"
+                                            }
+                                        ],
+                                        "id": 25,
+                                        "name": "ParameterList",
+                                        "src": "294:17:0"
+                                    }
+                                ],
+                                "id": 26,
+                                "name": "FunctionDefinition",
+                                "src": "238:74:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "decimals",
+                                    "scope": 94,
+                                    "stateMutability": "view",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "attributes": {
+                                            "parameters": [
+                                                null
+                                            ]
+                                        },
+                                        "children": [],
+                                        "id": 27,
+                                        "name": "ParameterList",
+                                        "src": "332:2:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "decimalPlaces",
+                                                    "scope": 31,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint8",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint8",
+                                                            "type": "uint8"
+                                                        },
+                                                        "id": 28,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "358:5:0"
+                                                    }
+                                                ],
+                                                "id": 29,
+                                                "name": "VariableDeclaration",
+                                                "src": "358:19:0"
+                                            }
+                                        ],
+                                        "id": 30,
+                                        "name": "ParameterList",
+                                        "src": "357:21:0"
+                                    }
+                                ],
+                                "id": 31,
+                                "name": "FunctionDefinition",
+                                "src": "315:64:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "decreaseApproval",
+                                    "scope": 94,
+                                    "stateMutability": "nonpayable",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "spender",
+                                                    "scope": 40,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 32,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "408:7:0"
+                                                    }
+                                                ],
+                                                "id": 33,
+                                                "name": "VariableDeclaration",
+                                                "src": "408:15:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "addedValue",
+                                                    "scope": 40,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 34,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "425:7:0"
+                                                    }
+                                                ],
+                                                "id": 35,
+                                                "name": "VariableDeclaration",
+                                                "src": "425:18:0"
+                                            }
+                                        ],
+                                        "id": 36,
+                                        "name": "ParameterList",
+                                        "src": "407:37:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "success",
+                                                    "scope": 40,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "bool",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "bool",
+                                                            "type": "bool"
+                                                        },
+                                                        "id": 37,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "463:4:0"
+                                                    }
+                                                ],
+                                                "id": 38,
+                                                "name": "VariableDeclaration",
+                                                "src": "463:12:0"
+                                            }
+                                        ],
+                                        "id": 39,
+                                        "name": "ParameterList",
+                                        "src": "462:14:0"
+                                    }
+                                ],
+                                "id": 40,
+                                "name": "FunctionDefinition",
+                                "src": "382:95:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "increaseApproval",
+                                    "scope": 94,
+                                    "stateMutability": "nonpayable",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "spender",
+                                                    "scope": 47,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 41,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "506:7:0"
+                                                    }
+                                                ],
+                                                "id": 42,
+                                                "name": "VariableDeclaration",
+                                                "src": "506:15:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "subtractedValue",
+                                                    "scope": 47,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 43,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "523:7:0"
+                                                    }
+                                                ],
+                                                "id": 44,
+                                                "name": "VariableDeclaration",
+                                                "src": "523:23:0"
+                                            }
+                                        ],
+                                        "id": 45,
+                                        "name": "ParameterList",
+                                        "src": "505:42:0"
+                                    },
+                                    {
+                                        "attributes": {
+                                            "parameters": [
+                                                null
+                                            ]
+                                        },
+                                        "children": [],
+                                        "id": 46,
+                                        "name": "ParameterList",
+                                        "src": "556:0:0"
+                                    }
+                                ],
+                                "id": 47,
+                                "name": "FunctionDefinition",
+                                "src": "480:77:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "name",
+                                    "scope": 94,
+                                    "stateMutability": "view",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "attributes": {
+                                            "parameters": [
+                                                null
+                                            ]
+                                        },
+                                        "children": [],
+                                        "id": 48,
+                                        "name": "ParameterList",
+                                        "src": "573:2:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "tokenName",
+                                                    "scope": 52,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "memory",
+                                                    "type": "string",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "string",
+                                                            "type": "string"
+                                                        },
+                                                        "id": 49,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "599:6:0"
+                                                    }
+                                                ],
+                                                "id": 50,
+                                                "name": "VariableDeclaration",
+                                                "src": "599:23:0"
+                                            }
+                                        ],
+                                        "id": 51,
+                                        "name": "ParameterList",
+                                        "src": "598:25:0"
+                                    }
+                                ],
+                                "id": 52,
+                                "name": "FunctionDefinition",
+                                "src": "560:64:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "symbol",
+                                    "scope": 94,
+                                    "stateMutability": "view",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "attributes": {
+                                            "parameters": [
+                                                null
+                                            ]
+                                        },
+                                        "children": [],
+                                        "id": 53,
+                                        "name": "ParameterList",
+                                        "src": "642:2:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "tokenSymbol",
+                                                    "scope": 57,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "memory",
+                                                    "type": "string",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "string",
+                                                            "type": "string"
+                                                        },
+                                                        "id": 54,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "668:6:0"
+                                                    }
+                                                ],
+                                                "id": 55,
+                                                "name": "VariableDeclaration",
+                                                "src": "668:25:0"
+                                            }
+                                        ],
+                                        "id": 56,
+                                        "name": "ParameterList",
+                                        "src": "667:27:0"
+                                    }
+                                ],
+                                "id": 57,
+                                "name": "FunctionDefinition",
+                                "src": "627:68:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "totalSupply",
+                                    "scope": 94,
+                                    "stateMutability": "view",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "attributes": {
+                                            "parameters": [
+                                                null
+                                            ]
+                                        },
+                                        "children": [],
+                                        "id": 58,
+                                        "name": "ParameterList",
+                                        "src": "718:2:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "totalTokensIssued",
+                                                    "scope": 62,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 59,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "744:7:0"
+                                                    }
+                                                ],
+                                                "id": 60,
+                                                "name": "VariableDeclaration",
+                                                "src": "744:25:0"
+                                            }
+                                        ],
+                                        "id": 61,
+                                        "name": "ParameterList",
+                                        "src": "743:27:0"
+                                    }
+                                ],
+                                "id": 62,
+                                "name": "FunctionDefinition",
+                                "src": "698:73:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "transfer",
+                                    "scope": 94,
+                                    "stateMutability": "nonpayable",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "to",
+                                                    "scope": 71,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 63,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "792:7:0"
+                                                    }
+                                                ],
+                                                "id": 64,
+                                                "name": "VariableDeclaration",
+                                                "src": "792:10:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "value",
+                                                    "scope": 71,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 65,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "804:7:0"
+                                                    }
+                                                ],
+                                                "id": 66,
+                                                "name": "VariableDeclaration",
+                                                "src": "804:13:0"
+                                            }
+                                        ],
+                                        "id": 67,
+                                        "name": "ParameterList",
+                                        "src": "791:27:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "success",
+                                                    "scope": 71,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "bool",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "bool",
+                                                            "type": "bool"
+                                                        },
+                                                        "id": 68,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "837:4:0"
+                                                    }
+                                                ],
+                                                "id": 69,
+                                                "name": "VariableDeclaration",
+                                                "src": "837:12:0"
+                                            }
+                                        ],
+                                        "id": 70,
+                                        "name": "ParameterList",
+                                        "src": "836:14:0"
+                                    }
+                                ],
+                                "id": 71,
+                                "name": "FunctionDefinition",
+                                "src": "774:77:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "transferAndCall",
+                                    "scope": 94,
+                                    "stateMutability": "nonpayable",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "to",
+                                                    "scope": 82,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 72,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "879:7:0"
+                                                    }
+                                                ],
+                                                "id": 73,
+                                                "name": "VariableDeclaration",
+                                                "src": "879:10:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "value",
+                                                    "scope": 82,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 74,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "891:7:0"
+                                                    }
+                                                ],
+                                                "id": 75,
+                                                "name": "VariableDeclaration",
+                                                "src": "891:13:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "data",
+                                                    "scope": 82,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "calldata",
+                                                    "type": "bytes",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "bytes",
+                                                            "type": "bytes"
+                                                        },
+                                                        "id": 76,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "906:5:0"
+                                                    }
+                                                ],
+                                                "id": 77,
+                                                "name": "VariableDeclaration",
+                                                "src": "906:19:0"
+                                            }
+                                        ],
+                                        "id": 78,
+                                        "name": "ParameterList",
+                                        "src": "878:48:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "success",
+                                                    "scope": 82,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "bool",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "bool",
+                                                            "type": "bool"
+                                                        },
+                                                        "id": 79,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "945:4:0"
+                                                    }
+                                                ],
+                                                "id": 80,
+                                                "name": "VariableDeclaration",
+                                                "src": "945:12:0"
+                                            }
+                                        ],
+                                        "id": 81,
+                                        "name": "ParameterList",
+                                        "src": "944:14:0"
+                                    }
+                                ],
+                                "id": 82,
+                                "name": "FunctionDefinition",
+                                "src": "854:105:0"
+                            },
+                            {
+                                "attributes": {
+                                    "body": null,
+                                    "documentation": null,
+                                    "implemented": false,
+                                    "isConstructor": false,
+                                    "kind": "function",
+                                    "modifiers": [
+                                        null
+                                    ],
+                                    "name": "transferFrom",
+                                    "scope": 94,
+                                    "stateMutability": "nonpayable",
+                                    "superFunction": null,
+                                    "visibility": "external"
+                                },
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "from",
+                                                    "scope": 93,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 83,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "984:7:0"
+                                                    }
+                                                ],
+                                                "id": 84,
+                                                "name": "VariableDeclaration",
+                                                "src": "984:12:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "to",
+                                                    "scope": 93,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "address",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "address",
+                                                            "stateMutability": "nonpayable",
+                                                            "type": "address"
+                                                        },
+                                                        "id": 85,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "998:7:0"
+                                                    }
+                                                ],
+                                                "id": 86,
+                                                "name": "VariableDeclaration",
+                                                "src": "998:10:0"
+                                            },
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "value",
+                                                    "scope": 93,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "uint256",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "uint256",
+                                                            "type": "uint256"
+                                                        },
+                                                        "id": 87,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "1010:7:0"
+                                                    }
+                                                ],
+                                                "id": 88,
+                                                "name": "VariableDeclaration",
+                                                "src": "1010:13:0"
+                                            }
+                                        ],
+                                        "id": 89,
+                                        "name": "ParameterList",
+                                        "src": "983:41:0"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "attributes": {
+                                                    "constant": false,
+                                                    "name": "success",
+                                                    "scope": 93,
+                                                    "stateVariable": false,
+                                                    "storageLocation": "default",
+                                                    "type": "bool",
+                                                    "value": null,
+                                                    "visibility": "internal"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "attributes": {
+                                                            "name": "bool",
+                                                            "type": "bool"
+                                                        },
+                                                        "id": 90,
+                                                        "name": "ElementaryTypeName",
+                                                        "src": "1043:4:0"
+                                                    }
+                                                ],
+                                                "id": 91,
+                                                "name": "VariableDeclaration",
+                                                "src": "1043:12:0"
+                                            }
+                                        ],
+                                        "id": 92,
+                                        "name": "ParameterList",
+                                        "src": "1042:14:0"
+                                    }
+                                ],
+                                "id": 93,
+                                "name": "FunctionDefinition",
+                                "src": "962:95:0"
+                            }
+                        ],
+                        "id": 94,
+                        "name": "ContractDefinition",
+                        "src": "25:1034:0"
+                    }
+                ],
+                "id": 95,
+                "name": "SourceUnit",
+                "src": "0:1060:0"
+            },
+            "id": 0,
+            "source": "pragma solidity ^0.5.0;\n\ninterface LinkTokenInterface {\n  function allowance(address owner, address spender) external view returns (uint256 remaining);\n  function approve(address spender, uint256 value) external returns (bool success);\n  function balanceOf(address owner) external view returns (uint256 balance);\n  function decimals() external view returns (uint8 decimalPlaces);\n  function decreaseApproval(address spender, uint256 addedValue) external returns (bool success);\n  function increaseApproval(address spender, uint256 subtractedValue) external;\n  function name() external view returns (string memory tokenName);\n  function symbol() external view returns (string memory tokenSymbol);\n  function totalSupply() external view returns (uint256 totalTokensIssued);\n  function transfer(address to, uint256 value) external returns (bool success);\n  function transferAndCall(address to, uint256 value, bytes calldata data) external returns (bool success);\n  function transferFrom(address from, address to, uint256 value) external returns (bool success);\n}\n"
+        }
+    }
+}
