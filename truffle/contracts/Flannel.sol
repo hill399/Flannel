@@ -38,7 +38,7 @@ contract Flannel is IFlannel {
 
         /* Create default param account */
         /* Fix those token mod values */
-        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 10 * ETHER, 300 * FINNEY);
+        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 1 * ETHER, 300 * FINNEY);
     }
 
     /// @notice Restricts certain calls to node address only.
@@ -63,7 +63,7 @@ contract Flannel is IFlannel {
 
         if(linkNode.balance <= userStoredParams.ethThreshold){
            require(linkNode != address(0), "Invalid LinkNode Address");
-           _linkToEthTopUp(topUpBalance);
+           _linkToEthTopUp(topUpBalance, true);
         }
 
         if(aaveBalance <= userStoredParams.aaveThreshold){
@@ -88,7 +88,7 @@ contract Flannel is IFlannel {
     public
     onlyOwner
     {
-        _linkToEthTopUp(_amount);
+        _linkToEthTopUp(_amount, false);
     }
 
     /// @notice Manual override to deposit LINK to Aave.
@@ -173,6 +173,52 @@ contract Flannel is IFlannel {
         pcTemp = pcTemp.add(_pcTopUp);
         require(pcTemp == 100, "Percent parameters do not equal 100");
         userStoredParams = thresholds(_paramsName, _pcUntouched, _pcAave, _pcTopUp, _linkThreshold, _ethThreshold, _aaveThreshold, _ethTopUp);
+    }
+
+
+    /// @notice Manually rebalance the automated deposit funds.
+    /// @param _to Reference name of params.
+    /// @param _from % to leave untouched in contract.
+    /// @param _value % to deposited to Aave.
+    function rebalance(
+    uint256 _to,
+    uint256 _from,
+    uint256 _value)
+    public
+    onlyOwner
+    {
+        if (_from == 0) {
+            require(storeBalance >= _value, "Insufficient funds in storeBalance");
+            if (_to == 1) {
+                aaveBalance = aaveBalance.add(_value);
+            }
+            if (_to == 2) {
+                topUpBalance = topUpBalance.add(_value);
+            }
+            storeBalance = storeBalance.sub(_value);
+        }
+
+        if (_from == 1) {
+            require(aaveBalance >= _value, "Insufficient funds in aaveBalance");
+            if (_to == 0) {
+                storeBalance = storeBalance.add(_value);
+            }
+            if (_to == 2) {
+                topUpBalance = topUpBalance.add(_value);
+            }
+            aaveBalance = aaveBalance.sub(_value);
+        }
+
+        if (_from == 2) {
+            require(topUpBalance >= _value, "Insufficient funds in topUpBalance");
+            if (_to == 0) {
+                storeBalance = storeBalance.add(_value);
+            }
+            if (_to == 1) {
+                aaveBalance = aaveBalance.add(_value);
+            }
+            topUpBalance = topUpBalance.sub(_value);
+        }
     }
 
     /// @notice Renounce ownership of oracle contract back to owner of this contract.

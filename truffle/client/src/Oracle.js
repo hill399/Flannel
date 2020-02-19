@@ -1,13 +1,10 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, Input } from 'reactstrap';
+import { Alert, Collapse, Button, CardBody, Card, Input, Row, Col } from 'reactstrap';
 
 import './App.css'
 
 const Oracle = (props) => {
-  const [oracleLinkBalanceKey, setOracleLinkBalanceKey] = useState(null)
-  const [flannelAutoWithdrawKey, setFlannelAutoWithdrawKey] = useState(null)
-
   const [withdrawLimitKey, setWithdrawLimitKey] = useState({
     oracleLinkBalance: '',
     autoWithdrawLimit: '',
@@ -15,6 +12,7 @@ const Oracle = (props) => {
   })
 
   const [isOpen, setIsOpen] = useState(true);
+  const [visibleAlert, setVisibleAlert] = useState(true);
 
   const [stackId, setStackID] = useState(null)
 
@@ -42,20 +40,37 @@ const Oracle = (props) => {
     });
   }
 
-  const formatData = (data, symbol) => {
-    return (
-      String(data / 1e18) + " " + (symbol)
-    )
-  }
-
   const initiateUpdateLimit = (value) => {
     const contract = drizzle.contracts.Flannel;
-    const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(value, {
+    const fValue = props.formatData(false, value, "");
+    const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 300000
     })
     // save the `stackId` for later reference
     setStackID(stackId)
+  }
+
+  const onDismiss = () => setVisibleAlert(false);
+
+  const getTxStatus = () => {
+    // get the transaction states from the drizzle state
+    const { transactions, transactionStack } = drizzleState
+
+    // get the transaction hash using our saved `stackId`
+    const txHash = transactionStack[stackId]
+
+    // if transaction hash does not exist, don't display anything
+    if (!txHash) return null;
+
+    // otherwise, return the transaction status
+    if (transactions[txHash] && transactions[txHash].status === "success") {
+      return (
+        <Alert color="success" isOpen={visibleAlert} toggle={onDismiss}>
+          Transaction Success - Balance has been distributed!
+        </Alert>
+      )
+    }
   }
 
   const toggle = () => setIsOpen(!isOpen);
@@ -64,21 +79,27 @@ const Oracle = (props) => {
   const flannelAutoWithdraw = Flannel.userStoredParams[withdrawLimitKey.autoWithdrawLimit]
 
   return (
-    // if it exists, then we display its value
     <div className="section">
-    <Card style={{ paddingLeft: '20px'}}>
-      <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><h2> Oracle </h2></div>
-        <div className="col-auto"> <Button color="primary" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
-      </div>
-      <Collapse isOpen={isOpen}>
+      <Card style={{ paddingLeft: '20px' }}>
+        <div className="row">
+          <div className="col" style={{ paddingTop: '15px' }}><h4> Oracle </h4></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+        </div>
+        <Collapse isOpen={isOpen}>
           <CardBody>
-            <p> Current Oracle Balance: {oracleLinkBalance && formatData(oracleLinkBalance.value, "LINK")}</p>
-            <p> Auto-Withdraw: {flannelAutoWithdraw && formatData(flannelAutoWithdraw.value[4], "LINK")}</p>
-            <Input placeholder="Withdraw Amount" type="text" name="newLimit" onChange={updateField} />
-            <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUpdateLimit(withdrawLimitKey.newLimit)} > Withdraw </Button>
+            <Row>
+              <Col sm="12" style={{ paddingRight: '30px' }}>
+                <p> Current Oracle Balance: {oracleLinkBalance && props.formatData(true, oracleLinkBalance.value, "LINK")}</p>
+                <p> Auto-Withdraw: {flannelAutoWithdraw && props.formatData(true, flannelAutoWithdraw.value[4], "LINK")}</p>
+                <Input placeholder="Withdraw Amount" type="text" name="newLimit" onChange={updateField} />
+                <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUpdateLimit(withdrawLimitKey.newLimit)} > Withdraw </Button>
+              </Col>
+              <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
+                <div>{getTxStatus()}</div>
+              </Col>
+            </Row>
           </CardBody>
-      </Collapse>
+        </Collapse>
       </Card>
     </div>
   )

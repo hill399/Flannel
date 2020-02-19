@@ -47,15 +47,10 @@ const Withdraw = (props) => {
     });
   }
 
-  const formatData = (data, symbol) => {
-    return (
-      String(data / 1e18) + " " + (symbol)
-    )
-  }
-
   const initiateWithdraw = (from, value) => {
     const contract = drizzle.contracts.Flannel;
-    const stackId = contract.methods["withdrawFromFlannel"].cacheSend(from, value, {
+    const fValue = props.formatData(false, value, "");
+    const stackId = contract.methods["withdrawFromFlannel"].cacheSend(from, fValue, {
       from: drizzleState.accounts[0]
     })
     // save the `stackId` for later reference
@@ -64,7 +59,8 @@ const Withdraw = (props) => {
 
   const initiateRebalance = (to, from, value) => {
     const contract = drizzle.contracts.Flannel;
-    const stackId = contract.methods["rebalance"].cacheSend(to, from, value, {
+    const fValue = props.formatData(false, value, "");
+    const stackId = contract.methods["rebalance"].cacheSend(to, from, fValue, {
       from: drizzleState.accounts[0]
     })
     // save the `stackId` for later reference
@@ -79,10 +75,10 @@ const Withdraw = (props) => {
 
   return (
     <div className="section">
-            <Card style={{ paddingLeft: '20px'}}>
+            <Card style={{ paddingLeft: '15px'}}>
       <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><h2> Withdraw & Rebalance </h2></div>
-        <div className="col-auto"> <Button color="primary" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+        <div className="col" style={{ paddingTop: '15px' }}><h4> Withdraw & Rebalance </h4></div>
+        <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
       </div>
       <Collapse isOpen={isOpen}>
           <CardBody>
@@ -101,13 +97,13 @@ const Withdraw = (props) => {
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
                 <Row>
-                  <Col sm="12">
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
                     <p></p>
                     <Input type="select" name="withdrawParam" id="withdrawParam" onClick={updateField}>
                       <option> From... </option>
-                      <option value={0}> Store Balance  ({storeBalance && formatData(storeBalance.value, "LINK")}{' '} Available) </option>
-                      <option value={1}> Aave Balance  ({aaveBalance && formatData(aaveBalance.value, "LINK")}{' '} Available) </option>
-                      <option value={2}> Top-Up Balance ({topUpBalance && formatData(topUpBalance.value, "LINK")}{' '} Available)</option>
+                      <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK")}{' '} Available) </option>
+                      <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK")}{' '} Available) </option>
+                      <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK")}{' '} Available)</option>
                     </Input>
                     <p></p>
                     <Input placeholder="Withdraw Amount" type="text" name="withdrawValue" onChange={updateField} />
@@ -121,18 +117,18 @@ const Withdraw = (props) => {
                     <p></p>
                     <Form>
                       <FormGroup>
-                        <Input type="select" name="rebalanceFrom" id="rebalanceFrom">
+                        <Input type="select" name="rebalanceFrom" id="rebalanceFrom" onClick={updateField}>
                           <option > From... </option>
-                          <option value={0}> Store Balance  ({storeBalance && formatData(storeBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={1}> Aave Balance  ({aaveBalance && formatData(aaveBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={2}> Top-Up Balance ({topUpBalance && formatData(topUpBalance.value, "LINK")}{' '} Available)</option>
+                          <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK")}{' '} Available) </option>
+                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK")}{' '} Available) </option>
+                          <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK")}{' '} Available)</option>
                         </Input>
                         <p></p>
-                        <Input type="select" name="rebalanceTo" id="rebalanceTo">
+                        <Input type="select" name="rebalanceTo" id="rebalanceTo" onClick={updateField}>
                           <option > To...</option>
-                          <option value={0}> Store Balance  ({storeBalance && formatData(storeBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={1}> Aave Balance  ({aaveBalance && formatData(aaveBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={2}> Top-Up Balance ({topUpBalance && formatData(topUpBalance.value, "LINK")}{' '} Available)</option>
+                          <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK")}{' '} Available) </option>
+                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK")}{' '} Available) </option>
+                          <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK")}{' '} Available)</option>
                         </Input>
                         <p></p>
                         <Input placeholder="Rebalance Amount" type="text" name="rebalanceAmount" onChange={updateField} />

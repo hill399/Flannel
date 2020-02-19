@@ -92,25 +92,34 @@ contract IFlannel is Ownable {
 
     /// @notice Convert LINK balance to ETH via Uniswap and send to node.
     /// @dev Only node address can call this.
-    function _linkToEthTopUp(uint256 _amount)
+    function _linkToEthTopUp(uint256 _amount, bool _auto)
     internal
     {
         require(_amount <= topUpBalance, "Not enough LINK to top-up");
         // Catch if topUpBalance is less than ethTopUp
         uint256 topBalance;
-        if(_amount >= userStoredParams.ethTopUp) {
+        if(_amount >= userStoredParams.ethTopUp && _auto) {
             topBalance = userStoredParams.ethTopUp;
         } else {
             topBalance = _amount;
         }
         // Get current LINK -> ETH conversion rate
-        uint256 exchangeRate = linkExchangeInterface.getTokenToEthInputPrice(topBalance);
+        uint256 exchangeRate = getLinkToEthPrice(topBalance);
         // Approve uniswap for transfer
         stdLinkTokenInterface.approve(address(linkExchangeInterface), topBalance);
         // Send to node address
         linkExchangeInterface.tokenToEthTransferOutput(exchangeRate, topBalance, (now + 1 hours), linkNode);
         // Reset topUpBalance
         topUpBalance = topUpBalance.sub(topBalance);
+    }
+
+    function getLinkToEthPrice(uint256 _amount)
+    public
+    view
+    returns
+    (uint256)
+    {
+        return linkExchangeInterface.getTokenToEthInputPrice(_amount);
     }
 
     /// @notice Helper function to generate percentage of value

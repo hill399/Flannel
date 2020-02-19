@@ -93,14 +93,14 @@
     "absolutePath": "chainlink/v0.5/contracts/interfaces/ChainlinkRequestInterface.sol",
     "exportedSymbols": {
       "ChainlinkRequestInterface": [
-        3174
+        3333
       ]
     },
-    "id": 3175,
+    "id": 3334,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3143,
+        "id": 3302,
         "literals": [
           "solidity",
           "^",
@@ -116,9 +116,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 3174,
+        "id": 3333,
         "linearizedBaseContracts": [
-          3174
+          3333
         ],
         "name": "ChainlinkRequestInterface",
         "nodeType": "ContractDefinition",
@@ -126,22 +126,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 3162,
+            "id": 3321,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "oracleRequest",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3160,
+              "id": 3319,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3145,
+                  "id": 3304,
                   "name": "sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "93:14:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -150,7 +150,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3144,
+                    "id": 3303,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "93:7:13",
@@ -165,10 +165,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3147,
+                  "id": 3306,
                   "name": "requestPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "113:20:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -177,7 +177,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3146,
+                    "id": 3305,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "113:7:13",
@@ -191,10 +191,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3149,
+                  "id": 3308,
                   "name": "serviceAgreementID",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "139:26:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -203,7 +203,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3148,
+                    "id": 3307,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "139:7:13",
@@ -217,10 +217,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3151,
+                  "id": 3310,
                   "name": "callbackAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "171:23:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -229,7 +229,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3150,
+                    "id": 3309,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "171:7:13",
@@ -244,10 +244,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3153,
+                  "id": 3312,
                   "name": "callbackFunctionId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "200:25:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -256,7 +256,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 3152,
+                    "id": 3311,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "200:6:13",
@@ -270,10 +270,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3155,
+                  "id": 3314,
                   "name": "nonce",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "231:13:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -282,7 +282,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3154,
+                    "id": 3313,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "231:7:13",
@@ -296,10 +296,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3157,
+                  "id": 3316,
                   "name": "dataVersion",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "250:19:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -308,7 +308,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3156,
+                    "id": 3315,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "250:7:13",
@@ -322,10 +322,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3159,
+                  "id": 3318,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "307:19:13",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -334,7 +334,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 3158,
+                    "id": 3317,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "307:5:13",
@@ -350,12 +350,12 @@
               "src": "87:243:13"
             },
             "returnParameters": {
-              "id": 3161,
+              "id": 3320,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "339:0:13"
             },
-            "scope": 3174,
+            "scope": 3333,
             "src": "65:275:13",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -364,22 +364,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 3173,
+            "id": 3332,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "cancelOracleRequest",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3171,
+              "id": 3330,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3164,
+                  "id": 3323,
                   "name": "requestId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "378:17:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -388,7 +388,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3163,
+                    "id": 3322,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "378:7:13",
@@ -402,10 +402,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3166,
+                  "id": 3325,
                   "name": "payment",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "401:15:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -414,7 +414,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3165,
+                    "id": 3324,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "401:7:13",
@@ -428,10 +428,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3168,
+                  "id": 3327,
                   "name": "callbackFunctionId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "422:25:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -440,7 +440,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 3167,
+                    "id": 3326,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "422:6:13",
@@ -454,10 +454,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3170,
+                  "id": 3329,
                   "name": "expiration",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "453:18:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -466,7 +466,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3169,
+                    "id": 3328,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "453:7:13",
@@ -482,19 +482,19 @@
               "src": "372:103:13"
             },
             "returnParameters": {
-              "id": 3172,
+              "id": 3331,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "484:0:13"
             },
-            "scope": 3174,
+            "scope": 3333,
             "src": "344:141:13",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 3175,
+        "scope": 3334,
         "src": "25:462:13"
       }
     ],
@@ -504,14 +504,14 @@
     "absolutePath": "chainlink/v0.5/contracts/interfaces/ChainlinkRequestInterface.sol",
     "exportedSymbols": {
       "ChainlinkRequestInterface": [
-        3174
+        3333
       ]
     },
-    "id": 3175,
+    "id": 3334,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3143,
+        "id": 3302,
         "literals": [
           "solidity",
           "^",
@@ -527,9 +527,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 3174,
+        "id": 3333,
         "linearizedBaseContracts": [
-          3174
+          3333
         ],
         "name": "ChainlinkRequestInterface",
         "nodeType": "ContractDefinition",
@@ -537,22 +537,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 3162,
+            "id": 3321,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "oracleRequest",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3160,
+              "id": 3319,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3145,
+                  "id": 3304,
                   "name": "sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "93:14:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -561,7 +561,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3144,
+                    "id": 3303,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "93:7:13",
@@ -576,10 +576,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3147,
+                  "id": 3306,
                   "name": "requestPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "113:20:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -588,7 +588,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3146,
+                    "id": 3305,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "113:7:13",
@@ -602,10 +602,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3149,
+                  "id": 3308,
                   "name": "serviceAgreementID",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "139:26:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -614,7 +614,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3148,
+                    "id": 3307,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "139:7:13",
@@ -628,10 +628,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3151,
+                  "id": 3310,
                   "name": "callbackAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "171:23:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -640,7 +640,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3150,
+                    "id": 3309,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "171:7:13",
@@ -655,10 +655,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3153,
+                  "id": 3312,
                   "name": "callbackFunctionId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "200:25:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -667,7 +667,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 3152,
+                    "id": 3311,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "200:6:13",
@@ -681,10 +681,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3155,
+                  "id": 3314,
                   "name": "nonce",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "231:13:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -693,7 +693,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3154,
+                    "id": 3313,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "231:7:13",
@@ -707,10 +707,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3157,
+                  "id": 3316,
                   "name": "dataVersion",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "250:19:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -719,7 +719,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3156,
+                    "id": 3315,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "250:7:13",
@@ -733,10 +733,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3159,
+                  "id": 3318,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3162,
+                  "scope": 3321,
                   "src": "307:19:13",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -745,7 +745,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 3158,
+                    "id": 3317,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "307:5:13",
@@ -761,12 +761,12 @@
               "src": "87:243:13"
             },
             "returnParameters": {
-              "id": 3161,
+              "id": 3320,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "339:0:13"
             },
-            "scope": 3174,
+            "scope": 3333,
             "src": "65:275:13",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -775,22 +775,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 3173,
+            "id": 3332,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "cancelOracleRequest",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3171,
+              "id": 3330,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3164,
+                  "id": 3323,
                   "name": "requestId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "378:17:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -799,7 +799,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3163,
+                    "id": 3322,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "378:7:13",
@@ -813,10 +813,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3166,
+                  "id": 3325,
                   "name": "payment",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "401:15:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -825,7 +825,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3165,
+                    "id": 3324,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "401:7:13",
@@ -839,10 +839,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3168,
+                  "id": 3327,
                   "name": "callbackFunctionId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "422:25:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -851,7 +851,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 3167,
+                    "id": 3326,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "422:6:13",
@@ -865,10 +865,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3170,
+                  "id": 3329,
                   "name": "expiration",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3173,
+                  "scope": 3332,
                   "src": "453:18:13",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -877,7 +877,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3169,
+                    "id": 3328,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "453:7:13",
@@ -893,19 +893,19 @@
               "src": "372:103:13"
             },
             "returnParameters": {
-              "id": 3172,
+              "id": 3331,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "484:0:13"
             },
-            "scope": 3174,
+            "scope": 3333,
             "src": "344:141:13",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 3175,
+        "scope": 3334,
         "src": "25:462:13"
       }
     ],
@@ -916,8 +916,8 @@
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.23",
-  "updatedAt": "2020-02-17T09:20:49.061Z",
+  "schemaVersion": "3.0.20",
+  "updatedAt": "2020-02-19T16:54:21.081Z",
   "devdoc": {
     "methods": {}
   },

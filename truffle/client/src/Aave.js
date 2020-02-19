@@ -1,14 +1,18 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Input } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Input, Alert} from 'reactstrap';
 
 import './App.css'
 
 const Aave = (props) => {
   const [aLinkBalanceKey, setaLinkBalanceKey] = useState(null)
   const [activeTab, setActiveTab] = useState('1');
+  const [visibleAlert, setVisibleAlert] = useState(true);
 
-  const [stackId, setStackID] = useState(null)
+  const [stackId, setStackID] = useState({
+    burnId: '',
+    mintId: ''
+  })
   const [isOpen, setIsOpen] = useState(true);
 
   const { drizzle, drizzleState } = props
@@ -36,30 +40,57 @@ const Aave = (props) => {
     });
   }
 
-  const formatData = (data, symbol) => {
-    return (
-      String(data / 1e18) + " " + (symbol)
-    )
+  const onDismiss = () => setVisibleAlert(false);
+
+  const getTxStatus = (func) => {
+    // get the transaction states from the drizzle state
+    const { transactions, transactionStack } = drizzleState
+
+    let txHash
+
+    if (func === 0) {
+      txHash = transactionStack[stackId.burnId]
+    } else {
+      txHash = transactionStack[stackId.mintId]
+    }
+
+    // if transaction hash does not exist, don't display anything
+    if (!txHash) return null;
+
+    // otherwise, return the transaction status
+    if (transactions[txHash] && transactions[txHash].status === "success") {
+      return (
+        <Alert color="success" isOpen={visibleAlert} toggle={onDismiss}>
+          Transaction Success - Aave function complete!
+        </Alert>
+      )
+    }
   }
 
   const initiateDeposit = value => {
     const contract = drizzle.contracts.Flannel
-    const stackId = contract.methods["manualDepositToAave"].cacheSend(value, {
+    const fValue = props.formatData(false, value, "");
+    const stackId = contract.methods["manualDepositToAave"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 300000
     })
     // save the `stackId` for later reference
-    setStackID(stackId)
+    setStackID({
+      mintId: stackId
+    })
   }
 
   const initiateBurn = value => {
     const contract = drizzle.contracts.Flannel
-    const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(value, {
+    const fValue = props.formatData(false, value, "");
+    const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 1000000
     })
     // save the `stackId` for later reference
-    setStackID(stackId)
+    setStackID({
+      burnId: stackId
+    })
   }
 
   const toggle = () => setIsOpen(!isOpen);
@@ -70,13 +101,13 @@ const Aave = (props) => {
     <div className="section">
       <Card style={{ paddingLeft: '20px'}}>
       <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><h2> Aave Deposits </h2></div>
-        <div className="col-auto"> <Button color="primary" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+        <div className="col" style={{ paddingTop: '15px' }}><h4> Aave Deposits </h4></div>
+        <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
       </div>
       <Collapse isOpen={isOpen}>
 
           <CardBody>
-            <p> aLINK Balance: {aLinkBalance && formatData(aLinkBalance.value, "aLINK")}</p>
+            <p> aLINK Balance: {aLinkBalance && props.formatData(true, aLinkBalance.value, "aLINK")}</p>
             <Nav tabs>
               <NavItem>
                 <NavLink onClick={() => { tabToggle('1'); }} >
@@ -92,19 +123,25 @@ const Aave = (props) => {
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
                 <Row>
-                  <Col sm="12">
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
                     <p></p>
                     <Input placeholder="Deposit Amount" name="aLinkDepositValue" type="text" onChange={updateField} /> 
                     <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateDeposit(aLinkInput.aLinkDepositValue)} > Deposit </Button>
+                  </Col>
+                  <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
+                    <div>{getTxStatus(1)}</div>
                   </Col>
                 </Row>
               </TabPane>
               <TabPane tabId="2">
                 <Row>
-                  <Col sm="12">
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
                     <p></p>
                     <Input placeholder="Burn Amount" name="aLinkBurnValue" type="text" onChange={updateField} /> 
                     <Button color="primary" style={{ marginTop: '15px' }}  onClick={() => initiateBurn(aLinkInput.aLinkBurnValue)} > Burn </Button>
+                  </Col>
+                  <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
+                    <div>{getTxStatus(0)}</div>
                   </Col>
                 </Row>
               </TabPane>
