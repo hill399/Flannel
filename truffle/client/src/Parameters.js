@@ -23,21 +23,14 @@ const Parameters = (props) => {
     if (activeTab !== tab) setActiveTab(tab);
   }
 
-  const formatData = (data, symbol) => {
-    return (
-      String(data / 1e18) + " " + (symbol)
-    )
-  }
-
   const parameters = Flannel.userStoredParams[parametersKey]
 
   return (
-    // if it exists, then we display its value
     <div className="section">
     <Card style={{ paddingLeft: '20px'}}>
       <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><h2> Flannel Parameters </h2></div>
-        <div className="col-auto"> <Button color="primary" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+        <div className="col" style={{ paddingTop: '15px' }}><h4> Flannel Parameters </h4></div>
+        <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
       </div>
       <Collapse isOpen={isOpen}>    
           <CardBody>
@@ -58,7 +51,7 @@ const Parameters = (props) => {
                 <Row>
                   <Col sm="12">
                     <p></p>
-                    <p> LINK Withdraw Threshold: {parameters && formatData(parameters.value[4], "LINK")}</p>
+                    <p> LINK Withdraw Threshold: {parameters && props.formatData(true, parameters.value[4], "LINK")}</p>
                     <p> For Storage : {parameters && parameters.value[1]} % </p>
                     <p> For Aave : {parameters && parameters.value[2]} %</p>
                     <p> For Top-Up : {parameters && parameters.value[3]} %</p>
@@ -69,8 +62,8 @@ const Parameters = (props) => {
                 <Row>
                   <Col sm="12">
                     <p></p>
-                    <p> ETH Top-Up Threshold: {parameters && formatData(parameters.value[5], "ETH")}</p>
-                    <p> ETH Top-Up Amount: {parameters && formatData(parameters.value[6], "ETH")}</p>
+                    <p> ETH Top-Up Threshold: {parameters && props.formatData(true, parameters.value[5], "ETH")}</p>
+                    <p> ETH Top-Up Amount: {parameters && props.formatData(true, parameters.value[6], "ETH")}</p>
                   </Col>
                 </Row>
               </TabPane>

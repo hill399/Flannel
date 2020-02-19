@@ -10,6 +10,14 @@ import Admin from './Admin';
 
 import "./App.css";
 
+const formatData = (output, data, symbol) => {
+  if (output === true) {
+      return String(data / 1e18) + " " + (symbol);
+  } else {
+    return data * 1e18;
+  }
+}
+
 export default () => (
   <DrizzleContext.Consumer>
     {drizzleContext => {
@@ -22,15 +30,16 @@ export default () => (
       return (
         <div className="App">
           <Header drizzle={drizzle} drizzleState={drizzleState} />
-          <Oracle drizzle={drizzle} drizzleState={drizzleState} />
-          <TopUp drizzle={drizzle} drizzleState={drizzleState} />
-          <Aave drizzle={drizzle} drizzleState={drizzleState} />
-          <Withdraw drizzle={drizzle} drizzleState={drizzleState} />
-          <Parameters drizzle={drizzle} drizzleState={drizzleState} />
+          <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} />
+          <TopUp drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} />
+          <Aave drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} />
+          <Withdraw drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} />
+          <Parameters drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} />
+          <Admin drizzle={drizzle} drizzleState={drizzleState} /> 
         </div>
       );
     }}
   </DrizzleContext.Consumer>
 )
 
-//           <Admin drizzle={drizzle} drizzleState={drizzleState} />
+//                        <Admin drizzle={drizzle} drizzleState={drizzleState} />       

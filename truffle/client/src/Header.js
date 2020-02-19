@@ -1,4 +1,6 @@
-import React from "react"
+import React from "react";
+import { Row, Col, Input } from 'reactstrap';
+
 
 import './App.css'
 
@@ -9,9 +11,18 @@ const Header = (props) => {
 
   return (
     <div className="banner">
-      <h1> Flannel</h1>
-      <h2> Chainlink Oracle Management Interface </h2>
-      <h3> Deployed Address: {deployed} </h3>
+
+
+      <Row>
+        <Col sm="12" style={{ paddingLeft: '25px' }}>
+          <h2> Flannel</h2>
+          <h3> Chainlink Oracle Management Interface </h3>
+        </Col>
+        <Col sm="12" style={{ paddingLeft: '25px', paddingTop: '15px' }}>
+          <p> Deployed Address: {deployed} </p>
+        </Col>
+      </Row>
+
     </div>
   )
 }
