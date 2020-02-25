@@ -1,33 +1,47 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Input, Form, FormGroup } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input } from 'reactstrap';
 
 import './App.css'
 
 
 const Admin = (props) => {
-  const [stackId, setStackID] = useState(null);
+  // UI state keys
   const [activeTab, setActiveTab] = useState('1');
+  const [isOpen, setIsOpen] = useState(true);
 
+  // Contract variable keys
   const [addressKey, setAddressKey] = useState(null);
 
+  // TX keys
+  const [stackId, setStackID] = useState(null);
+
+  // User input keys
   const [oracleKey, setOracleKey] = useState({
     oracleAddress: '',
     nodeAddress: ''
   });
 
-  const [isOpen, setIsOpen] = useState(true);
-
+  // Drizzle / Contract props
   const { drizzle, drizzleState } = props
   const { Flannel } = drizzleState.contracts
 
+  // Update effects
   useEffect(() => {
     const FlannelContract = drizzle.contracts.Flannel
     const addressKey = FlannelContract.methods.getAddresses.cacheCall();
 
     setAddressKey(addressKey);
-  }, [])
+  }, [drizzle.contracts.Flannel])
 
+  // Tab functions
+  const tabToggle = tab => {
+    if (activeTab !== tab) setActiveTab(tab);
+  }
+
+  const toggle = () => setIsOpen(!isOpen);
+
+  // Field update functions
   const updateField = e => {
     setOracleKey({
       ...oracleKey,
@@ -35,10 +49,7 @@ const Admin = (props) => {
     });
   }
 
-  const tabToggle = tab => {
-    if (activeTab !== tab) setActiveTab(tab);
-  }
-
+  // Initiate address update on contract
 
   const initiateAddressUpdate = (oracleAddress, nodeAddress) => {
     const contract = drizzle.contracts.Flannel;
@@ -49,18 +60,19 @@ const Admin = (props) => {
     setStackID(stackId)
   }
 
+  // Revert ownership of Oracle to owner
+
   const initiateRevertOwnership = () => {
     const contract = drizzle.contracts.Flannel;
     const stackId = contract.methods["revertOracleOwnership"].cacheSend({
       from: drizzleState.accounts[0]
     })
-    // save the `stackId` for later reference
+
     setStackID(stackId)
   }
 
 
-  const toggle = () => setIsOpen(!isOpen);
-
+  // Cachecall() lookup variables
   const addresses = Flannel.getAddresses[addressKey];
 
   return (
