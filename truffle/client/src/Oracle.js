@@ -1,40 +1,48 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, Input } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert } from 'reactstrap';
 
 import './App.css'
 
 const Oracle = (props) => {
-  const [oracleLinkBalanceKey, setOracleLinkBalanceKey] = useState(null)
-  const [flannelAutoWithdrawKey, setFlannelAutoWithdrawKey] = useState(null)
+  // UI state keys
+  const [activeTab, setActiveTab] = useState('1');
+  const [isOpen, setIsOpen] = useState(true);
+  const [visibleAlert, setVisibleAlert] = useState(true);
 
+  // Contract variable keys
   const [withdrawLimitKey, setWithdrawLimitKey] = useState({
     oracleLinkBalance: '',
-    autoWithdrawLimit: '',
     newLimit: ''
   })
 
-  const [isOpen, setIsOpen] = useState(true);
+  // TX keys
+  const [stackId, setStackID] = useState(null);
 
-  const [stackId, setStackID] = useState(null)
-
-  const { drizzle, drizzleState } = props
+  // Drizzle / Contract props
+  const { drizzle, drizzleState, parameterKey } = props
   const { Flannel, LinkTokenInterface } = drizzleState.contracts
 
+  // Update effects
   useEffect(() => {
     const linkTokenContract = drizzle.contracts.LinkTokenInterface
-    const flannelContract = drizzle.contracts.Flannel
     const oracleLinkBalanceKey = linkTokenContract.methods.balanceOf.cacheCall(drizzle.contracts.Oracle.address)
-    const autoWithdrawLimitKey = flannelContract.methods.userStoredParams.cacheCall()
 
     setWithdrawLimitKey({
       ...withdrawLimitKey,
       oracleLinkBalance: oracleLinkBalanceKey,
-      autoWithdrawLimit: autoWithdrawLimitKey
     })
 
-  }, [withdrawLimitKey.oracleLinkBalance, drizzle.contracts.LinkTokenInterface, drizzle.contracts.Flannel])
+  }, [drizzle.contracts.Oracle.address, drizzle.contracts.LinkTokenInterface]) // withdrawLimitKey in dep. causes infite render
 
+  // Tab functions
+  const tabToggle = tab => {
+    if (activeTab !== tab) setActiveTab(tab);
+  }
+
+  const toggle = () => setIsOpen(!isOpen);
+
+  // Field update functions
   const updateField = e => {
     setWithdrawLimitKey({
       ...withdrawLimitKey,
@@ -42,43 +50,116 @@ const Oracle = (props) => {
     });
   }
 
-  const formatData = (data, symbol) => {
-    return (
-      String(data / 1e18) + " " + (symbol)
-    )
+  // Transaction alert functions
+  const onDismiss = () => setVisibleAlert(false);
+
+  const getTxStatus = () => {
+    // get the transaction states from the drizzle state
+    const { transactions, transactionStack } = drizzleState
+
+    // get the transaction hash using our saved `stackId`
+    const txHash = transactionStack[stackId]
+
+    // if transaction hash does not exist, don't display anything
+    if (!txHash) return null;
+
+    // otherwise, return the transaction status
+    if (transactions[txHash] && transactions[txHash].status === "success") {
+      return (
+        <Alert color="success" isOpen={visibleAlert} toggle={onDismiss}>
+          Transaction Success - Balance has been distributed!
+        </Alert>
+      )
+    }
   }
+
+  // Initiate an withdrawal from Oracle contract
 
   const initiateUpdateLimit = (value) => {
     const contract = drizzle.contracts.Flannel;
-    const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(value, {
+    const fValue = props.formatData(false, value, "");
+    const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 300000
     })
-    // save the `stackId` for later reference
     setStackID(stackId)
   }
 
-  const toggle = () => setIsOpen(!isOpen);
 
+  // Cachecall() lookup variables
   const oracleLinkBalance = LinkTokenInterface.balanceOf[withdrawLimitKey.oracleLinkBalance]
-  const flannelAutoWithdraw = Flannel.userStoredParams[withdrawLimitKey.autoWithdrawLimit]
+  const parameters = Flannel.userStoredParams[parameterKey]
 
   return (
-    // if it exists, then we display its value
     <div className="section">
-    <Card style={{ paddingLeft: '20px'}}>
-      <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><h2> Oracle </h2></div>
-        <div className="col-auto"> <Button color="primary" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
-      </div>
-      <Collapse isOpen={isOpen}>
+      <Card style={{ paddingLeft: '15px' }}>
+        <div className="row">
+        <div className="col" style={{ paddingTop: '15px' }}><p><h4> Oracle </h4> {(oracleLinkBalance && props.formatData(true, oracleLinkBalance.value, "LINK"))} </p></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 0px 0px' }}>Show/Hide</Button></div>
+        </div>
+        <Collapse isOpen={isOpen}>
           <CardBody>
-            <p> Current Oracle Balance: {oracleLinkBalance && formatData(oracleLinkBalance.value, "LINK")}</p>
-            <p> Auto-Withdraw: {flannelAutoWithdraw && formatData(flannelAutoWithdraw.value[4], "LINK")}</p>
-            <Input placeholder="Withdraw Amount" type="text" name="newLimit" onChange={updateField} />
-            <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUpdateLimit(withdrawLimitKey.newLimit)} > Withdraw </Button>
+            <Nav tabs>
+              <NavItem>
+                <NavLink onClick={() => { tabToggle('1'); }} >
+                  Auto
+          </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={() => { tabToggle('2'); }} >
+                  Manual
+          </NavLink>
+              </NavItem>
+            </Nav>
+            <TabContent activeTab={activeTab}>
+              <TabPane tabId="1">
+                <Form style={{ paddingTop: '10px' }}>
+                  <FormGroup className="oracle-col" >
+                    <p>Oracle Withdrawals will trigger when <strong> {parameters && props.formatData(true, parameters.value[4], "LINK")} </strong> has been earned </p>
+                  </FormGroup>
+                  <Row form >
+                    <Col md={4}>
+                      <FormGroup className="oracle-col">
+                        <p>STORE</p>
+                        <strong> {parameters && parameters.value[1]} % </strong>
+                        <p></p>
+                        <p> Store LINK within Flannel </p>
+                        <p></p>
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup className="oracle-col">
+                        <p>EARN</p>
+                        <strong> {parameters && parameters.value[2]} % </strong>
+                        <p></p>
+                        <p> Allocate LINK to generate interest </p>
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup className="oracle-col">
+                        <p>TOP-UP</p>
+                        <strong> {parameters && parameters.value[3]} % </strong>
+                        <p></p>
+                        <p> Keep your node topped-up </p>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </Form>
+              </TabPane>
+              <TabPane tabId="2">
+                <Row style={{ paddingTop: '10px' }}>
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
+                    <Input placeholder="Withdraw Amount" type="text" name="newLimit" onChange={updateField} />
+                    <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUpdateLimit(withdrawLimitKey.newLimit)} > Withdraw </Button>
+                  </Col>
+                  <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
+                    <div>{getTxStatus()}</div>
+                  </Col>
+                </Row>
+              </TabPane>
+            </TabContent>
           </CardBody>
-      </Collapse>
+        </Collapse>
       </Card>
     </div>
   )

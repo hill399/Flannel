@@ -2,10 +2,15 @@
   background:#f4f4ff;
 }
 
+.landing {
+  background:#0b0bde;
+  color: #f2f2f2;
+}
+
 .banner {
   background-color:#0b0bde;
   padding-top: 1rem;
-  padding-bottom: 20px;
+  padding-bottom: 5px;
   padding-left: 10px;
   color: #f2f2f2;
   font-family: 'Arial';
@@ -24,6 +29,17 @@
   border-left-width: 6px;
   border-radius: 5px;
   background: white;
+}
+
+.oracle-col {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #0b0bde;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
 }
 
 .bottom {

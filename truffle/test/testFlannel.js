@@ -62,9 +62,9 @@ contract('Flannel', accounts => {
     // [5] = Eth Threshold
     // [6] = Aave Threshold (LINK)
     // [7] = Eth Top-Up
-    let defTestSet = ["Default",  20, 60, 20, web3.utils.toWei('5', 'ether'), web3.utils.toWei('1', 'ether'), web3.utils.toWei('10', 'ether'), web3.utils.toWei('300', 'finney')];
+    let defTestSet = ["Default",  20, 60, 20, web3.utils.toWei('5', 'ether'), web3.utils.toWei('1', 'ether'), web3.utils.toWei('1', 'ether'), web3.utils.toWei('300', 'finney')];
     let newTestSet = ["Test Set", 40, 40, 20, web3.utils.toWei('10', 'ether'), web3.utils.toWei('2', 'finney'),web3.utils.toWei('5', 'ether'),  web3.utils.toWei('5', 'finney')];
-    let badTestSet = ["Test Set", 40, 50, 20, web3.utils.toWei('10', 'ether'), web3.utils.toWei('2', 'finney'), web3.utils.toWei('10', 'ether'), web3.utils.toWei('5', 'finney')];
+    let badTestSet = ["Test Set", 40, 50, 20, web3.utils.toWei('10', 'ether'), web3.utils.toWei('2', 'finney'), web3.utils.toWei('1', 'ether'), web3.utils.toWei('5', 'finney')];
 
 
     it('Checks that the default thresholds have been applied at deployment', async () => {
