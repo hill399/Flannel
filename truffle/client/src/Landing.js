@@ -5,6 +5,7 @@ import { Button, Form, FormGroup, Input } from 'reactstrap';
 import Flannel from "./contracts/Flannel.json";
 
 import './App.css'
+import git_icon from './icons/GitHub-Mark-32px.png';
 
 const Landing = (props) => {
     // User input keys
@@ -32,29 +33,28 @@ const Landing = (props) => {
     }
 
     return (
-    <Fragment>
-        <div className="landing">
-            <Form style={{ padding: '10% 30% 1% 30%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }} >
-                <FormGroup>
-                    <h1> Flannel </h1>
-                    <h2> LOGO HERE </h2>
-                </FormGroup>
-                <FormGroup>
-                    <Input placeholder="Deployed Flannel Address" name="addressKey" type="text" onChange={updateField} />
-                    <Button color="success" style={{ marginTop: '15px' }} onClick={() => addContract(ready)} > Connect </Button>
-                </FormGroup>
-            </Form>
-        </div>
-        <div>
-            <Form style={{ padding: '0 30% 0 30%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-                <FormGroup style={{ paddingTop: '30px', color: 'black' }}>
-                    <p> This is where you should add a description about what this is. Make something succinct up.</p>
-                </FormGroup>
-                <FormGroup style={{ paddingTop: '30px' }}>
-                    <p> Add github links here with icons here </p>
-                </FormGroup>
-            </Form >
-        </div>
+        <Fragment>
+            <div className="landing">
+                <Form style={{ padding: '10% 30% 1% 30%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }} >
+                    <FormGroup>
+                        <h1> Flannel </h1>
+                    </FormGroup>
+                    <FormGroup>
+                        <Input placeholder="Deployed Flannel Address" name="addressKey" type="text" style={{ justifyContent: 'center', textAlign: 'center' }} onChange={updateField} />
+                        <Button color="success" style={{ marginTop: '15px' }} onClick={() => addContract(ready)} > Connect </Button>
+                    </FormGroup>
+                </Form>
+            </div>
+            <div>
+                <Form style={{ padding: '0 30% 0 30%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                    <FormGroup style={{ paddingTop: '30px', color: 'black' }}>
+                        <p> Flannel is a management interface for your personal Chainlink oracle. Automate withdrawal of earnings, take advantage of DeFi
+                            and keep your node topped up to avoid service interruptions.
+                        </p>
+                        <img src={git_icon} id="gitIcon" style={{ cursor: "pointer" }} onClick={() => window.open('http://github.com/hill399/Flannel')} />
+                    </FormGroup>
+                </Form >
+            </div>
         </Fragment>
     )
 }

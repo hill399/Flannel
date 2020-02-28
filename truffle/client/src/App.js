@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { DrizzleContext } from "drizzle-react";
 import Header from './Header';
+import Balance from './Balance';
 import Oracle from './Oracle';
 import TopUp from './TopUp';
 import Earn from './Earn';
@@ -22,9 +23,19 @@ const App = () => {
 
   const [parameters, setParameters] = useState(null);
 
-  const formatData = (output, data, symbol) => {
+  const [addresses, setAddresses] = useState(null);
+
+  const formatData = (output, data, symbol, reduce) => {
     if (output === true) {
-      return String(data / 1e18) + " " + (symbol);
+
+      if (reduce === true) {
+        data = Math.round((data / 1e18 + Number.EPSILON) * 100) / 100
+      } else {
+        data = data / 1e18
+      }
+
+      return String(data) + " " + (symbol);
+
     } else {
       return data * 1e18;
     }
@@ -47,13 +58,14 @@ const App = () => {
 
         return (
           <div className="App">
-            <Header drizzle={drizzle} drizzleState={drizzleState} balances={setBalances} parameters={setParameters} />
-            <History drizzle={drizzle} drizzleState={drizzleState} />
+            <Header drizzle={drizzle} drizzleState={drizzleState} balances={setBalances} parameters={setParameters} addresses={setAddresses} />
+            <Balance drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} addressKey={addresses} />
             <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} parameterKey={parameters} />
             <TopUp drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
             <Earn drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
             <Withdraw drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
-            <Admin drizzle={drizzle} drizzleState={drizzleState} />
+            <Admin drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} addressKey={addresses} parameterKey={parameters} />
+            <History drizzle={drizzle} drizzleState={drizzleState} />
           </div>
         );
       }}

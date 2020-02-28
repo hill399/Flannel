@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert, FormText } from 'reactstrap';
 
 import './App.css'
 
 const TopUp = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [visibleAlert, setVisibleAlert] = useState(true);
 
   // Contract variable keys
@@ -17,7 +17,7 @@ const TopUp = (props) => {
   const [stackId, setStackID] = useState(null)
 
   // User input keys
-  const [topUpKey, setTopUpKey] = useState(null);
+  const [topUpKey, setTopUpKey] = useState(0);
 
   // Drizzle / Contract props
   const { drizzle, drizzleState, parameterKey, balanceKey } = props
@@ -25,8 +25,7 @@ const TopUp = (props) => {
 
   useEffect(() => {
     const flannelContract = drizzle.contracts.Flannel;
-    if (isNaN(topUpKey) || topUpKey === 0) {
-      console.log(exchangeKey)
+    if (isNaN(topUpKey) || topUpKey === 0 || topUpKey === '' ) {
       setExchangeKey(0);
     } else {
       const exchangeVal = flannelContract.methods.getLinkToEthPrice.cacheCall(topUpKey * 1e18);
@@ -73,7 +72,7 @@ const TopUp = (props) => {
   // Initiate LINK - ETH Uniswap conversion
   const initiateUniswapTopUp = value => {
     const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "");
+    const fValue = props.formatData(false, value, "", false);
     const stackId = contract.methods["manualLinkToEthTopUp"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 300000
@@ -91,8 +90,8 @@ const TopUp = (props) => {
     <div className="section">
       <Card style={{ paddingLeft: '20px' }}>
         <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><p><h4> Top-Up </h4> {(topUpBalance && props.formatData(true, topUpBalance.value, "LINK"))} </p></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+        <div className="col" style={{ paddingTop: '15px' }}><h4> Top-Up </h4> <p> {(topUpBalance && props.formatData(true, topUpBalance.value, "LINK", true))} </p></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle}  className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
@@ -112,8 +111,8 @@ const TopUp = (props) => {
               <TabPane tabId="1">
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col">
-                    <p> When Chainlink node is below <strong> {parameters && props.formatData(true, parameters.value[5], "ETH")} </strong>,
-                        convert enough LINK to top-up by <strong> {parameters && props.formatData(true, parameters.value[6], "ETH")} </strong> </p>
+                    <p> When Chainlink node is below <strong> {parameters && props.formatData(true, parameters.value[5], "ETH", false)} </strong>,
+                        convert enough LINK to top-up by <strong> {parameters && props.formatData(true, parameters.value[6], "ETH", false)} </strong> </p>
                   </FormGroup>
                 </Form>
               </TabPane>
@@ -121,10 +120,12 @@ const TopUp = (props) => {
                 <Row style={{ paddingTop: '10px' }}>
                   <Col md={6} sm="12" >
                     <Input placeholder="Manual Top-Up" type="text" onChange={updateField} />
+                    <FormText color="muted"> Top-Up in LINK </FormText>
                     <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUniswapTopUp(topUpKey)} > Convert </Button>
                   </Col>
                   <Col md={6} style={{ paddingRight: '30px' }}>
-                    <Input placeholder="ETH Value" type="text" value={exchange && props.formatData(true, exchange.value, "ETH")} readOnly />
+                    <Input placeholder="ETH Value" type="text" value={(exchange && props.formatData(true, exchange.value, "ETH", false)) || ''}  readOnly />
+                    <FormText color="muted"> Uniswap LINK-ETH conversion rate </FormText>
                   </Col>
                   <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
                     <div>{getTxStatus()}</div>

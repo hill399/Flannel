@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert, FormText } from 'reactstrap';
 
 import './App.css'
 
@@ -8,11 +8,8 @@ const Earn = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
   const [activeTabTwo, setActiveTabTwo] = useState('1');
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [visibleAlert, setVisibleAlert] = useState(true);
-
-  // Contract variable keys
-  const [aLinkBalanceKey, setaLinkBalanceKey] = useState(null);
 
   // TX keys
   const [stackId, setStackID] = useState({
@@ -28,14 +25,8 @@ const Earn = (props) => {
 
   // Drizzle / Contract props
   const { drizzle, drizzleState, parameterKey, balanceKey } = props
-  const { AToken, Flannel } = drizzleState.contracts
+  const { Flannel } = drizzleState.contracts
 
-  // Update effects
-  useEffect(() => {
-    const ATokenContract = drizzle.contracts.AToken
-    const aLinkBalanceKey = ATokenContract.methods.balanceOf.cacheCall(drizzle.contracts.Flannel.address)
-    setaLinkBalanceKey(aLinkBalanceKey)
-  }, [aLinkBalanceKey, drizzle.contracts.AToken, drizzle.contracts.Flannel])
 
   // Tab functions
   const tabToggle = tab => {
@@ -86,7 +77,7 @@ const Earn = (props) => {
 
   const initiateDeposit = value => {
     const contract = drizzle.contracts.Flannel
-    const fValue = props.formatData(false, value, "");
+    const fValue = props.formatData(false, value, "", false);
     const stackId = contract.methods["manualDepositToAave"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 300000
@@ -101,7 +92,7 @@ const Earn = (props) => {
 
   const initiateBurn = value => {
     const contract = drizzle.contracts.Flannel
-    const fValue = props.formatData(false, value, "");
+    const fValue = props.formatData(false, value, "", false);
     const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 1000000
@@ -114,7 +105,6 @@ const Earn = (props) => {
 
   
   // Cachecall() lookup variables
-  const aLinkBalance = AToken.balanceOf[aLinkBalanceKey]
   const parameters = Flannel.userStoredParams[parameterKey]
   const aaveBalance = Flannel.aaveBalance[balanceKey.earn]
 
@@ -122,8 +112,8 @@ const Earn = (props) => {
     <div className="section">
       <Card style={{ paddingLeft: '20px' }}>
         <div className="row">
-          <div className="col" style={{ paddingTop: '15px' }}><p><h4> Earn </h4> {(aaveBalance && props.formatData(true, aaveBalance.value, "LINK"))} </p></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+          <div className="col" style={{ paddingTop: '15px' }}><h4> Earn </h4> <p> {(aaveBalance && props.formatData(true, aaveBalance.value, "LINK", true))} </p></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle}  className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
@@ -143,17 +133,12 @@ const Earn = (props) => {
               <TabPane tabId="1">
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col">
-                    <p> When Earn balance is greater than <strong>{parameters && props.formatData(true, parameters.value[6], "LINK")}</strong>,
+                    <p> When Earn balance is greater than <strong>{parameters && props.formatData(true, parameters.value[6], "LINK", true)}</strong>,
                         deposit to Aave to generate interest. </p>
                   </FormGroup>
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                <Form style={{ paddingTop: '10px' }}>
-                  <FormGroup className="oracle-col">
-                    <p> aLINK balance is <strong> {aLinkBalance && props.formatData(true, aLinkBalance.value, "aLINK")} </strong>  </p>
-                  </FormGroup>
-                </Form>
                 <Nav tabs>
                   <NavItem>
                     <NavLink onClick={() => { tabToggleTwo('1'); }} >
@@ -172,6 +157,7 @@ const Earn = (props) => {
                       <Col sm="12" style={{ paddingRight: '30px' }}>
                         <p></p>
                         <Input placeholder="Deposit Amount" name="aLinkDepositValue" type="text" onChange={updateField} />
+                        <FormText color="muted"> Deposit in LINK </FormText>
                         <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateDeposit(aLinkInput.aLinkDepositValue)} > Deposit </Button>
                       </Col>
                       <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
@@ -184,6 +170,7 @@ const Earn = (props) => {
                       <Col sm="12" style={{ paddingRight: '30px' }}>
                         <p></p>
                         <Input placeholder="Burn Amount" name="aLinkBurnValue" type="text" onChange={updateField} />
+                        <FormText color="muted"> Burn in aLINK </FormText>
                         <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateBurn(aLinkInput.aLinkBurnValue)} > Burn </Button>
                       </Col>
                       <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>

@@ -7,7 +7,7 @@ import './App.css'
 const Withdraw = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   // TX keys
   const [stackId, setStackID] = useState({
@@ -47,7 +47,7 @@ const Withdraw = (props) => {
 
   const initiateWithdraw = (from, value) => {
     const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "");
+    const fValue = props.formatData(false, value, "", false);
     const stackId = contract.methods["withdrawFromFlannel"].cacheSend(from, fValue, {
       from: drizzleState.accounts[0]
     })
@@ -59,7 +59,7 @@ const Withdraw = (props) => {
 
   const initiateRebalance = (to, from, value) => {
     const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "");
+    const fValue = props.formatData(false, value, "", false);
     const stackId = contract.methods["rebalance"].cacheSend(to, from, fValue, {
       from: drizzleState.accounts[0]
     })
@@ -79,7 +79,7 @@ const Withdraw = (props) => {
       <Card style={{ paddingLeft: '15px' }}>
         <div className="row">
           <div className="col" style={{ paddingTop: '15px' }}><h4> Withdraw & Rebalance </h4></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle}  className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
@@ -102,9 +102,9 @@ const Withdraw = (props) => {
                     <p></p>
                     <Input type="select" name="withdrawParam" id="withdrawParam" onClick={updateField}>
                       <option> From... </option>
-                      <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK")}{' '} Available) </option>
-                      <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK")}{' '} Available) </option>
-                      <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK")}{' '} Available)</option>
+                      <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK", false)}{' '} Available) </option>
+                      <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
+                      <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                     </Input>
                     <p></p>
                     <Input placeholder="Withdraw Amount" type="text" name="withdrawValue" onChange={updateField} />
@@ -120,16 +120,16 @@ const Withdraw = (props) => {
                       <FormGroup>
                         <Input type="select" name="rebalanceFrom" id="rebalanceFrom" onClick={updateField}>
                           <option > From... </option>
-                          <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK")}{' '} Available)</option>
+                          <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK", false)}{' '} Available) </option>
+                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
+                          <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                         </Input>
                         <p></p>
                         <Input type="select" name="rebalanceTo" id="rebalanceTo" onClick={updateField}>
                           <option > To...</option>
-                          <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK")}{' '} Available) </option>
-                          <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK")}{' '} Available)</option>
+                          <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK", false)}{' '} Available) </option>
+                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
+                          <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                         </Input>
                         <p></p>
                         <Input placeholder="Rebalance Amount" type="text" name="rebalanceAmount" onChange={updateField} />

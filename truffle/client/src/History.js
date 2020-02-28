@@ -129,12 +129,12 @@ const History = (props) => {
             <Card style={{ paddingLeft: '20px' }}>
                 <div className="row">
                     <div className="col" style={{ paddingTop: '15px' }}><h4> History </h4></div>
-                    <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 15px 0px' }}>Show/Hide</Button></div>
+                    <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh"> &#709; </Button></div>
                 </div>
                 <Collapse isOpen={isOpen}>
                     <CardBody>
                         <Label> Last 50 Blocks </Label>
-                        <Table>
+                        <Table style={{ paddingRight: '10px' }} >
                             <thead>
                                 <tr>
                                     <th> # </th>

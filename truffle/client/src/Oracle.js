@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert, FormText } from 'reactstrap';
 
 import './App.css'
 
@@ -33,7 +33,7 @@ const Oracle = (props) => {
       oracleLinkBalance: oracleLinkBalanceKey,
     })
 
-  }, [drizzle.contracts.Oracle.address, drizzle.contracts.LinkTokenInterface]) // withdrawLimitKey in dep. causes infite render
+  }, [drizzleState, drizzle.contracts.Oracle.address, drizzle.contracts.LinkTokenInterface])
 
   // Tab functions
   const tabToggle = tab => {
@@ -77,7 +77,7 @@ const Oracle = (props) => {
 
   const initiateUpdateLimit = (value) => {
     const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "");
+    const fValue = props.formatData(false, value, "", false);
     const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
       from: drizzleState.accounts[0],
       gas: 300000
@@ -94,8 +94,8 @@ const Oracle = (props) => {
     <div className="section">
       <Card style={{ paddingLeft: '15px' }}>
         <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><p><h4> Oracle </h4> {(oracleLinkBalance && props.formatData(true, oracleLinkBalance.value, "LINK"))} </p></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} style={{ margin: '10px 20px 0px 0px' }}>Show/Hide</Button></div>
+          <div className="col" style={{ paddingTop: '15px' }}><h4> Oracle </h4> <p> {(oracleLinkBalance && props.formatData(true, oracleLinkBalance.value, "LINK", true))} </p></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
@@ -103,19 +103,19 @@ const Oracle = (props) => {
               <NavItem>
                 <NavLink onClick={() => { tabToggle('1'); }} >
                   Auto
-          </NavLink>
+              </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink onClick={() => { tabToggle('2'); }} >
                   Manual
-          </NavLink>
+              </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col" >
-                    <p>Oracle Withdrawals will trigger when <strong> {parameters && props.formatData(true, parameters.value[4], "LINK")} </strong> has been earned </p>
+                    <p>Oracle Withdrawals will trigger when <strong> {parameters && props.formatData(true, parameters.value[4], "LINK", false)} </strong> has been earned </p>
                   </FormGroup>
                   <Row form >
                     <Col md={4}>
@@ -150,6 +150,7 @@ const Oracle = (props) => {
                 <Row style={{ paddingTop: '10px' }}>
                   <Col sm="12" style={{ paddingRight: '30px' }}>
                     <Input placeholder="Withdraw Amount" type="text" name="newLimit" onChange={updateField} />
+                    <FormText color="muted"> Withdraw in LINK </FormText>
                     <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUpdateLimit(withdrawLimitKey.newLimit)} > Withdraw </Button>
                   </Col>
                   <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>

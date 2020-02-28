@@ -4,14 +4,14 @@ import { Row, Col } from 'reactstrap';
 import './App.css'
 
 const Header = (props) => {
-  const { drizzle, parameters, balances } = props;
+  const { drizzle, drizzleState, parameters, balances, addresses } = props;
 
   // Update Parameters
   useEffect(() => {
     const flannelContract = drizzle.contracts.Flannel
     const parametersKey = flannelContract.methods.userStoredParams.cacheCall()
     parameters(parametersKey)
-  }, [drizzle.contracts.Flannel, parameters])
+  }, [drizzleState, drizzle.contracts.Flannel, parameters])
 
   // Update Balances
   useEffect(() => {
@@ -26,6 +26,14 @@ const Header = (props) => {
       earn: earnKey
     })
   }, [drizzle.contracts.Flannel, balances])
+
+  // Update addresses
+  useEffect(() => {
+    const flannelContract = drizzle.contracts.Flannel
+    const address = flannelContract.methods.getAddresses.cacheCall();
+
+    addresses(address);
+  }, [drizzle.contracts.Flannel, addresses])
 
   const deployed = drizzle.contracts.Flannel.address;
 

@@ -35,7 +35,11 @@ const options = {
     {
       contractName: AToken.contractName,
       web3Contract: new web3.eth.Contract(AToken.abi, '0x52fd99c15e6FFf8D4CF1B83b2263a501FDd78973')
-    }]
+    }],
+  polls: {
+    accounts: 3000,
+    contracts: 3000
+  },
 };
 
 const drizzleStore = generateStore(options);
