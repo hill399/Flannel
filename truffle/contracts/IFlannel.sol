@@ -24,7 +24,7 @@ contract IFlannel is Ownable {
     uint256 constant ETHER = 1 * 10 ** 18;
 
     /* Address of user node */
-    address internal linkNode;
+    address public linkNode;
 
     /* Lending pool approval address */
     address internal lendingPoolApproval;
@@ -42,9 +42,7 @@ contract IFlannel is Ownable {
     }
 
     /* Mapping to hold customised allowances */
-    mapping(uint => thresholds) public userStoredParams;
-    uint256 public paramCounter;
-    uint256 public paramsInUse;
+    thresholds public userStoredParams;
 
     uint256 public storeBalance;
     uint256 public aaveBalance;
@@ -58,9 +56,9 @@ contract IFlannel is Ownable {
     {
         require(_amount <= oracle.withdrawable(), "Not enough LINK in oracle to withdraw");
         oracle.withdraw(address(this), _amount);
-        storeBalance = storeBalance.add(_percentHelper(_amount, userStoredParams[paramsInUse].pcUntouched));
-        aaveBalance = aaveBalance.add(_percentHelper(_amount, userStoredParams[paramsInUse].pcAave));
-        topUpBalance = topUpBalance.add(_percentHelper(_amount, userStoredParams[paramsInUse].pcTopUp));
+        storeBalance = storeBalance.add(_percentHelper(_amount, userStoredParams.pcUntouched));
+        aaveBalance = aaveBalance.add(_percentHelper(_amount, userStoredParams.pcAave));
+        topUpBalance = topUpBalance.add(_percentHelper(_amount, userStoredParams.pcTopUp));
     }
 
     /// @notice Deposit withdrawn LINK into Aave Protocol
@@ -71,7 +69,7 @@ contract IFlannel is Ownable {
     function _depositToAave(uint256 _amount)
     internal
     {
-        require(_amount >= aaveBalance, "Not enough allocated Aave Deposit funds");
+        require(_amount <= aaveBalance, "Not enough allocated Aave Deposit funds");
         // Approve for aaveLINK tokens to be moved by the lending interface.
         aaveLinkTokenInterface.approve(lendingPoolApproval, _amount + 100);
         // Deposit aaveLINK into interest bearing contract.
@@ -88,29 +86,40 @@ contract IFlannel is Ownable {
         require(_amount <= aLinkTokenInterface.balanceOf(address(this)), "Not enough aLINK in contract");
         // Redeem LINK using aLINK redeem function.
         aLinkTokenInterface.redeem(_amount);
+        // Return LINK to Aave balance store
+        aaveBalance = aaveBalance.add(_amount);
     }
 
     /// @notice Convert LINK balance to ETH via Uniswap and send to node.
     /// @dev Only node address can call this.
-    function _linkToEthTopUp(uint256 _amount)
+    function _linkToEthTopUp(uint256 _amount, bool _auto)
     internal
     {
         require(_amount <= topUpBalance, "Not enough LINK to top-up");
         // Catch if topUpBalance is less than ethTopUp
         uint256 topBalance;
-        if(_amount >= userStoredParams[paramsInUse].ethTopUp) {
-            topBalance = userStoredParams[paramsInUse].ethTopUp;
+        if(_amount >= userStoredParams.ethTopUp && _auto) {
+            topBalance = userStoredParams.ethTopUp;
         } else {
             topBalance = _amount;
         }
         // Get current LINK -> ETH conversion rate
-        uint256 exchangeRate = linkExchangeInterface.getTokenToEthInputPrice(topBalance);
+        uint256 exchangeRate = getLinkToEthPrice(topBalance);
         // Approve uniswap for transfer
         stdLinkTokenInterface.approve(address(linkExchangeInterface), topBalance);
         // Send to node address
         linkExchangeInterface.tokenToEthTransferOutput(exchangeRate, topBalance, (now + 1 hours), linkNode);
         // Reset topUpBalance
         topUpBalance = topUpBalance.sub(topBalance);
+    }
+
+    function getLinkToEthPrice(uint256 _amount)
+    public
+    view
+    returns
+    (uint256)
+    {
+        return linkExchangeInterface.getTokenToEthInputPrice(_amount);
     }
 
     /// @notice Helper function to generate percentage of value

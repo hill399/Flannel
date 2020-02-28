@@ -1,0 +1,80 @@
+.App {
+  background: #e6ffff;
+}
+
+.landing {
+  background:#0b0bde;
+  color: #f2f2f2;
+}
+
+.banner {
+  background-color:#0b0bde;
+  padding-top: 1rem;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  color: #f2f2f2;
+  font-family: 'Arial';
+}
+
+.section {
+  text-align: left;
+  max-width: auto;
+  margin: 10px 5px 10px 5px;
+  border-style: solid solid solid solid;
+  border-color: #ccffff;
+  border-width: 1px;
+  border-radius: 5px;
+  background: white;
+}
+
+.oracle-col {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #e6ffff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.blank-col {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.balance-col {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #b3c6ff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+  background: white;
+  margin: 10px 5px 20px 5px;
+}
+
+.button-sh {
+  margin: 10px 20px 15px 0px;
+}
+
+.bottom {
+  text-align: left;
+  max-width: auto;
+  margin: 10px 5px 10px 5px;
+  border-style: solid solid solid solid;
+  border-top-color: #404040;
+  border-top-width: 2px;
+  border-bottom-color:#404040;
+  border-bottom-width: 2px;
+  border-left-color: #0b0bde;
+  border-left-width: 6px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  background: white;
+}
+
