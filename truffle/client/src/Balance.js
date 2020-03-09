@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from "react"
-import { Row, Col, Form, FormGroup, Tooltip } from 'reactstrap';
+import { Row, Col, Form, FormGroup, Tooltip, Button } from 'reactstrap';
 
 import './App.css'
 import info_icon from './icons/simple-small.svg';
@@ -18,33 +18,28 @@ const Balance = (props) => {
         earnInfo: false
     });
 
-    // Drizzle / Contract props
-    const { drizzle, drizzleState, addressKey, balanceKey } = props
+    const { drizzle, addressKey, drizzleState } = props
     const { Flannel, AToken, LinkTokenInterface } = drizzleState.contracts
 
     const nodeAddress = Flannel.getAddresses[addressKey];
 
     // Update Balances
-    useEffect(() => {
+    useEffect(async () => {
         const linkTokenContract = drizzle.contracts.LinkTokenInterface;
-        const oracleLinkBalanceKey = linkTokenContract.methods["balanceOf"].cacheCall(drizzle.contracts.Oracle.address);
+        const oracleLinkBalanceKey = await linkTokenContract.methods["balanceOf"].cacheCall(drizzle.contracts.Oracle.address);
 
         const ATokenContract = drizzle.contracts.AToken;
-        const aLinkBalanceKey = ATokenContract.methods.balanceOf.cacheCall(drizzle.contracts.Flannel.address);
-
-        nodeBalance();
+        const aLinkBalanceKey = await ATokenContract.methods["balanceOf"].cacheCall(drizzle.contracts.Flannel.address);
 
         setExtBalances({
             ...extBalances,
             oracle: oracleLinkBalanceKey,
             aLink: aLinkBalanceKey,
         })
-
-    }, [drizzleState, nodeAddress, balanceKey])
+    }, [])
 
 
     const nodeBalance = useCallback(async () => {
-
         let bal = (typeof nodeAddress !== 'undefined') ? await drizzle.web3.eth.getBalance(nodeAddress.value[1]) : '0'
 
         setExtBalances({
@@ -52,15 +47,28 @@ const Balance = (props) => {
             node: bal
         })
 
-    }, [drizzle.contracts.Flannel, nodeAddress])
+    }, [drizzleState])
+
+    // Update Balances
+    useEffect(() => {
+
+        nodeBalance();
+
+    }, [drizzleState, nodeBalance])
 
     const toolToggle = (prev, e) => {
         setTooltip({
-        ...tooltip,
-        [e.target.id]: !prev
+            ...tooltip,
+            [e.target.id]: !prev
         })
     };
-  
+
+    const SetBalance = (bal) => {
+        return (
+            <h2> {(bal.bal && props.formatData(true, bal.bal.value, "", true))} </h2>
+        );
+    }
+
     // Cachecall() lookup variables
     const oracleBal = LinkTokenInterface.balanceOf[extBalances.oracle];
     const aLinkBal = AToken.balanceOf[extBalances.aLink];
@@ -72,7 +80,7 @@ const Balance = (props) => {
                 <Row form >
                     <Col md={4}>
                         <FormGroup className="balance-col">
-                            <h2> {(oracleBal && props.formatData(true, oracleBal.value, "", true))} </h2>
+                            <SetBalance bal={oracleBal} />
                             <h6> LINK </h6>
                             <p></p>
                             <h5> ORACLE </h5>
@@ -98,7 +106,7 @@ const Balance = (props) => {
                     </Col>
                     <Col md={4}>
                         <FormGroup className="balance-col">
-                            <h2> {(aLinkBal && props.formatData(true, aLinkBal.value, "", true))} </h2>
+                            <SetBalance bal={aLinkBal} />
                             <h6> aLINK </h6>
                             <p></p>
                             <h5> EARN </h5>

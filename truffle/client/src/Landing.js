@@ -12,7 +12,7 @@ const Landing = (props) => {
     const [addressKey, setAddressKey] = useState(null);
 
     // Drizzle / Contract props
-    const { drizzle, ready } = props
+    const { drizzle, ready, addresses } = props
 
     // Field update functions
     const updateField = e => {
@@ -28,7 +28,13 @@ const Landing = (props) => {
 
         let events = []
 
-        drizzle.addContract(contractConfig, events)
+        drizzle.addContract(contractConfig, events);
+
+        const flannelContract = drizzle.contracts.Flannel
+        const address = flannelContract.methods.getAddresses.cacheCall();
+
+        addresses(address);
+
         state(true);
     }
 
@@ -51,6 +57,7 @@ const Landing = (props) => {
                         <p> Flannel is a management interface for your personal Chainlink oracle. Automate withdrawal of earnings, take advantage of DeFi
                             and keep your node topped up to avoid service interruptions.
                         </p>
+                        <p> 0x5dddd91c5c80280f4462bc9dfb4fc2124ac40b59 </p>
                         <img src={git_icon} id="gitIcon" style={{ cursor: "pointer" }} onClick={() => window.open('http://github.com/hill399/Flannel')} />
                     </FormGroup>
                 </Form >

@@ -27,28 +27,26 @@ const Header = (props) => {
     })
   }, [drizzle.contracts.Flannel, balances])
 
-  // Update addresses
-  useEffect(() => {
-    const flannelContract = drizzle.contracts.Flannel
-    const address = flannelContract.methods.getAddresses.cacheCall();
-
-    addresses(address);
-  }, [drizzle.contracts.Flannel, addresses])
-
   const deployed = drizzle.contracts.Flannel.address;
+  const bn = drizzleState.currentBlock.number;
+  const connAccount = drizzleState.accounts[0];
 
   return (
-    <div className="banner">
-      <Row>
-        <Col sm="12" style={{ paddingLeft: '25px' }}>
-          <h2> Flannel</h2>
-          <h3> Chainlink Oracle Management Interface </h3>
-        </Col>
-        <Col sm="12" style={{ paddingLeft: '25px', paddingTop: '15px' }}>
-          <p> Deployed Address: {deployed} </p>
-        </Col>
-      </Row>
-    </div>
+      <div className="banner">
+        <Row>
+          <Col sm="12" style={{ paddingLeft: '25px' }}>
+            <div className="row" >
+              <div className="col" style={{ fontSize: "3" }} ><p> Block: { bn } </p> </div>
+              <div className="col-auto" style={{ marginRight: "20px", fontSize: "3" }}> <p> Account: {connAccount} </p> </div>
+            </div>
+            <h2> Flannel</h2>
+            <h3> Chainlink Oracle Management Interface </h3>
+          </Col>
+          <Col sm="12" style={{ paddingLeft: '25px', paddingTop: '15px' }}>
+            <p> Deployed Address: {deployed} </p>
+          </Col>
+        </Row>
+      </div>
   )
 }
 

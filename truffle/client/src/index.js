@@ -8,22 +8,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Drizzle, generateStore } from "drizzle";
 import { DrizzleContext } from "drizzle-react";
 
-import Flannel from "./contracts/Flannel.json";
 import LinkTokenInterface from "./contracts/LinkTokenInterface.json"
 import AToken from "./contracts/AToken.json"
-import Oracle from "./contracts/Oracle.json"
 
-//const web3 = new Web3();
-const web3 = new Web3("http://127.0.0.1:7545");
+const web3 = new Web3("https://ropsten.infura.io/v3/70ded10ed2504d8f8b2031e096427fa7");
 
 const options = {
   web3: {
-    fallback: {
-      type: "ws",
-      url: "ws://127.0.0.1:7545",
-    },
+    customProvider: web3,
   },
-  contracts: [Flannel, Oracle,
+  contracts: [
     {
       contractName: LinkTokenInterface.contractName,
       web3Contract: new web3.eth.Contract(LinkTokenInterface.abi, '0x20fe562d797a42dcb3399062ae9546cd06f63280')
@@ -37,9 +31,10 @@ const options = {
       web3Contract: new web3.eth.Contract(AToken.abi, '0x52fd99c15e6FFf8D4CF1B83b2263a501FDd78973')
     }],
   polls: {
-    accounts: 3000,
-    contracts: 3000
+    accounts: 5000,
+    blocks: 5000,
   },
+  events: {},
 };
 
 const drizzleStore = generateStore(options);

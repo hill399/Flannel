@@ -54,7 +54,6 @@ const Admin = (props) => {
       ...newParams,
       [e.target.name]: Number(e.target.value)
     });
-    console.log(newParams)
   }
   
 

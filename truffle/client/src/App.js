@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DrizzleContext } from "drizzle-react";
 import Header from './Header';
 import Balance from './Balance';
@@ -9,11 +9,13 @@ import Withdraw from './Withdraw';
 import Admin from './Admin';
 import History from './History';
 import Landing from './Landing';
+import Loading from './Loading';
 
 import "./App.css";
 
 const App = () => {
-  const [readyState, setReadyState] = useState(true);
+  const [readyState, setReadyState] = useState(false);
+  const [loadingState, setLoadingState] = useState(false);
 
   const [balances, setBalances] = useState({
     topUp: '',
@@ -44,7 +46,7 @@ const App = () => {
   return (
     <DrizzleContext.Consumer>
       {drizzleContext => {
-        const { drizzle, drizzleState, initialized } = drizzleContext;
+        const { drizzle, initialized, drizzleState } = drizzleContext;
 
         if (!initialized) {
           return "Loading...";
@@ -52,13 +54,19 @@ const App = () => {
 
         if (!readyState) {
           return (
-            <Landing drizzle={drizzle} ready={setReadyState} />
+            <Landing drizzle={drizzle} ready={setReadyState} addresses={setAddresses} />
+          )
+        }
+
+        if (!loadingState) {
+          return (
+            <Loading drizzle={drizzle} drizzleState={drizzleState} loading={setLoadingState} addressKey={addresses} />
           )
         }
 
         return (
           <div className="App">
-            <Header drizzle={drizzle} drizzleState={drizzleState} balances={setBalances} parameters={setParameters} addresses={setAddresses} />
+            <Header drizzle={drizzle} drizzleState={drizzleState} balances={setBalances} parameters={setParameters} />
             <Balance drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} addressKey={addresses} />
             <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} parameterKey={parameters} />
             <TopUp drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
@@ -69,9 +77,10 @@ const App = () => {
           </div>
         );
       }}
-
     </DrizzleContext.Consumer>
   )
 }
 
 export default App;
+
+//             

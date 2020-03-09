@@ -25,8 +25,7 @@ contract('Flannel', accounts => {
 
   const jobId = '4c7b7ffb66b344fbaa64995af81e355a'
   const dummyResponse = web3.utils.numberToHex('12345');
-  const costOfReq = (web3.utils.toWei('5', 'ether'));
-
+  
   let stdLinkToken, aaveLinkToken, uniswap, lendingPool, oracle, testnetConsumer, flannel
 
   beforeEach(async () => {
@@ -53,6 +52,106 @@ contract('Flannel', accounts => {
     await h.fulfillOracleRequest(oracle, request, dummyResponse, { from: oracleNode })
   })
 
+
+  context('Flannel - Get Addresses', () => {
+    it('Returns correct addresses', async () => {
+      storedAddresses = await flannel.getAddresses.call();
+      assert.equal(storedAddresses[0], oracle.address);
+      assert.equal(storedAddresses[1], oracleNode);
+    })
+  })
+
+  context('Flannel - Withdraw & Rebalance', () => {
+    it('Withdraws from store', async () => {
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      storeAllocation = await flannel.storeBalance.call();
+
+      preOwnerBal = await stdLinkToken.balanceOf.call(owner);
+      await flannel.withdrawFromFlannel(0, storeAllocation, {from: owner})
+      postOwnerBal = await stdLinkToken.balanceOf.call(owner);
+      postStoreAllocation = await flannel.storeBalance.call();
+
+      assert.equal(Number(preOwnerBal) + Number(storeAllocation), Number(postOwnerBal));
+      assert.equal(Number(postStoreAllocation), 0);   
+    })
+
+    it('Withdraws from top-up', async () => {
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      topUpAllocation = await flannel.topUpBalance.call();
+
+      preOwnerBal = await stdLinkToken.balanceOf.call(owner);
+      await flannel.withdrawFromFlannel(2, topUpAllocation, {from: owner})
+      postOwnerBal = await stdLinkToken.balanceOf.call(owner);
+      postTopUpAllocation = await flannel.topUpBalance.call();
+
+      assert.equal(Number(preOwnerBal) + Number(topUpAllocation), Number(postOwnerBal));
+      assert.equal(Number(postTopUpAllocation), 0);   
+    })
+
+    it('Withdraws from earn', async () => {
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      earnAllocation = await flannel.aaveBalance.call();
+
+      preOwnerBal = await stdLinkToken.balanceOf.call(owner);
+      await flannel.withdrawFromFlannel(1, earnAllocation, {from: owner})
+      postOwnerBal = await stdLinkToken.balanceOf.call(owner);
+      postEarnAllocation = await flannel.aaveBalance.call();
+
+      assert.equal(Number(preOwnerBal) + Number(earnAllocation), Number(postOwnerBal));
+      assert.equal(Number(postEarnAllocation), 0);   
+    })
+
+    it('Rebalances to store', async () => {
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      preStoreAllocation = await flannel.storeBalance.call();
+      preEarnAllocation = await flannel.aaveBalance.call();
+
+      await flannel.rebalance(0, 1, preEarnAllocation);
+
+      postStoreAllocation = await flannel.storeBalance.call();
+      postEarnAllocation = await flannel.aaveBalance.call();
+
+      assert.equal(Number(postStoreAllocation), Number(preStoreAllocation) + Number(preEarnAllocation));
+      assert.equal(Number(postEarnAllocation), 0);
+ 
+    })
+
+    it('Rebalances to earn', async () => {
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      preTopUpAllocation = await flannel.topUpBalance.call();
+      preEarnAllocation = await flannel.aaveBalance.call();
+
+      await flannel.rebalance(1, 2, preTopUpAllocation);
+
+      postTopUpAllocation = await flannel.topUpBalance.call();
+      postEarnAllocation = await flannel.aaveBalance.call();
+
+      assert.equal(Number(postEarnAllocation), Number(preTopUpAllocation) + Number(preEarnAllocation));
+      assert.equal(Number(postTopUpAllocation), 0);
+    })
+
+    it('Rebalances to top-up', async () => {
+      init = await stdLinkToken.balanceOf.call(oracle.address);
+      await flannel.manualWithdrawFromOracle(init, {from: owner});
+      preTopUpAllocation = await flannel.topUpBalance.call();
+      preStoreAllocation = await flannel.storeBalance.call();
+
+      await flannel.rebalance(2, 0, preStoreAllocation);
+
+      postTopUpAllocation = await flannel.topUpBalance.call();
+      postStoreAllocation = await flannel.storeBalance.call();
+
+      assert.equal(Number(postTopUpAllocation), Number(preStoreAllocation) + Number(preTopUpAllocation));
+      assert.equal(Number(postStoreAllocation), 0);
+    })
+
+  })
+
   context('Flannel - Threshold Functions', () => {
     // [0] = Name
     // [1] = Percent Untouched
@@ -75,7 +174,7 @@ contract('Flannel', accounts => {
     })
 
     it('Can add a new parameter set', async() => {
-      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7]);
+      await flannel.createNewAllowance(newTestSet[0], newTestSet[1], newTestSet[2], newTestSet[3], newTestSet[4], newTestSet[5], newTestSet[6], newTestSet[7], { from: owner });
       newUserStoredParams = await flannel.userStoredParams.call();
       newTestSet.forEach(function(item, index) {
         assert.equal(newUserStoredParams[index], item);
@@ -114,10 +213,10 @@ contract('Flannel', accounts => {
     it('Only owner can revert ownership of oracle contract from Flannel', async() => {
       await truffleAssert.reverts(
         flannel.revertOracleOwnership({from: stranger}),
-        "VM Exception while processing transaction: revert");
+        "Ownable: caller is not the owner");
       await truffleAssert.reverts(
         flannel.revertOracleOwnership({from: oracleNode}),
-        "VM Exception while processing transaction: revert");  
+        "Ownable: caller is not the owner");  
       await flannel.revertOracleOwnership({from: owner});
     })
   })

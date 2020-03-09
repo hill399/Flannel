@@ -108,7 +108,7 @@ const Withdraw = (props) => {
                     </Input>
                     <p></p>
                     <Input placeholder="Withdraw Amount" type="text" name="withdrawValue" onChange={updateField} />
-                    <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateWithdraw(withdrawKey.storeWithdraw, 0)} > Withdraw </Button>
+                    <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateWithdraw( withdrawKey.withdrawParam, withdrawKey.withdrawValue )} > Withdraw </Button>
                   </Col>
                 </Row>
               </TabPane>

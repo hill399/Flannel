@@ -38,6 +38,14 @@
   padding-top: 10px;
 }
 
+.earn-col {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #e6ffff;
+  padding-top: 10px;
+}
+
 .blank-col {
   justify-content: center;
   align-items: center;

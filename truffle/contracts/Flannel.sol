@@ -6,6 +6,9 @@ import "../contracts/IFlannel.sol";
 /// @author hill399 (github.com/hill399)
 /// @notice Extension of Chainlink oracle contract to allow for additional features.
 contract Flannel is IFlannel {
+    
+    //Debug remove after
+    uint256 public availableFunds;
 
     /// @notice Constructor to set default contract values.
     /// @param _uniswapExchange address of Uniswap exchange contract.
@@ -38,7 +41,7 @@ contract Flannel is IFlannel {
 
         /* Create default param account */
         /* Fix those token mod values */
-        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 1 * ETHER, 300 * FINNEY);
+        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 3 * ETHER, 300 * FINNEY);
     }
 
     /// @notice Restricts certain calls to node address only.
@@ -54,21 +57,24 @@ contract Flannel is IFlannel {
     /// @dev Function Selector : 0x86b12681
     function flannelCoordinator()
     public
-    onlyNodeAddress()
     {
-        uint256 availableFunds = oracle.withdrawable();
+        availableFunds = stdLinkTokenInterface.balanceOf(address(oracle));
+        
         if(availableFunds >= userStoredParams.linkThreshold){
            _withdrawFromOracle(availableFunds);
         }
+
 
         if(linkNode.balance <= userStoredParams.ethThreshold){
            require(linkNode != address(0), "Invalid LinkNode Address");
            _linkToEthTopUp(topUpBalance, true);
         }
 
-        if(aaveBalance <= userStoredParams.aaveThreshold){
+
+        if(aaveBalance >= userStoredParams.aaveThreshold){
            _depositToAave(aaveBalance);
         }
+
     }
 
     /// @notice Manual override to withdraw from oracle
@@ -77,7 +83,7 @@ contract Flannel is IFlannel {
     /// @dev Func selector: 0x8a3ae54f
     function manualWithdrawFromOracle(uint256 _amount)
     public
- //   onlyOwner
+    onlyOwner
     {
         _withdrawFromOracle(_amount);
     }
