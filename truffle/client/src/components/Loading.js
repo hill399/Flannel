@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect, Fragment } from "react"
-import { Button, Form, FormGroup, Input } from 'reactstrap';
+import React, { useEffect, Fragment } from "react"
+import { Form, FormGroup } from 'reactstrap';
 
-import Oracle from "./contracts/Oracle.json";
+import Oracle from "../contracts/Oracle.json";
 
-import './App.css'
+import '../layout/App.css'
 
 const Loading = (props) => {
     // Drizzle / Contract props

@@ -1,14 +1,13 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert, FormText } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Spinner, FormText } from 'reactstrap';
 
-import './App.css'
+import '../layout/App.css'
 
 const TopUp = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
   const [isOpen, setIsOpen] = useState(false);
-  const [visibleAlert, setVisibleAlert] = useState(true);
 
   // Contract variable keys
   const [exchangeKey, setExchangeKey] = useState(0);
@@ -25,7 +24,7 @@ const TopUp = (props) => {
 
   useEffect(() => {
     const flannelContract = drizzle.contracts.Flannel;
-    if (isNaN(topUpKey) || topUpKey === 0 || topUpKey === '' ) {
+    if (isNaN(topUpKey) || topUpKey === 0 || topUpKey === '') {
       setExchangeKey(0);
     } else {
       const exchangeVal = flannelContract.methods.getLinkToEthPrice.cacheCall(topUpKey * 1e18);
@@ -47,8 +46,6 @@ const TopUp = (props) => {
 
   // Transaction alert functions
 
-  const onDismiss = () => setVisibleAlert(false);
-
   const getTxStatus = () => {
     // get the transaction states from the drizzle state
     const { transactions, transactionStack } = drizzleState
@@ -60,11 +57,9 @@ const TopUp = (props) => {
     if (!txHash) return null;
 
     // otherwise, return the transaction status
-    if (transactions[txHash] && transactions[txHash].status === "success") {
+    if (transactions[txHash] && transactions[txHash].status === "pending") {
       return (
-        <Alert color="success" isOpen={visibleAlert} toggle={onDismiss}>
-          Transaction Success - Node has been topped-up!
-        </Alert>
+        <Spinner color="primary" size="sm" style={{ marginLeft: '15px', marginTop: '5px' }} />
       )
     }
   }
@@ -73,12 +68,16 @@ const TopUp = (props) => {
   const initiateUniswapTopUp = value => {
     const contract = drizzle.contracts.Flannel;
     const fValue = props.formatData(false, value, "", false);
-    const stackId = contract.methods["manualLinkToEthTopUp"].cacheSend(fValue, {
-      from: drizzleState.accounts[0],
-      gas: 300000
-    })
 
-    setStackID(stackId)
+    if(fValue > topUpBalance.value){
+      alert('Top-Up amount too high, not enough LINK allocated to function');
+    } else {
+      const stackId = contract.methods["manualLinkToEthTopUp"].cacheSend(fValue, {
+        from: drizzleState.accounts[0],
+        gas: 300000
+      })
+      setStackID(stackId)
+    }
   }
 
   // Cachecall() lookup parameters
@@ -90,21 +89,21 @@ const TopUp = (props) => {
     <div className="section">
       <Card style={{ paddingLeft: '20px' }}>
         <div className="row">
-        <div className="col" style={{ paddingTop: '15px' }}><h4> Top-Up </h4> <p> {(topUpBalance && props.formatData(true, topUpBalance.value, "LINK", true))} </p></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle}  className="button-sh" >&#709;</Button></div>
+          <div className="col" style={{ paddingTop: '15px' }}><h4> Top-Up </h4> <p> {(topUpBalance && props.formatData(true, topUpBalance.value, "LINK", true))} </p></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
             <Nav tabs>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('1'); }} >
+                <NavLink onClick={() => { tabToggle('1'); }} style={parseInt(activeTab) === 1 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Auto
-          </NavLink>
+              </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('2'); }} >
+                <NavLink onClick={() => { tabToggle('2'); }} style={parseInt(activeTab) === 2 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Manual
-          </NavLink>
+              </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
@@ -117,18 +116,22 @@ const TopUp = (props) => {
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                <Row style={{ paddingTop: '10px' }}>
-                  <Col md={6} sm="12" >
-                    <Input placeholder="Manual Top-Up" type="text" onChange={updateField} />
-                    <FormText color="muted"> Top-Up in LINK </FormText>
-                    <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUniswapTopUp(topUpKey)} > Convert </Button>
+                  <p></p>
+                  <p><strong> Manual Top-Up </strong></p>
+                  <p> Convert earned LINK funds to top-up your running Chainlink node with ETH, which is needed to send transactions and fulfill oracle requests.</p>
+                <Row>
+                  <Col md={6} sm="12" style={{ paddingBottom: '15px' }} >
+                    <Input placeholder="LINK Value" type="text" onChange={updateField} />
                   </Col>
                   <Col md={6} style={{ paddingRight: '30px' }}>
-                    <Input placeholder="ETH Value" type="text" value={(exchange && props.formatData(true, exchange.value, "ETH", false)) || ''}  readOnly />
+                    <Input placeholder="ETH Value" type="text" value={(exchange && props.formatData(true, exchange.value, "ETH", false)) || ''} readOnly />
                     <FormText color="muted"> Uniswap LINK-ETH conversion rate </FormText>
                   </Col>
-                  <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
-                    <div>{getTxStatus()}</div>
+                </Row>
+                <Row>
+                  <Col md={6} sm="12" >
+                    <Button color="primary" onClick={() => initiateUniswapTopUp(topUpKey)} > Convert </Button>
+                    {getTxStatus()}
                   </Col>
                 </Row>
               </TabPane>

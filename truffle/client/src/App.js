@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { DrizzleContext } from "drizzle-react";
-import Header from './Header';
-import Balance from './Balance';
-import Oracle from './Oracle';
-import TopUp from './TopUp';
-import Earn from './Earn';
-import Withdraw from './Withdraw';
-import Admin from './Admin';
-import History from './History';
-import Landing from './Landing';
-import Loading from './Loading';
+import Header from './components/Header';
+import Balance from './components/Balance';
+import Oracle from './components/Oracle';
+import TopUp from './components/TopUp';
+import Earn from './components/Earn';
+import Withdraw from './components/Withdraw';
+import Admin from './components/Admin';
+import History from './components/History';
+import Landing from './components/Landing';
+import Loading from './components/Loading';
 
-import "./App.css";
+import "./layout/App.css";
 
 const App = () => {
   const [readyState, setReadyState] = useState(false);
@@ -52,9 +52,9 @@ const App = () => {
           return "Loading...";
         }
 
-        if (!readyState) {
+        if (!readyState || !initialized) {
           return (
-            <Landing drizzle={drizzle} ready={setReadyState} addresses={setAddresses} />
+            <Landing drizzle={drizzle} drizzleState={drizzleState} ready={setReadyState} addresses={setAddresses} />
           )
         }
 

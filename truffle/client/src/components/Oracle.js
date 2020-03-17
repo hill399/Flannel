@@ -1,19 +1,18 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert, FormText } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Spinner, FormText } from 'reactstrap';
 
-import './App.css'
+import '../layout/App.css'
 
 const Oracle = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
   const [isOpen, setIsOpen] = useState(true);
-  const [visibleAlert, setVisibleAlert] = useState(true);
 
   // Contract variable keys
   const [withdrawLimitKey, setWithdrawLimitKey] = useState({
     oracleLinkBalance: '',
-    newLimit: ''
+    withdrawAmount: ''
   })
 
   // TX keys
@@ -21,19 +20,19 @@ const Oracle = (props) => {
 
   // Drizzle / Contract props
   const { drizzle, drizzleState, parameterKey } = props
-  const { Flannel, LinkTokenInterface } = drizzleState.contracts
+  const { Flannel } = drizzleState.contracts
 
   // Update effects
   useEffect(() => {
-    const linkTokenContract = drizzle.contracts.LinkTokenInterface
-    const oracleLinkBalanceKey = linkTokenContract.methods.balanceOf.cacheCall(drizzle.contracts.Oracle.address)
+    const FlannelContract = drizzle.contracts.Flannel;
+    const oracleLinkBalanceKey = FlannelContract.methods["getOracleWithdrawable"].cacheCall();
 
     setWithdrawLimitKey({
       ...withdrawLimitKey,
       oracleLinkBalance: oracleLinkBalanceKey,
     })
 
-  }, [drizzleState, drizzle.contracts.Oracle.address, drizzle.contracts.LinkTokenInterface])
+  }, [])
 
   // Tab functions
   const tabToggle = tab => {
@@ -50,9 +49,6 @@ const Oracle = (props) => {
     });
   }
 
-  // Transaction alert functions
-  const onDismiss = () => setVisibleAlert(false);
-
   const getTxStatus = () => {
     // get the transaction states from the drizzle state
     const { transactions, transactionStack } = drizzleState
@@ -64,30 +60,32 @@ const Oracle = (props) => {
     if (!txHash) return null;
 
     // otherwise, return the transaction status
-    if (transactions[txHash] && transactions[txHash].status === "success") {
+    if (transactions[txHash] && transactions[txHash].status === "pending") {
       return (
-        <Alert color="success" isOpen={visibleAlert} toggle={onDismiss}>
-          Transaction Success - Balance has been distributed!
-        </Alert>
+        <Spinner color="primary" size="sm" style={{ marginLeft: '15px', marginTop: '5px' }} />
       )
     }
   }
 
   // Initiate an withdrawal from Oracle contract
 
-  const initiateUpdateLimit = (value) => {
-    const contract = drizzle.contracts.Flannel;
+  const initiateManualWithdraw = (value) => {
     const fValue = props.formatData(false, value, "", false);
-    const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
-      from: drizzleState.accounts[0],
-      gas: 300000
-    })
-    setStackID(stackId)
+    const contract = drizzle.contracts.Flannel;
+
+    if(fValue > oracleLinkBalance.value){
+      alert('Withdraw amount too high, not enough LINK in Oracle contract');
+    } else {
+      const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
+        from: drizzleState.accounts[0],
+        gas: 300000
+      })
+      setStackID(stackId)
+    }
   }
 
-
   // Cachecall() lookup variables
-  const oracleLinkBalance = LinkTokenInterface.balanceOf[withdrawLimitKey.oracleLinkBalance]
+  const oracleLinkBalance = Flannel.getOracleWithdrawable[withdrawLimitKey.oracleLinkBalance]
   const parameters = Flannel.userStoredParams[parameterKey]
 
   return (
@@ -101,12 +99,12 @@ const Oracle = (props) => {
           <CardBody>
             <Nav tabs>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('1'); }} >
+                <NavLink onClick={() => { tabToggle('1'); }} style={parseInt(activeTab) === 1 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Auto
               </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('2'); }} >
+                <NavLink onClick={() => { tabToggle('2'); }} style={parseInt(activeTab) === 2 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Manual
               </NavLink>
               </NavItem>
@@ -147,14 +145,19 @@ const Oracle = (props) => {
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                <Row style={{ paddingTop: '10px' }}>
-                  <Col sm="12" style={{ paddingRight: '30px' }}>
-                    <Input placeholder="Withdraw Amount" type="text" name="newLimit" onChange={updateField} />
+                  <p></p>
+                  <p><strong> Manual Oracle Withdraw </strong></p>
+                  <p> Initiate a withdrawal from your Oracle contract, to distribute within Flannel and access its additional features. </p>
+                <Row >
+                  <Col sm="12" style={{ paddingRight: '30px', paddingBottom: '15px' }}>
+                    <Input placeholder="Withdraw Amount" type="text" name="withdrawAmount" onChange={updateField} />
                     <FormText color="muted"> Withdraw in LINK </FormText>
-                    <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateUpdateLimit(withdrawLimitKey.newLimit)} > Withdraw </Button>
                   </Col>
-                  <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
-                    <div>{getTxStatus()}</div>
+                </Row>
+                <Row >
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
+                    <Button color="primary" onClick={() => initiateManualWithdraw(withdrawLimitKey.withdrawAmount)} > Withdraw </Button>
+                    {getTxStatus()}
                   </Col>
                 </Row>
               </TabPane>

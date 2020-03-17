@@ -1,15 +1,14 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Alert, FormText } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Spinner, FormText } from 'reactstrap';
 
-import './App.css'
+import '../layout/App.css'
 
 const Earn = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
-  const [activeTabTwo, setActiveTabTwo] = useState('1');
   const [isOpen, setIsOpen] = useState(false);
-  const [visibleAlert, setVisibleAlert] = useState(true);
+  const [aLinkBal, setaLinkBal] = useState(null);
 
   // TX keys
   const [stackId, setStackID] = useState({
@@ -27,14 +26,18 @@ const Earn = (props) => {
   const { drizzle, drizzleState, parameterKey, balanceKey } = props
   const { Flannel } = drizzleState.contracts
 
+  // Update Balances
+  useEffect(() => {
+    const FlannelContract = drizzle.contracts.Flannel;
+    const aLinkBalanceKey = FlannelContract.methods["getALinkBalance"].cacheCall();
+
+    setaLinkBal(aLinkBalanceKey);
+  }, [drizzle.contracts.Flannel])
+
 
   // Tab functions
   const tabToggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
-  }
-
-  const tabToggleTwo = tab => {
-    if (activeTabTwo !== tab) setActiveTabTwo(tab);
   }
 
   const toggle = () => setIsOpen(!isOpen);
@@ -49,8 +52,6 @@ const Earn = (props) => {
 
   // Transaction alert functions
 
-  const onDismiss = () => setVisibleAlert(false);
-
   const getTxStatus = (func) => {
     const { transactions, transactionStack } = drizzleState
 
@@ -64,11 +65,10 @@ const Earn = (props) => {
 
     if (!txHash) return null;
 
-    if (transactions[txHash] && transactions[txHash].status === "success") {
+    // otherwise, return the transaction status
+    if (transactions[txHash] && transactions[txHash].status === "pending") {
       return (
-        <Alert color="success" isOpen={visibleAlert} toggle={onDismiss}>
-          Transaction Success - Aave function complete!
-        </Alert>
+        <Spinner color="primary" size="sm" style={{ marginLeft: '15px', marginTop: '5px' }} />
       )
     }
   }
@@ -78,14 +78,18 @@ const Earn = (props) => {
   const initiateDeposit = value => {
     const contract = drizzle.contracts.Flannel
     const fValue = props.formatData(false, value, "", false);
-    const stackId = contract.methods["manualDepositToAave"].cacheSend(fValue, {
-      from: drizzleState.accounts[0],
-      gas: 300000
-    })
 
-    setStackID({
-      mintId: stackId
-    })
+    if (fValue > aaveBalance.value) {
+      alert('Deposit amount too high, not enough LINK allocated to function');
+    } else {
+      const stackId = contract.methods["manualDepositToAave"].cacheSend(fValue, {
+        from: drizzleState.accounts[0],
+        gas: 300000
+      })
+      setStackID({
+        mintId: stackId
+      })
+    }
   }
 
   // Initiate a burn on aLINK
@@ -93,18 +97,24 @@ const Earn = (props) => {
   const initiateBurn = value => {
     const contract = drizzle.contracts.Flannel
     const fValue = props.formatData(false, value, "", false);
-    const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(fValue, {
-      from: drizzleState.accounts[0],
-      gas: 1000000
-    })
 
-    setStackID({
-      burnId: stackId
-    })
+    if (fValue > aLink.value) {
+      alert('Burn amount too high, not enough aLINK in Flannel');
+    } else {
+      const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(fValue, {
+        from: drizzleState.accounts[0],
+        gas: 1000000
+      })
+
+      setStackID({
+        burnId: stackId
+      })
+    }
   }
 
 
   // Cachecall() lookup variables
+  const aLink = Flannel.getALinkBalance[aLinkBal];
   const parameters = Flannel.userStoredParams[parameterKey]
   const aaveBalance = Flannel.aaveBalance[balanceKey.earn]
 
@@ -119,14 +129,14 @@ const Earn = (props) => {
           <CardBody>
             <Nav tabs>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('1'); }} >
+                <NavLink onClick={() => { tabToggle('1'); }} style={parseInt(activeTab) === 1 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Auto
-                </NavLink>
+              </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('2'); }} >
+                <NavLink onClick={() => { tabToggle('2'); }} style={parseInt(activeTab) === 2 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Manual
-                </NavLink>
+              </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
@@ -139,19 +149,22 @@ const Earn = (props) => {
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                <Form>
+                <Form style={{ paddingTop: '10px' }}>
                   <Row form >
                     <Col md={6}>
                       <FormGroup className="earn-col">
                         <Row>
-                          <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                          <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px', paddingBottom: '15px' }}>
                             <p><strong> Deposit </strong></p>
+                            <p> Deposit LINK to mint interest-bearing aLINK, and earn passive income from lending on the Aave network.</p>
                             <Input placeholder="Deposit Amount" name="aLinkDepositValue" type="text" onChange={updateField} />
                             <FormText color="muted"> Deposit in LINK </FormText>
-                            <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateDeposit(aLinkInput.aLinkDepositValue)} > Deposit </Button>
                           </Col>
-                          <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
-                            <div>{getTxStatus(1)}</div>
+                        </Row>
+                        <Row>
+                          <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px', paddingBottom: '10px' }}>
+                            <Button color="primary" onClick={() => initiateDeposit(aLinkInput.aLinkDepositValue)} > Deposit </Button>
+                            {getTxStatus(1)}
                           </Col>
                         </Row>
                       </FormGroup>
@@ -159,14 +172,17 @@ const Earn = (props) => {
                     <Col md={6}>
                       <FormGroup className="earn-col">
                         <Row>
-                          <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                          <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px', paddingBottom: '15px' }}>
                             <p><strong> Burn </strong></p>
+                            <p> Burn aLINK to return LINK tokens to the Flannel contract, and redeem any interest earned from your deposits. </p>
                             <Input placeholder="Burn Amount" name="aLinkBurnValue" type="text" onChange={updateField} />
                             <FormText color="muted" > Burn in aLINK </FormText>
-                            <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateBurn(aLinkInput.aLinkBurnValue)} > Burn </Button>
                           </Col>
-                          <Col style={{ paddingTop: '5px', paddingRight: "30px" }}>
-                            <div>{getTxStatus(0)}</div>
+                        </Row>
+                        <Row>
+                          <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px', paddingBottom: '10px' }}>
+                            <Button color="primary" onClick={() => initiateBurn(aLinkInput.aLinkBurnValue)} > Burn </Button>
+                            {getTxStatus(0)}
                           </Col>
                         </Row>
                       </FormGroup>

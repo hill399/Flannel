@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { Collapse, Button, CardBody, Card, Table, Label } from 'reactstrap';
 
-import './App.css'
+import '../layout/App.css'
 
 const History = (props) => {
     // UI state keys
@@ -88,11 +88,11 @@ const History = (props) => {
                 return "Aave Withdrawal";
             case "0x45a190af":
                 return "Oracle Configured";
-            case "0xd53ef6e7":
+            case "0x284503f5":
                 return "Flannel Withdrawal";
             case "0x08c00746":
                 return "Flannel Parameters Changed";
-            case "0xadb72a86":
+            case "0x32b5d1ab":
                 return "Flannel Rebalanced";
             case "0x0cbfef9f":
                 return "Oracle Ownership Reverted";

@@ -11,12 +11,13 @@ import { DrizzleContext } from "drizzle-react";
 import LinkTokenInterface from "./contracts/LinkTokenInterface.json"
 import AToken from "./contracts/AToken.json"
 
-const web3 = new Web3("https://ropsten.infura.io/v3/70ded10ed2504d8f8b2031e096427fa7");
+const web3 = new Web3(process.env.REACT_APP_INFURA_KEY);
 
 const options = {
   web3: {
     customProvider: web3,
   },
+  alwaysSync: true,
   contracts: [
     {
       contractName: LinkTokenInterface.contractName,
@@ -31,10 +32,11 @@ const options = {
       web3Contract: new web3.eth.Contract(AToken.abi, '0x52fd99c15e6FFf8D4CF1B83b2263a501FDd78973')
     }],
   polls: {
-    accounts: 5000,
-    blocks: 5000,
+    accounts: 3000,
+    blocks: 3000,
   },
   events: {},
+  networkWhitelist: [3],
 };
 
 const drizzleStore = generateStore(options);

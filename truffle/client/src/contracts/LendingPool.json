@@ -5259,9 +5259,8 @@
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.20",
-  "updatedAt": "2020-02-28T12:47:23.639Z",
-  "networkType": "ethereum",
+  "schemaVersion": "3.0.23",
+  "updatedAt": "2020-03-17T08:44:50.201Z",
   "devdoc": {
     "author": "Aave*",
     "methods": {

@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input } from 'reactstrap';
+import React, { useState } from "react"
+import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Spinner, Input } from 'reactstrap';
 
-import './App.css'
+import '../layout/App.css'
 
 const Withdraw = (props) => {
   // UI state keys
@@ -43,6 +43,28 @@ const Withdraw = (props) => {
     });
   }
 
+
+  const getTxStatus = (func) => {
+    const { transactions, transactionStack } = drizzleState
+
+    let txHash
+
+    if (func === 0) {
+      txHash = transactionStack[stackId.withdrawId]
+    } else {
+      txHash = transactionStack[stackId.rebalanceId]
+    }
+
+    if (!txHash) return null;
+
+    // otherwise, return the transaction status
+    if (transactions[txHash] && transactions[txHash].status === "pending") {
+      return (
+        <Spinner color="primary" size="sm" style={{ marginLeft: '15px', marginTop: '5px' }} />
+      )
+    }
+  }
+
   // Initiate a withdraw from Flannel contract
 
   const initiateWithdraw = (from, value) => {
@@ -79,63 +101,77 @@ const Withdraw = (props) => {
       <Card style={{ paddingLeft: '15px' }}>
         <div className="row">
           <div className="col" style={{ paddingTop: '15px' }}><h4> Withdraw & Rebalance </h4></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle}  className="button-sh" >&#709;</Button></div>
+          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
             <Nav tabs>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('1'); }} >
+                <NavLink onClick={() => { tabToggle('1'); }} style={parseInt(activeTab) === 1 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Withdraw
-          </NavLink>
+              </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={() => { tabToggle('2'); }} >
+                <NavLink onClick={() => { tabToggle('2'); }} style={parseInt(activeTab) === 2 ? { borderBottomColor: '#0b0bde', borderBottomWidth: '3px' } : null} >
                   Rebalance
-          </NavLink>
+              </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
                 <Row>
-                  <Col sm="12" style={{ paddingRight: '30px' }}>
+                  <Col sm="12" style={{ paddingRight: '30px', paddingBottom: '15px' }}>
                     <p></p>
+                    <p><strong> Withdraw From Flannel </strong></p>
+                    <p> Withdraw LINK from the Flannel contract directly to the owner. </p>
                     <Input type="select" name="withdrawParam" id="withdrawParam" onClick={updateField}>
                       <option> From... </option>
                       <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK", false)}{' '} Available) </option>
-                      <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
+                      <option value={1}> Earn Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
                       <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                     </Input>
                     <p></p>
                     <Input placeholder="Withdraw Amount" type="text" name="withdrawValue" onChange={updateField} />
-                    <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateWithdraw( withdrawKey.withdrawParam, withdrawKey.withdrawValue )} > Withdraw </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
+                    <Button color="primary" onClick={() => initiateWithdraw(withdrawKey.withdrawParam, withdrawKey.withdrawValue)} > Withdraw </Button>
+                    {getTxStatus(0)}
                   </Col>
                 </Row>
               </TabPane>
               <TabPane tabId="2">
                 <Row>
-                  <Col sm="12">
+                  <Col sm="12" style={{ paddingRight: '30px' }}>
                     <p></p>
+                    <p><strong> Rebalance Flannel Functions </strong></p>
+                    <p> Reallocate LINK deposits between Flannel functions to better suit your requirements. </p>
                     <Form>
                       <FormGroup>
                         <Input type="select" name="rebalanceFrom" id="rebalanceFrom" onClick={updateField}>
                           <option > From... </option>
                           <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK", false)}{' '} Available) </option>
-                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
+                          <option value={1}> Earn Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
                           <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                         </Input>
                         <p></p>
                         <Input type="select" name="rebalanceTo" id="rebalanceTo" onClick={updateField}>
                           <option > To...</option>
                           <option value={0}> Store Balance  ({storeBalance && props.formatData(true, storeBalance.value, "LINK", false)}{' '} Available) </option>
-                          <option value={1}> Aave Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
+                          <option value={1}> Earn Balance  ({aaveBalance && props.formatData(true, aaveBalance.value, "LINK", false)}{' '} Available) </option>
                           <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                         </Input>
                         <p></p>
                         <Input placeholder="Rebalance Amount" type="text" name="rebalanceAmount" onChange={updateField} />
-                        <Button color="primary" style={{ marginTop: '15px' }} onClick={() => initiateRebalance(withdrawKey.rebalanceTo, withdrawKey.rebalanceFrom, withdrawKey.rebalanceAmount)}> Rebalance </Button>
                       </FormGroup>
                     </Form>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm="12">
+                    <Button color="primary" onClick={() => initiateRebalance(withdrawKey.rebalanceTo, withdrawKey.rebalanceFrom, withdrawKey.rebalanceAmount)}> Rebalance </Button>
+                    {getTxStatus(1)}
                   </Col>
                 </Row>
               </TabPane>

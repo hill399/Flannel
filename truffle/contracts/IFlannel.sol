@@ -54,7 +54,7 @@ contract IFlannel is Ownable {
     function _withdrawFromOracle(uint256 _amount)
     internal
     {
-        require(_amount <= oracle.withdrawable(), "Not enough LINK in oracle to withdraw");
+        require(_amount <= getOracleWithdrawable(), "Not enough LINK in oracle to withdraw");
         oracle.withdraw(address(this), _amount);
         storeBalance = storeBalance.add(_percentHelper(_amount, userStoredParams.pcUntouched));
         aaveBalance = aaveBalance.add(_percentHelper(_amount, userStoredParams.pcAave));
@@ -83,7 +83,7 @@ contract IFlannel is Ownable {
     internal
     {
         // Catch that _amount is greater thzan contract aLINK balance.
-        require(_amount <= aLinkTokenInterface.balanceOf(address(this)), "Not enough aLINK in contract");
+        require(_amount <= getALinkBalance(), "Not enough aLINK in contract");
         // Redeem LINK using aLINK redeem function.
         aLinkTokenInterface.redeem(_amount);
         // Return LINK to Aave balance store
@@ -120,6 +120,24 @@ contract IFlannel is Ownable {
     (uint256)
     {
         return linkExchangeInterface.getTokenToEthInputPrice(_amount);
+    }
+
+    function getOracleWithdrawable()
+    public
+    view
+    returns
+    (uint256)
+    {
+        return oracle.withdrawable();
+    }
+
+    function getALinkBalance()
+    public
+    view
+    returns
+    (uint256)
+    {
+        return aLinkTokenInterface.balanceOf(address(this));
     }
 
     /// @notice Helper function to generate percentage of value

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Row, Col } from 'reactstrap';
 
-import './App.css'
+import '../layout/App.css'
 
 const Header = (props) => {
-  const { drizzle, drizzleState, parameters, balances, addresses } = props;
+  const { drizzle, drizzleState, parameters, balances } = props;
 
   // Update Parameters
   useEffect(() => {
@@ -29,7 +29,13 @@ const Header = (props) => {
 
   const deployed = drizzle.contracts.Flannel.address;
   const bn = drizzleState.currentBlock.number;
-  const connAccount = drizzleState.accounts[0];
+
+  const shortAccount = () => {
+    const connAccount = drizzleState.accounts[0];
+    return (
+      connAccount.slice(0, 8) + "..." + connAccount.slice(36)
+    )
+  }
 
   return (
       <div className="banner">
@@ -37,7 +43,7 @@ const Header = (props) => {
           <Col sm="12" style={{ paddingLeft: '25px' }}>
             <div className="row" >
               <div className="col" style={{ fontSize: "3" }} ><p> Block: { bn } </p> </div>
-              <div className="col-auto" style={{ marginRight: "20px", fontSize: "3" }}> <p> Account: {connAccount} </p> </div>
+              <div className="col-auto" style={{ marginRight: "20px", fontSize: "3" }}> <p> Account: {shortAccount()} </p> </div>
             </div>
             <h2> Flannel</h2>
             <h3> Chainlink Oracle Management Interface </h3>
