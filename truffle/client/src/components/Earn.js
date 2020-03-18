@@ -44,10 +44,15 @@ const Earn = (props) => {
 
   // Field update functions
   const updateField = e => {
-    aLinkInputKey({
-      ...aLinkInputKey,
-      [e.target.name]: e.target.value
-    });
+
+    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
+
+    if (e.target.value === '' || re.test(e.target.value)) {
+      aLinkInputKey({
+        ...aLinkInputKey,
+        [e.target.name]: e.target.value
+      });
+    }
   }
 
   // Transaction alert functions

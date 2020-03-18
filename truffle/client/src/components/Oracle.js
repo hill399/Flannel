@@ -43,10 +43,15 @@ const Oracle = (props) => {
 
   // Field update functions
   const updateField = e => {
-    setWithdrawLimitKey({
-      ...withdrawLimitKey,
-      [e.target.name]: e.target.value
-    });
+
+    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
+
+    if (e.target.value === '' || re.test(e.target.value)) {
+      setWithdrawLimitKey({
+        ...withdrawLimitKey,
+        [e.target.name]: e.target.value
+      });
+    }
   }
 
   const getTxStatus = () => {
@@ -73,7 +78,7 @@ const Oracle = (props) => {
     const fValue = props.formatData(false, value, "", false);
     const contract = drizzle.contracts.Flannel;
 
-    if(fValue > oracleLinkBalance.value){
+    if (fValue > oracleLinkBalance.value) {
       alert('Withdraw amount too high, not enough LINK in Oracle contract');
     } else {
       const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
@@ -145,9 +150,9 @@ const Oracle = (props) => {
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                  <p></p>
-                  <p><strong> Manual Oracle Withdraw </strong></p>
-                  <p> Initiate a withdrawal from your Oracle contract, to distribute within Flannel and access its additional features. </p>
+                <p></p>
+                <p><strong> Manual Oracle Withdraw </strong></p>
+                <p> Initiate a withdrawal from your Oracle contract, to distribute within Flannel and access its additional features. </p>
                 <Row >
                   <Col sm="12" style={{ paddingRight: '30px', paddingBottom: '15px' }}>
                     <Input placeholder="Withdraw Amount" type="text" name="withdrawAmount" onChange={updateField} />

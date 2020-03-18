@@ -41,7 +41,17 @@ const TopUp = (props) => {
 
   // Field update functions
   const updateField = e => {
-    setTopUpKey(e.target.value);
+
+    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
+
+    if (e.target.value === '' || re.test(e.target.value)) {
+      if (parseInt(e.target.value) > 999) {
+        alert('Maximum allowance of 999 LINK');
+        e.target.value = 999;
+      } else {
+        setTopUpKey(e.target.value);
+      }
+    }
   }
 
   // Transaction alert functions
@@ -69,7 +79,7 @@ const TopUp = (props) => {
     const contract = drizzle.contracts.Flannel;
     const fValue = props.formatData(false, value, "", false);
 
-    if(fValue > topUpBalance.value){
+    if (fValue > topUpBalance.value) {
       alert('Top-Up amount too high, not enough LINK allocated to function');
     } else {
       const stackId = contract.methods["manualLinkToEthTopUp"].cacheSend(fValue, {
@@ -116,9 +126,9 @@ const TopUp = (props) => {
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                  <p></p>
-                  <p><strong> Manual Top-Up </strong></p>
-                  <p> Convert earned LINK funds to top-up your running Chainlink node with ETH, which is needed to send transactions and fulfill oracle requests.</p>
+                <p></p>
+                <p><strong> Manual Top-Up </strong></p>
+                <p> Convert earned LINK funds to top-up your running Chainlink node with ETH, which is needed to send transactions and fulfill oracle requests.</p>
                 <Row>
                   <Col md={6} sm="12" style={{ paddingBottom: '15px' }} >
                     <Input placeholder="LINK Value" type="text" onChange={updateField} />

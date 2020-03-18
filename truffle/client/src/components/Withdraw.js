@@ -37,12 +37,15 @@ const Withdraw = (props) => {
 
   // Field update functions
   const updateField = e => {
-    setWithdrawKey({
-      ...withdrawKey,
-      [e.target.name]: e.target.value
-    });
-  }
+    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
 
+    if (e.target.value === '' || re.test(e.target.value)) {
+      setWithdrawKey({
+        ...withdrawKey,
+        [e.target.name]: e.target.value
+      });
+    }
+  }
 
   const getTxStatus = (func) => {
     const { transactions, transactionStack } = drizzleState

@@ -53,12 +53,16 @@ const Admin = (props) => {
 
   // New parameter update
   const updateNewParameters = e => {
-    setNewParams({
-      ...newParams,
-      [e.target.name]: Number(e.target.value)
-    });
-  }
 
+    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
+
+    if (e.target.value === '' || re.test(e.target.value)) {
+      setNewParams({
+        ...newParams,
+        [e.target.name]: Number(e.target.value)
+      });
+    }
+  }
 
   // Initiate address update on contract
 
