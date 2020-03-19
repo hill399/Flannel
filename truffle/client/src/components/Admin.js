@@ -17,7 +17,7 @@ const Admin = (props) => {
   })
 
   // User input keys
-  const [oracleKey, setOracleKey] = useState({
+  const [newAddress, setNewAddress] = useState({
     oracleAddress: '',
     nodeAddress: ''
   });
@@ -45,8 +45,8 @@ const Admin = (props) => {
 
   // Field update functions
   const updateField = e => {
-    setOracleKey({
-      ...oracleKey,
+    setNewAddress({
+      ...newAddress,
       [e.target.name]: e.target.value
     });
   }
@@ -76,6 +76,11 @@ const Admin = (props) => {
       ...stackId,
       addressId: stackId
     })
+
+    setNewAddress({
+      oracleAddress: '',
+      nodeAddress: ''
+    });
   }
 
   // Revert ownership of Oracle to owner
@@ -113,6 +118,16 @@ const Admin = (props) => {
         ...stackId,
         updateId: stackId
       })
+
+      setNewParams({
+        pcUntouched: '',
+        pcAave: '',
+        pcTopUp: '',
+        linkThreshold: '',
+        ethThreshold: '',
+        aaveThreshold: '',
+        ethTopUp: ''
+      });
 
     } else {
       alert('Invalid Parameter Set - Check Percentage Input')
@@ -189,10 +204,10 @@ const Admin = (props) => {
                     <Form>
                       <FormGroup>
                         <p><strong> Change Contract Addresses </strong></p>
-                        <Input placeholder="New Oracle Address" type="text" name="oracleAddress" onChange={updateField} />
+                        <Input placeholder="New Oracle Address" type="text" name="oracleAddress" value={newAddress.oracleAddress} onChange={updateField} />
                         <FormText color="muted"> Current Oracle Address: {addresses && addresses.value[0]}  </FormText>
                         <p></p>
-                        <Input placeholder="New Node Address" type="text" name="nodeAddress" onChange={updateField} />
+                        <Input placeholder="New Node Address" type="text" name="nodeAddress" value={newAddress.nodeAddress} onChange={updateField} />
                         <FormText color="muted"> Current Node Address: {addresses && addresses.value[1]}  </FormText>
                       </FormGroup>
                     </Form>
@@ -200,7 +215,7 @@ const Admin = (props) => {
                 </Row>
                 <Row style={{ marginBottom: '10px' }}>
                   <Col sm="12" style={{ paddingRight: '30px' }}>
-                    <Button color="primary" onClick={() => initiateAddressUpdate(oracleKey.oracleAddress, oracleKey.nodeAddress)} > Update </Button>
+                    <Button color="primary" onClick={() => initiateAddressUpdate(newAddress.oracleAddress, newAddress.nodeAddress)} > Update </Button>
                     {getTxStatus(0)}
                   </Col>
                 </Row>
@@ -234,21 +249,21 @@ const Admin = (props) => {
                         </Row>
                         <p><strong> Oracle </strong></p>
                         <Row style={{ paddingLeft: '15px', paddingRight: '15px' }}>
-                          <Input placeholder="Withdraw Threshold" type="text" name="linkThreshold" onChange={updateNewParameters} />
+                          <Input placeholder="Withdraw Threshold" type="text" name="linkThreshold" value={newParams.linkThreshold} onChange={updateNewParameters} />
                           <FormText color="muted"> Currently set to {(parameters && props.formatData(true, parameters.value[4], "LINK", true))}  </FormText>
                         </Row>
                         <p></p>
                         <Row >
                           <Col sm={4}>
-                            <Input placeholder="Store %" type="text" name="pcUntouched" onChange={updateNewParameters} />
+                            <Input placeholder="Store %" type="text" name="pcUntouched" value={newParams.pcUntouched} onChange={updateNewParameters} />
                             <FormText color="muted"> Currently at {(parameters && parameters.value[1])}%  </FormText>
                           </Col>
                           <Col sm={4}>
-                            <Input placeholder="Earn %" type="text" name="pcAave" onChange={updateNewParameters} />
+                            <Input placeholder="Earn %" type="text" name="pcAave" value={newParams.pcAave} onChange={updateNewParameters} />
                             <FormText color="muted"> Currently at {(parameters && parameters.value[2])}%  </FormText>
                           </Col>
                           <Col sm={4}>
-                            <Input placeholder="Top-Up %" type="text" name="pcTopUp" onChange={updateNewParameters} />
+                            <Input placeholder="Top-Up %" type="text" name="pcTopUp" value={newParams.pcTopUp} onChange={updateNewParameters} />
                             <FormText color="muted"> Currently at {(parameters && parameters.value[3])}% </FormText>
                           </Col>
                         </Row>
@@ -256,19 +271,19 @@ const Admin = (props) => {
                       <FormGroup>
                         <p><strong> Top-Up </strong></p>
                         <Row style={{ paddingLeft: '15px', paddingRight: '15px' }}>
-                          <Input placeholder="Node Balance Threshold" type="text" name="ethThreshold" onChange={updateNewParameters} />
+                          <Input placeholder="Node Balance Threshold" type="text" name="ethThreshold" value={newParams.ethThreshold} onChange={updateNewParameters} />
                           <FormText color="muted"> Currently set at {(parameters && props.formatData(true, parameters.value[5], "ETH", true))}  </FormText>
                         </Row>
                         <p></p>
                         <Row style={{ paddingLeft: '15px', paddingRight: '15px' }}>
-                          <Input placeholder="Top-Up Amount" type="text" name="ethTopUp" onChange={updateNewParameters} />
-                          <FormText color="muted"> Currently set at {(parameters && props.formatData(true, parameters.value[7], "ETH", true))}  </FormText>
+                          <Input placeholder="Top-Up Amount" type="text" name="ethTopUp" value={newParams.ethTopUp} onChange={updateNewParameters} />
+                          <FormText color="muted"> Currently set at {(parameters && props.formatData(true, parameters.value[7], "LINK", true))}  </FormText>
                         </Row>
                       </FormGroup>
                       <FormGroup >
                         <p><strong> Earn </strong></p>
                         <Row style={{ paddingLeft: '15px', paddingRight: '15px' }}>
-                          <Input placeholder="Earn Threshold" type="text" name="aaveThreshold" onChange={updateNewParameters} />
+                          <Input placeholder="Earn Threshold" type="text" name="aaveThreshold" value={newParams.aaveThreshold} onChange={updateNewParameters} />
                           <FormText color="muted"> Currently set at {(parameters && props.formatData(true, parameters.value[6], "LINK", true))}  </FormText>
                         </Row>
                       </FormGroup>

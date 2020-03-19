@@ -54,7 +54,6 @@ contract IFlannel is Ownable {
     function _withdrawFromOracle(uint256 _amount)
     internal
     {
-        require(_amount <= getOracleWithdrawable(), "Not enough LINK in oracle to withdraw");
         oracle.withdraw(address(this), _amount);
         storeBalance = storeBalance.add(_percentHelper(_amount, userStoredParams.pcUntouched));
         aaveBalance = aaveBalance.add(_percentHelper(_amount, userStoredParams.pcAave));

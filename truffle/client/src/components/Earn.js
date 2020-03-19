@@ -94,6 +94,11 @@ const Earn = (props) => {
       setStackID({
         mintId: stackId
       })
+
+      aLinkInputKey({
+        ...aLinkInputKey,
+        aLinkDepositValue: ''
+      });
     }
   }
 
@@ -114,6 +119,11 @@ const Earn = (props) => {
       setStackID({
         burnId: stackId
       })
+
+      aLinkInputKey({
+        ...aLinkInputKey,
+        aLinkBurnValue: ''
+      });
     }
   }
 
@@ -162,7 +172,7 @@ const Earn = (props) => {
                           <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px', paddingBottom: '15px' }}>
                             <p><strong> Deposit </strong></p>
                             <p> Deposit LINK to mint interest-bearing aLINK, and earn passive income from lending on the Aave network.</p>
-                            <Input placeholder="Deposit Amount" name="aLinkDepositValue" type="text" onChange={updateField} />
+                            <Input placeholder="Deposit Amount" name="aLinkDepositValue" value={aLinkInput.aLinkDepositValue} type="text" onChange={updateField} />
                             <FormText color="muted"> Deposit in LINK </FormText>
                           </Col>
                         </Row>
@@ -180,7 +190,7 @@ const Earn = (props) => {
                           <Col sm="12" style={{ paddingLeft: '30px', paddingRight: '30px', paddingBottom: '15px' }}>
                             <p><strong> Burn </strong></p>
                             <p> Burn aLINK to return LINK tokens to the Flannel contract, and redeem any interest earned from your deposits. </p>
-                            <Input placeholder="Burn Amount" name="aLinkBurnValue" type="text" onChange={updateField} />
+                            <Input placeholder="Burn Amount" name="aLinkBurnValue" value={aLinkInput.aLinkBurnValue} type="text" onChange={updateField} />
                             <FormText color="muted" > Burn in aLINK </FormText>
                           </Col>
                         </Row>

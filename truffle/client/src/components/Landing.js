@@ -58,7 +58,7 @@ const Landing = (props) => {
         if (networkSafe) {
             let contractConfig = {
                 contractName: Flannel.contractName,
-                web3Contract: new drizzle.web3.eth.Contract(Flannel.abi, '0x611bac63cc8725bf66e827a95f73eb1f930ebe41')
+                web3Contract: new drizzle.web3.eth.Contract(Flannel.abi, '0x5c756b8dfa70b7aca3c2f97cac92f75d40953e6b')
             }
 
             let events = []
@@ -99,7 +99,7 @@ const Landing = (props) => {
                 <Form style={{ padding: '10% 30% 1% 30%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }} >
                     <FormGroup>
                         <h1> Flannel </h1>
-                        <h4> Chainlink Oracle Management Interface </h4>
+                        <h4> Chainlink Oracle Interface </h4>
                     </FormGroup>
                     <FormGroup>
                         <Input placeholder="Deployed Flannel Address" name="addressKey" type="text" onKeyDown={handleKeyPress} style={{ justifyContent: 'center', textAlign: 'center' }} onChange={updateField} />

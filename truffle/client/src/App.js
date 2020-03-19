@@ -23,6 +23,12 @@ const App = () => {
     earn: ''
   });
 
+  const [extBalances, setExtBalances] = useState({
+    oracle: '',
+    node: '',
+    aLink: ''
+  });
+
   const [parameters, setParameters] = useState(null);
 
   const [addresses, setAddresses] = useState(null);
@@ -66,9 +72,9 @@ const App = () => {
 
         return (
           <div className="App">
-            <Header drizzle={drizzle} drizzleState={drizzleState} balances={setBalances} parameters={setParameters} />
-            <Balance drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} addressKey={addresses} />
-            <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} parameterKey={parameters} />
+            <Header drizzle={drizzle} drizzleState={drizzleState} setBalances={setBalances} setExtBalances={setExtBalances} addressKey={addresses} parameters={setParameters} />
+            <Balance drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} extBalances={extBalances} parameterKey={parameters} addressKey={addresses} />
+            <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} extBalances={extBalances} parameterKey={parameters} />
             <TopUp drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
             <Earn drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
             <Withdraw drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />

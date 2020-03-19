@@ -29,7 +29,7 @@ const History = (props) => {
         setOwnerKey(ownerKey);
 
         setHistoryKey(getHistory())
-    }, [drizzle.contracts.Flannel])
+    }, [])
 
     // Tab functions
     const toggle = () => setIsOpen(!isOpen);
@@ -90,7 +90,7 @@ const History = (props) => {
                 return "Oracle Configured";
             case "0x284503f5":
                 return "Flannel Withdrawal";
-            case "0x08c00746":
+            case "0xa0649f40":
                 return "Flannel Parameters Changed";
             case "0x32b5d1ab":
                 return "Flannel Rebalanced";

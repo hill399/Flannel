@@ -2,6 +2,7 @@
   "name": "flannel",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@drizzle/react-components": "^1.5.1",
     "@drizzle/react-plugin": "^1.5.1",
@@ -34,7 +35,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "homepage": "./"
+    ]
   }
 }

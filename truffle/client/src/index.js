@@ -32,8 +32,8 @@ const options = {
       web3Contract: new web3.eth.Contract(AToken.abi, '0x52fd99c15e6FFf8D4CF1B83b2263a501FDd78973')
     }],
   polls: {
-    accounts: 3000,
-    blocks: 3000,
+    accounts: 5000,
+    blocks: 8000,
   },
   events: {},
   networkWhitelist: [3],

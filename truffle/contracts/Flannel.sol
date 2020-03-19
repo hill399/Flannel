@@ -58,8 +58,8 @@ contract Flannel is IFlannel {
     function flannelCoordinator()
     public
     {
-        availableFunds = stdLinkTokenInterface.balanceOf(address(oracle));
-        
+        availableFunds = getOracleWithdrawable();
+
         if(availableFunds >= userStoredParams.linkThreshold){
            _withdrawFromOracle(availableFunds);
         }
@@ -85,6 +85,7 @@ contract Flannel is IFlannel {
     public
     onlyOwner
     {
+        require(_amount <= getOracleWithdrawable(), "Not enough LINK in oracle to withdraw");
         _withdrawFromOracle(_amount);
     }
 

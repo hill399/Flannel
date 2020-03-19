@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Spinner, FormText } from 'reactstrap';
 
 import '../layout/App.css'
@@ -10,29 +10,14 @@ const Oracle = (props) => {
   const [isOpen, setIsOpen] = useState(true);
 
   // Contract variable keys
-  const [withdrawLimitKey, setWithdrawLimitKey] = useState({
-    oracleLinkBalance: '',
-    withdrawAmount: ''
-  })
+  const [withdrawAmount, setWithdrawAmount] = useState('');
 
   // TX keys
   const [stackId, setStackID] = useState(null);
 
   // Drizzle / Contract props
-  const { drizzle, drizzleState, parameterKey } = props
+  const { drizzle, drizzleState, parameterKey, extBalances } = props
   const { Flannel } = drizzleState.contracts
-
-  // Update effects
-  useEffect(() => {
-    const FlannelContract = drizzle.contracts.Flannel;
-    const oracleLinkBalanceKey = FlannelContract.methods["getOracleWithdrawable"].cacheCall();
-
-    setWithdrawLimitKey({
-      ...withdrawLimitKey,
-      oracleLinkBalance: oracleLinkBalanceKey,
-    })
-
-  }, [])
 
   // Tab functions
   const tabToggle = tab => {
@@ -47,10 +32,7 @@ const Oracle = (props) => {
     const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
 
     if (e.target.value === '' || re.test(e.target.value)) {
-      setWithdrawLimitKey({
-        ...withdrawLimitKey,
-        [e.target.name]: e.target.value
-      });
+      setWithdrawAmount(e.target.value);
     }
   }
 
@@ -78,26 +60,28 @@ const Oracle = (props) => {
     const fValue = props.formatData(false, value, "", false);
     const contract = drizzle.contracts.Flannel;
 
-    if (fValue > oracleLinkBalance.value) {
+    if (fValue > oracleLinkBalance ) {
       alert('Withdraw amount too high, not enough LINK in Oracle contract');
     } else {
       const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
         from: drizzleState.accounts[0],
         gas: 300000
       })
-      setStackID(stackId)
+      setStackID(stackId);
+
+      setWithdrawAmount('');
     }
   }
 
   // Cachecall() lookup variables
-  const oracleLinkBalance = Flannel.getOracleWithdrawable[withdrawLimitKey.oracleLinkBalance]
+  const oracleLinkBalance = extBalances.oracle;
   const parameters = Flannel.userStoredParams[parameterKey]
 
   return (
     <div className="section">
       <Card style={{ paddingLeft: '15px' }}>
         <div className="row">
-          <div className="col" style={{ paddingTop: '15px' }}><h4> Oracle </h4> <p> {(oracleLinkBalance && props.formatData(true, oracleLinkBalance.value, "LINK", true))} </p></div>
+          <div className="col" style={{ paddingTop: '15px' }}><h4> Oracle </h4> <p> {props.formatData(true, oracleLinkBalance, "LINK", true)} </p></div>
           <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh" >&#709;</Button></div>
         </div>
         <Collapse isOpen={isOpen}>
@@ -155,13 +139,13 @@ const Oracle = (props) => {
                 <p> Initiate a withdrawal from your Oracle contract, to distribute within Flannel and access its additional features. </p>
                 <Row >
                   <Col sm="12" style={{ paddingRight: '30px', paddingBottom: '15px' }}>
-                    <Input placeholder="Withdraw Amount" type="text" name="withdrawAmount" onChange={updateField} />
+                    <Input placeholder="Withdraw Amount" type="text" name="withdrawAmount" value={withdrawAmount} onChange={updateField} />
                     <FormText color="muted"> Withdraw in LINK </FormText>
                   </Col>
                 </Row>
                 <Row >
                   <Col sm="12" style={{ paddingRight: '30px' }}>
-                    <Button color="primary" onClick={() => initiateManualWithdraw(withdrawLimitKey.withdrawAmount)} > Withdraw </Button>
+                    <Button color="primary" onClick={() => initiateManualWithdraw(withdrawAmount)} > Withdraw </Button>
                     {getTxStatus()}
                   </Col>
                 </Row>

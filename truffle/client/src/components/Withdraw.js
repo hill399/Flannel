@@ -80,6 +80,11 @@ const Withdraw = (props) => {
     setStackID({
       withdrawId: stackId
     })
+
+    setWithdrawKey({
+      ...withdrawKey,
+      withdrawValue: ''
+    });
   }
 
   const initiateRebalance = (to, from, value) => {
@@ -92,6 +97,11 @@ const Withdraw = (props) => {
     setStackID({
       rebalanceId: stackId
     })
+
+    setWithdrawKey({
+      ...withdrawKey,
+      rebalanceAmount: ''
+    });
   }
 
   // Cachecall() lookup variables
@@ -134,7 +144,7 @@ const Withdraw = (props) => {
                       <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                     </Input>
                     <p></p>
-                    <Input placeholder="Withdraw Amount" type="text" name="withdrawValue" onChange={updateField} />
+                    <Input placeholder="Withdraw Amount" type="text" name="withdrawValue" value={withdrawKey.withdrawValue} onChange={updateField} />
                   </Col>
                 </Row>
                 <Row>
@@ -166,7 +176,7 @@ const Withdraw = (props) => {
                           <option value={2}> Top-Up Balance ({topUpBalance && props.formatData(true, topUpBalance.value, "LINK", false)}{' '} Available)</option>
                         </Input>
                         <p></p>
-                        <Input placeholder="Rebalance Amount" type="text" name="rebalanceAmount" onChange={updateField} />
+                        <Input placeholder="Rebalance Amount" type="text" name="rebalanceAmount" value={withdrawKey.rebalanceAmount} onChange={updateField} />
                       </FormGroup>
                     </Form>
                   </Col>

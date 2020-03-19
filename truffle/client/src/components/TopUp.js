@@ -87,6 +87,8 @@ const TopUp = (props) => {
         gas: 300000
       })
       setStackID(stackId)
+
+      setTopUpKey('');
     }
   }
 
@@ -121,7 +123,7 @@ const TopUp = (props) => {
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col">
                     <p> When Chainlink node is below <strong> {parameters && props.formatData(true, parameters.value[5], "ETH", false)} </strong>,
-                        convert enough LINK to top-up by <strong> {parameters && props.formatData(true, parameters.value[6], "ETH", false)} </strong> </p>
+                        convert enough LINK to top-up by <strong> {parameters && props.formatData(true, parameters.value[7], "LINK", false)} </strong> </p>
                   </FormGroup>
                 </Form>
               </TabPane>
@@ -131,7 +133,7 @@ const TopUp = (props) => {
                 <p> Convert earned LINK funds to top-up your running Chainlink node with ETH, which is needed to send transactions and fulfill oracle requests.</p>
                 <Row>
                   <Col md={6} sm="12" style={{ paddingBottom: '15px' }} >
-                    <Input placeholder="LINK Value" type="text" onChange={updateField} />
+                    <Input placeholder="LINK Value" type="text" value={topUpKey} onChange={updateField} />
                   </Col>
                   <Col md={6} style={{ paddingRight: '30px' }}>
                     <Input placeholder="ETH Value" type="text" value={(exchange && props.formatData(true, exchange.value, "ETH", false)) || ''} readOnly />
