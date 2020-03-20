@@ -34,14 +34,14 @@
     "absolutePath": "chainlink/v0.5/contracts/vendor/ENSResolver.sol",
     "exportedSymbols": {
       "ENSResolver": [
-        4384
+        4380
       ]
     },
-    "id": 4385,
+    "id": 4381,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4376,
+        "id": 4372,
         "literals": [
           "solidity",
           "^",
@@ -57,9 +57,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 4384,
+        "id": 4380,
         "linearizedBaseContracts": [
-          4384
+          4380
         ],
         "name": "ENSResolver",
         "nodeType": "ContractDefinition",
@@ -67,22 +67,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 4383,
+            "id": 4379,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "addr",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4379,
+              "id": 4375,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4378,
+                  "id": 4374,
                   "name": "node",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4383,
+                  "scope": 4379,
                   "src": "64:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -91,7 +91,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4377,
+                    "id": 4373,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "64:7:21",
@@ -107,15 +107,15 @@
               "src": "63:14:21"
             },
             "returnParameters": {
-              "id": 4382,
+              "id": 4378,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4381,
+                  "id": 4377,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4383,
+                  "scope": 4379,
                   "src": "99:7:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -124,7 +124,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4380,
+                    "id": 4376,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "99:7:21",
@@ -140,14 +140,14 @@
               ],
               "src": "98:9:21"
             },
-            "scope": 4384,
+            "scope": 4380,
             "src": "50:58:21",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4385,
+        "scope": 4381,
         "src": "25:85:21"
       }
     ],
@@ -157,14 +157,14 @@
     "absolutePath": "chainlink/v0.5/contracts/vendor/ENSResolver.sol",
     "exportedSymbols": {
       "ENSResolver": [
-        4384
+        4380
       ]
     },
-    "id": 4385,
+    "id": 4381,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4376,
+        "id": 4372,
         "literals": [
           "solidity",
           "^",
@@ -180,9 +180,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 4384,
+        "id": 4380,
         "linearizedBaseContracts": [
-          4384
+          4380
         ],
         "name": "ENSResolver",
         "nodeType": "ContractDefinition",
@@ -190,22 +190,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 4383,
+            "id": 4379,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "addr",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4379,
+              "id": 4375,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4378,
+                  "id": 4374,
                   "name": "node",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4383,
+                  "scope": 4379,
                   "src": "64:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -214,7 +214,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4377,
+                    "id": 4373,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "64:7:21",
@@ -230,15 +230,15 @@
               "src": "63:14:21"
             },
             "returnParameters": {
-              "id": 4382,
+              "id": 4378,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4381,
+                  "id": 4377,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4383,
+                  "scope": 4379,
                   "src": "99:7:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -247,7 +247,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4380,
+                    "id": 4376,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "99:7:21",
@@ -263,14 +263,14 @@
               ],
               "src": "98:9:21"
             },
-            "scope": 4384,
+            "scope": 4380,
             "src": "50:58:21",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4385,
+        "scope": 4381,
         "src": "25:85:21"
       }
     ],
@@ -282,7 +282,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-03-17T08:44:50.239Z",
+  "updatedAt": "2020-03-20T09:49:32.962Z",
   "devdoc": {
     "methods": {}
   },

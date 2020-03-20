@@ -6,9 +6,6 @@ import "../contracts/IFlannel.sol";
 /// @author hill399 (github.com/hill399)
 /// @notice Extension of Chainlink oracle contract to allow for additional features.
 contract Flannel is IFlannel {
-    
-    //Debug remove after
-    uint256 public availableFunds;
 
     /// @notice Constructor to set default contract values.
     /// @param _uniswapExchange address of Uniswap exchange contract.
@@ -41,7 +38,7 @@ contract Flannel is IFlannel {
 
         /* Create default param account */
         /* Fix those token mod values */
-        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 3 * ETHER, 300 * FINNEY);
+        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 3 * ETHER, 200 * FINNEY);
     }
 
     /// @notice Restricts certain calls to node address only.
@@ -57,8 +54,9 @@ contract Flannel is IFlannel {
     /// @dev Function Selector : 0x86b12681
     function flannelCoordinator()
     public
+    onlyNodeAddress()
     {
-        availableFunds = getOracleWithdrawable();
+        uint256 availableFunds = getOracleWithdrawable();
 
         if(availableFunds >= userStoredParams.linkThreshold){
            _withdrawFromOracle(availableFunds);

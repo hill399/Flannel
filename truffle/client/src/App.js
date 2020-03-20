@@ -71,7 +71,7 @@ const App = () => {
         }
 
         return (
-          <div className="App">
+          <div className="App" style={{overflow: "hidden"}}>
             <Header drizzle={drizzle} drizzleState={drizzleState} setBalances={setBalances} setExtBalances={setExtBalances} addressKey={addresses} parameters={setParameters} />
             <Balance drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} extBalances={extBalances} parameterKey={parameters} addressKey={addresses} />
             <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} extBalances={extBalances} parameterKey={parameters} />
@@ -88,5 +88,3 @@ const App = () => {
 }
 
 export default App;
-
-//             
