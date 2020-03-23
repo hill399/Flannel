@@ -67,6 +67,8 @@ Constructor Template
 7. Automation Only - Create job on Chainlink node using external initiator of choice (example is cron-based) and configure EthTx as based in the example (node_job.json).
 8. Visit [flannel.link](https://flannel.link), enter deployed Flannel address (or view demo) to access front-end.
 
+NOTE: On Ropsten, the Aave network uses their own flavour of LINK token. The Flannel contract has been configured to accomodate this, but requires a balance of this Aave link to operate correctly. Aave LINk can be found at the testnet page [HERE](https://testnet.aave.com/)
+
 
 
 ## Test
