@@ -25,7 +25,7 @@ const Withdraw = (props) => {
   })
 
   // Drizzle / Contract props
-  const { drizzle, drizzleState, balanceKey } = props
+  const { drizzle, drizzleState, balanceKey, validateInput } = props
   const { Flannel } = drizzleState.contracts
 
   // Tab functions
@@ -37,14 +37,10 @@ const Withdraw = (props) => {
 
   // Field update functions
   const updateField = e => {
-    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
-
-    if (e.target.value === '' || re.test(e.target.value)) {
-      setWithdrawKey({
-        ...withdrawKey,
-        [e.target.name]: e.target.value
-      });
-    }
+    setWithdrawKey({
+      ...withdrawKey,
+      [e.target.name]: e.target.value
+    });
   }
 
   const getTxStatus = (func) => {
@@ -71,37 +67,45 @@ const Withdraw = (props) => {
   // Initiate a withdraw from Flannel contract
 
   const initiateWithdraw = (from, value) => {
-    const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "", false);
-    const stackId = contract.methods["withdrawFromFlannel"].cacheSend(from, fValue, {
-      from: drizzleState.accounts[0]
-    })
+    if (validateInput(value)) {
+      const contract = drizzle.contracts.Flannel;
+      const fValue = props.formatData(false, value, "", false);
+      const stackId = contract.methods["withdrawFromFlannel"].cacheSend(from, fValue, {
+        from: drizzleState.accounts[0]
+      })
 
-    setStackID({
-      withdrawId: stackId
-    })
+      setStackID({
+        withdrawId: stackId
+      })
 
-    setWithdrawKey({
-      ...withdrawKey,
-      withdrawValue: ''
-    });
+      setWithdrawKey({
+        ...withdrawKey,
+        withdrawValue: ''
+      });
+    } else {
+      alert('Invalid Withdraw Amount');
+    }
   }
 
   const initiateRebalance = (to, from, value) => {
-    const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "", false);
-    const stackId = contract.methods["rebalance"].cacheSend(to, from, fValue, {
-      from: drizzleState.accounts[0]
-    })
+    if (validateInput(value)) {
+      const contract = drizzle.contracts.Flannel;
+      const fValue = props.formatData(false, value, "", false);
+      const stackId = contract.methods["rebalance"].cacheSend(to, from, fValue, {
+        from: drizzleState.accounts[0]
+      })
 
-    setStackID({
-      rebalanceId: stackId
-    })
+      setStackID({
+        rebalanceId: stackId
+      })
 
-    setWithdrawKey({
-      ...withdrawKey,
-      rebalanceAmount: ''
-    });
+      setWithdrawKey({
+        ...withdrawKey,
+        rebalanceAmount: ''
+      });
+    } else {
+      alert('Invalid Rebalance Amount');
+    }
   }
 
   // Cachecall() lookup variables

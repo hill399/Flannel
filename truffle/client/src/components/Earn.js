@@ -23,7 +23,7 @@ const Earn = (props) => {
   })
 
   // Drizzle / Contract props
-  const { drizzle, drizzleState, parameterKey, balanceKey } = props
+  const { drizzle, drizzleState, parameterKey, balanceKey, validateInput } = props
   const { Flannel } = drizzleState.contracts
 
   // Update Balances
@@ -44,15 +44,10 @@ const Earn = (props) => {
 
   // Field update functions
   const updateField = e => {
-
-    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
-
-    if (e.target.value === '' || re.test(e.target.value)) {
-      aLinkInputKey({
-        ...aLinkInputKey,
-        [e.target.name]: e.target.value
-      });
-    }
+    aLinkInputKey({
+      ...aLinkInputKey,
+      [e.target.name]: e.target.value
+    });
   }
 
   // Transaction alert functions
@@ -81,49 +76,57 @@ const Earn = (props) => {
   // Initiate a deposit to aLINK
 
   const initiateDeposit = value => {
-    const contract = drizzle.contracts.Flannel
-    const fValue = props.formatData(false, value, "", false);
+    if (validateInput(value)) {
+      const contract = drizzle.contracts.Flannel
+      const fValue = props.formatData(false, value, "", false);
 
-    if (fValue > aaveBalance.value) {
-      alert('Deposit amount too high, not enough LINK allocated to function');
+      if (fValue > aaveBalance.value) {
+        alert('Deposit amount too high, not enough LINK allocated to function');
+      } else {
+        const stackId = contract.methods["manualDepositToAave"].cacheSend(fValue, {
+          from: drizzleState.accounts[0],
+          gas: 300000
+        })
+        setStackID({
+          mintId: stackId
+        })
+
+        aLinkInputKey({
+          ...aLinkInputKey,
+          aLinkDepositValue: ''
+        });
+      }
     } else {
-      const stackId = contract.methods["manualDepositToAave"].cacheSend(fValue, {
-        from: drizzleState.accounts[0],
-        gas: 300000
-      })
-      setStackID({
-        mintId: stackId
-      })
-
-      aLinkInputKey({
-        ...aLinkInputKey,
-        aLinkDepositValue: ''
-      });
+      alert('Invalid Deposit Amount');
     }
   }
 
   // Initiate a burn on aLINK
 
   const initiateBurn = value => {
-    const contract = drizzle.contracts.Flannel
-    const fValue = props.formatData(false, value, "", false);
+    if (validateInput(value)) {
+      const contract = drizzle.contracts.Flannel
+      const fValue = props.formatData(false, value, "", false);
 
-    if (fValue > aLink.value) {
-      alert('Burn amount too high, not enough aLINK in Flannel');
+      if (fValue > aLink.value) {
+        alert('Burn amount too high, not enough aLINK in Flannel');
+      } else {
+        const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(fValue, {
+          from: drizzleState.accounts[0],
+          gas: 1000000
+        })
+
+        setStackID({
+          burnId: stackId
+        })
+
+        aLinkInputKey({
+          ...aLinkInputKey,
+          aLinkBurnValue: ''
+        });
+      }
     } else {
-      const stackId = contract.methods["manualWithdrawFromAave"].cacheSend(fValue, {
-        from: drizzleState.accounts[0],
-        gas: 1000000
-      })
-
-      setStackID({
-        burnId: stackId
-      })
-
-      aLinkInputKey({
-        ...aLinkInputKey,
-        aLinkBurnValue: ''
-      });
+      alert('Invalid Burn Amount');
     }
   }
 
@@ -158,8 +161,8 @@ const Earn = (props) => {
               <TabPane tabId="1">
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col">
-                    <p> When Earn balance is greater than <strong>{parameters && props.formatData(true, parameters.value[6], "LINK", true)}</strong>,
-                        deposit to Aave to generate interest. </p>
+                    <p> When Earn balance is greater than <strong>{parameters && props.formatData(true, parameters.value[6], "LINK", true)} </strong>
+                      deposit to Aave to generate interest. </p>
                   </FormGroup>
                 </Form>
               </TabPane>

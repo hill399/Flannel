@@ -33,7 +33,7 @@ const Admin = (props) => {
   })
 
   // Drizzle / Contract props
-  const { drizzle, drizzleState, addressKey, parameterKey } = props
+  const { drizzle, drizzleState, addressKey, parameterKey, validateInput } = props
   const { Flannel } = drizzleState.contracts
 
   // Tab functions
@@ -53,15 +53,10 @@ const Admin = (props) => {
 
   // New parameter update
   const updateNewParameters = e => {
-
-    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
-
-    if (e.target.value === '' || re.test(e.target.value)) {
-      setNewParams({
-        ...newParams,
-        [e.target.name]: Number(e.target.value)
-      });
-    }
+    setNewParams({
+      ...newParams,
+      [e.target.name]: e.target.value
+    });
   }
 
   // Initiate address update on contract
@@ -98,39 +93,50 @@ const Admin = (props) => {
   }
 
   const initiateParameterUpdate = () => {
-    const contract = drizzle.contracts.Flannel;
 
-    if (newParams.pcUntouched + newParams.pcAave + newParams.pcTopUp === 100) {
-      const stackId = contract.methods["createNewAllowance"].cacheSend(
-        "Default",
-        newParams.pcUntouched,
-        newParams.pcAave,
-        newParams.pcTopUp,
-        newParams.linkThreshold * 1e18,
-        newParams.ethThreshold * 1e18,
-        newParams.aaveThreshold * 1e18,
-        newParams.ethTopUp * 1e18,
-        {
-          from: drizzleState.accounts[0]
+    let validInputFlag = true;
+
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (validInputFlag) { validInputFlag = validateInput(value) }
+    })
+
+    if (validInputFlag) {
+      const contract = drizzle.contracts.Flannel;
+
+      if (parseInt(newParams.pcUntouched) + parseInt(newParams.pcAave) + parseInt(newParams.pcTopUp) === 100) {
+        const stackId = contract.methods["createNewAllowance"].cacheSend(
+          "Default",
+          newParams.pcUntouched,
+          newParams.pcAave,
+          newParams.pcTopUp,
+          newParams.linkThreshold * 1e18,
+          newParams.ethThreshold * 1e18,
+          newParams.aaveThreshold * 1e18,
+          newParams.ethTopUp * 1e18,
+          {
+            from: drizzleState.accounts[0]
+          })
+
+        setStackID({
+          ...stackId,
+          updateId: stackId
         })
 
-      setStackID({
-        ...stackId,
-        updateId: stackId
-      })
+        setNewParams({
+          pcUntouched: '',
+          pcAave: '',
+          pcTopUp: '',
+          linkThreshold: '',
+          ethThreshold: '',
+          aaveThreshold: '',
+          ethTopUp: ''
+        });
 
-      setNewParams({
-        pcUntouched: '',
-        pcAave: '',
-        pcTopUp: '',
-        linkThreshold: '',
-        ethThreshold: '',
-        aaveThreshold: '',
-        ethTopUp: ''
-      });
-
+      } else {
+        alert('Invalid Parameter Set - Check Percentage Input')
+      }
     } else {
-      alert('Invalid Parameter Set - Check Percentage Input')
+      alert('Invalid Parameter Values');
     }
   }
 
@@ -244,8 +250,7 @@ const Admin = (props) => {
                         <Row style={{ paddingLeft: '15px', paddingRight: '70px' }}>
                           <p><strong> Modify Automatic Parameters </strong></p>
                           <p> Change how Flannels automated functions behave by modifying the parameters below. Change how deposits are split between functions,
-                              the top-up threshold and amount of LINK to be converted for top-up and the threshold in which to deposit LINK to generate interest-bearing
-                            aLINK. </p>
+                              how top-ups are triggered and the threshold in which to deposit LINK to generate interest-bearing aLINK. </p>
                         </Row>
                         <p><strong> Oracle </strong></p>
                         <Row style={{ paddingLeft: '15px', paddingRight: '15px' }}>

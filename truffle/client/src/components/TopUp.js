@@ -19,7 +19,7 @@ const TopUp = (props) => {
   const [topUpKey, setTopUpKey] = useState(0);
 
   // Drizzle / Contract props
-  const { drizzle, drizzleState, parameterKey, balanceKey } = props
+  const { drizzle, drizzleState, parameterKey, balanceKey, validateInput } = props
   const { Flannel } = drizzleState.contracts
 
   useEffect(() => {
@@ -42,16 +42,13 @@ const TopUp = (props) => {
   // Field update functions
   const updateField = e => {
 
-    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
-
-    if (e.target.value === '' || re.test(e.target.value)) {
-      if (parseInt(e.target.value) > 999) {
-        alert('Maximum allowance of 999 LINK');
-        e.target.value = 999;
-      } else {
-        setTopUpKey(e.target.value);
-      }
+    if (parseInt(e.target.value) > 999) {
+      alert('Maximum allowance of 999 LINK');
+      e.target.value = 999;
+    } else {
+      setTopUpKey(e.target.value);
     }
+
   }
 
   // Transaction alert functions
@@ -76,19 +73,23 @@ const TopUp = (props) => {
 
   // Initiate LINK - ETH Uniswap conversion
   const initiateUniswapTopUp = value => {
-    const contract = drizzle.contracts.Flannel;
-    const fValue = props.formatData(false, value, "", false);
+    if (validateInput(value)) {
+      const contract = drizzle.contracts.Flannel;
+      const fValue = props.formatData(false, value, "", false);
 
-    if (fValue > topUpBalance.value) {
-      alert('Top-Up amount too high, not enough LINK allocated to function');
+      if (fValue > topUpBalance.value) {
+        alert('Top-Up amount too high, not enough LINK allocated to function');
+      } else {
+        const stackId = contract.methods["manualLinkToEthTopUp"].cacheSend(fValue, {
+          from: drizzleState.accounts[0],
+          gas: 300000
+        })
+        setStackID(stackId)
+
+        setTopUpKey('');
+      }
     } else {
-      const stackId = contract.methods["manualLinkToEthTopUp"].cacheSend(fValue, {
-        from: drizzleState.accounts[0],
-        gas: 300000
-      })
-      setStackID(stackId)
-
-      setTopUpKey('');
+      alert('Invalid Top-Up Amount');
     }
   }
 
@@ -122,15 +123,15 @@ const TopUp = (props) => {
               <TabPane tabId="1">
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col">
-                    <p> When Chainlink node is below <strong> {parameters && props.formatData(true, parameters.value[5], "ETH", false)} </strong>,
-                        convert enough LINK to top-up by <strong> {parameters && props.formatData(true, parameters.value[7], "LINK", false)} </strong> </p>
+                    <p> When Chainlink node is below <strong> {parameters && props.formatData(true, parameters.value[5], "ETH", false)} </strong>
+                      top-up with <strong> {parameters && props.formatData(true, parameters.value[7], "LINK", false)} </strong> </p>
                   </FormGroup>
                 </Form>
               </TabPane>
               <TabPane tabId="2">
                 <p></p>
                 <p><strong> Manual Top-Up </strong></p>
-                <p> Convert earned LINK funds to top-up your running Chainlink node with ETH, which is needed to send transactions and fulfill oracle requests.</p>
+                <p> Convert earned LINK funds to top-up your running Chainlink node with ETH, which is required to send transactions and fulfill oracle requests.</p>
                 <Row>
                   <Col md={6} sm="12" style={{ paddingBottom: '15px' }} >
                     <Input placeholder="LINK Value" type="text" value={topUpKey} onChange={updateField} />

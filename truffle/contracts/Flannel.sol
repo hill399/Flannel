@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.12;
 
 import "../contracts/IFlannel.sol";
 
@@ -36,9 +36,11 @@ contract Flannel is IFlannel {
         lendingPool = LendingPool(_lendingPool);
         lendingPoolApproval = _lendingPoolApproval;
 
+        address[2] memory writeWhitelist = [msg.sender, linkNode];
+        whitelistAddresses = writeWhitelist;
+
         /* Create default param account */
-        /* Fix those token mod values */
-        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 3 * ETHER, 200 * FINNEY);
+        userStoredParams = thresholds("Default", 20, 60, 20, 5 * ETHER, 1 * ETHER, 3 * ETHER, 5 * ETHER);
     }
 
     /// @notice Restricts certain calls to node address only.

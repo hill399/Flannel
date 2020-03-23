@@ -54,7 +54,6 @@ const Header = (props) => {
   }, [drizzleState])
 
   const deployed = drizzle.contracts.Flannel.address;
-  const bn = drizzleState.currentBlock.number;
 
   const shortAccount = () => {
     const connAccount = drizzleState.accounts[0];
@@ -68,7 +67,7 @@ const Header = (props) => {
       <Row>
         <Col sm="12" style={{ paddingLeft: '25px' }}>
           <div className="row" >
-            <div className="col" style={{ fontSize: "3" }} ><p> Block: {bn} </p> </div>
+            <div className="col" style={{ fontSize: "3" }} > </div>
             <div className="col-auto" style={{ marginRight: "20px", fontSize: "3" }}> <p> Account: {shortAccount()} </p> </div>
           </div>
           <h2> Flannel</h2>

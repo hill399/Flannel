@@ -58,7 +58,7 @@ const Landing = (props) => {
         if (networkSafe) {
             let contractConfig = {
                 contractName: Flannel.contractName,
-                web3Contract: new drizzle.web3.eth.Contract(Flannel.abi, '0x5c756b8dfa70b7aca3c2f97cac92f75d40953e6b')
+                web3Contract: new drizzle.web3.eth.Contract(Flannel.abi, '0xea4543fde5284895ad51f109e8601472d3c5739a')
             }
 
             let events = []

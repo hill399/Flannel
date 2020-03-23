@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.12;
 
 import "chainlink/v0.5/contracts/Oracle.sol";
 import "../contracts/UniswapExchangeInterface.sol";
@@ -24,10 +24,12 @@ contract IFlannel is Ownable {
     uint256 constant ETHER = 1 * 10 ** 18;
 
     /* Address of user node */
-    address public linkNode;
+    address internal linkNode;
 
     /* Lending pool approval address */
     address internal lendingPoolApproval;
+
+    address[2] internal whitelistAddresses;
 
     /* Struct to customise and store allowances */
     struct thresholds {
@@ -48,11 +50,18 @@ contract IFlannel is Ownable {
     uint256 public aaveBalance;
     uint256 public topUpBalance;
 
+    modifier whitelistedAddresses()
+    {
+        require(msg.sender == whitelistAddresses[0] || msg.sender == whitelistAddresses[1], "Invalid caller");
+        _;
+    }
+
     /// @notice Withdraw earned LINK balance from deployed oracle contract.
     /// @dev Only node address can call this.
     /// @dev Function selector : 0x61ff4fac
     function _withdrawFromOracle(uint256 _amount)
     internal
+    whitelistedAddresses
     {
         oracle.withdraw(address(this), _amount);
         storeBalance = storeBalance.add(_percentHelper(_amount, userStoredParams.pcUntouched));
@@ -67,6 +76,7 @@ contract IFlannel is Ownable {
     /// @dev Function selector : 0x06197c1c
     function _depositToAave(uint256 _amount)
     internal
+    whitelistedAddresses
     {
         require(_amount <= aaveBalance, "Not enough allocated Aave Deposit funds");
         // Approve for aaveLINK tokens to be moved by the lending interface.
@@ -80,6 +90,7 @@ contract IFlannel is Ownable {
     /// @dev Only node address can call this.
     function _withdrawFromAave(uint256 _amount)
     internal
+    whitelistedAddresses
     {
         // Catch that _amount is greater thzan contract aLINK balance.
         require(_amount <= getALinkBalance(), "Not enough aLINK in contract");
@@ -93,6 +104,7 @@ contract IFlannel is Ownable {
     /// @dev Only node address can call this.
     function _linkToEthTopUp(uint256 _amount, bool _auto)
     internal
+    whitelistedAddresses
     {
         require(_amount <= topUpBalance, "Not enough LINK to top-up");
         // Catch if topUpBalance is less than ethTopUp

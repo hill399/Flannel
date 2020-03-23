@@ -16,7 +16,7 @@ const Oracle = (props) => {
   const [stackId, setStackID] = useState(null);
 
   // Drizzle / Contract props
-  const { drizzle, drizzleState, parameterKey, extBalances } = props
+  const { drizzle, drizzleState, parameterKey, extBalances, validateInput } = props
   const { Flannel } = drizzleState.contracts
 
   // Tab functions
@@ -28,12 +28,7 @@ const Oracle = (props) => {
 
   // Field update functions
   const updateField = e => {
-
-    const re = /^[0-9]{1,2}([.][0-9]{1,2})?$/;
-
-    if (e.target.value === '' || re.test(e.target.value)) {
-      setWithdrawAmount(e.target.value);
-    }
+    setWithdrawAmount(e.target.value);
   }
 
   const getTxStatus = () => {
@@ -57,19 +52,23 @@ const Oracle = (props) => {
   // Initiate an withdrawal from Oracle contract
 
   const initiateManualWithdraw = (value) => {
-    const fValue = props.formatData(false, value, "", false);
-    const contract = drizzle.contracts.Flannel;
+    if (validateInput(value)) {
+      const fValue = props.formatData(false, value, "", false);
+      const contract = drizzle.contracts.Flannel;
 
-    if (fValue > oracleLinkBalance ) {
-      alert('Withdraw amount too high, not enough LINK in Oracle contract');
+      if (fValue > oracleLinkBalance) {
+        alert('Withdraw amount too high, not enough LINK in Oracle contract');
+      } else {
+        const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
+          from: drizzleState.accounts[0],
+          gas: 300000
+        })
+        setStackID(stackId);
+
+        setWithdrawAmount('');
+      }
     } else {
-      const stackId = contract.methods["manualWithdrawFromOracle"].cacheSend(fValue, {
-        from: drizzleState.accounts[0],
-        gas: 300000
-      })
-      setStackID(stackId);
-
-      setWithdrawAmount('');
+      alert('Invalid Withdraw Amount');
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "flannel",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Management interface for Chainlink oracle contract",
   "scripts": {
     "remix": "npx remixd -s . --remix-ide https://remix.ethereum.org",

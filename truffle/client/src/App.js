@@ -49,13 +49,23 @@ const App = () => {
     }
   }
 
+  const validateInput = (input) => {
+    const regex = /^\d+\.?\d*$/;
+
+    if (input === '' || regex.test(input)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
     <DrizzleContext.Consumer>
       {drizzleContext => {
         const { drizzle, initialized, drizzleState } = drizzleContext;
 
         if (!initialized) {
-          return "Loading...";
+          return "Loading, Web3 initialising...";
         }
 
         if (!readyState || !initialized) {
@@ -71,15 +81,68 @@ const App = () => {
         }
 
         return (
-          <div className="App" style={{overflow: "hidden"}}>
-            <Header drizzle={drizzle} drizzleState={drizzleState} setBalances={setBalances} setExtBalances={setExtBalances} addressKey={addresses} parameters={setParameters} />
-            <Balance drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} extBalances={extBalances} parameterKey={parameters} addressKey={addresses} />
-            <Oracle drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} extBalances={extBalances} parameterKey={parameters} />
-            <TopUp drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
-            <Earn drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
-            <Withdraw drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} balanceKey={balances} parameterKey={parameters} />
-            <Admin drizzle={drizzle} drizzleState={drizzleState} formatData={formatData} addressKey={addresses} parameterKey={parameters} />
-            <History drizzle={drizzle} drizzleState={drizzleState} />
+          <div className="App" style={{ overflow: "hidden" }}>
+            <Header
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              setBalances={setBalances}
+              setExtBalances={setExtBalances}
+              addressKey={addresses}
+              parameters={setParameters}
+            />
+            <Balance
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              formatData={formatData}
+              balanceKey={balances}
+              extBalances={extBalances}
+              parameterKey={parameters}
+              addressKey={addresses}
+            />
+            <Oracle
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              formatData={formatData}
+              extBalances={extBalances}
+              parameterKey={parameters}
+              validateInput={validateInput}
+            />
+            <TopUp
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              formatData={formatData}
+              balanceKey={balances}
+              parameterKey={parameters}
+              validateInput={validateInput}
+            />
+            <Earn
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              formatData={formatData}
+              balanceKey={balances}
+              parameterKey={parameters}
+              validateInput={validateInput}
+            />
+            <Withdraw
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              formatData={formatData}
+              balanceKey={balances}
+              parameterKey={parameters}
+              validateInput={validateInput}
+            />
+            <Admin
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              formatData={formatData}
+              addressKey={addresses}
+              parameterKey={parameters}
+              validateInput={validateInput}
+            />
+            <History
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+            />
           </div>
         );
       }}
