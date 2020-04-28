@@ -1,6 +1,7 @@
 
 import React, { useState } from "react"
-import { Collapse, Button, CardBody, Card, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Input, Spinner, FormText } from 'reactstrap';
+import { Collapse, Card, CardBody, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Form, FormGroup, Spinner, FormText } from 'reactstrap';
+import { Input, Text, Button, Loader, Flex, Box } from 'rimble-ui';
 
 import '../layout/App.css'
 
@@ -31,20 +32,23 @@ const Oracle = (props) => {
     setWithdrawAmount(e.target.value);
   }
 
-  const getTxStatus = () => {
+  const buttonStatus = () => {
     // get the transaction states from the drizzle state
     const { transactions, transactionStack } = drizzleState
 
     // get the transaction hash using our saved `stackId`
     const txHash = transactionStack[stackId]
 
-    // if transaction hash does not exist, don't display anything
-    if (!txHash) return null;
-
     // otherwise, return the transaction status
     if (transactions[txHash] && transactions[txHash].status === "pending") {
       return (
-        <Spinner color="primary" size="sm" style={{ marginLeft: '15px', marginTop: '5px' }} />
+        <Button>
+          <Loader color="white" />
+        </Button>
+      )
+    } else {
+      return (
+        <Button color="primary" style={{ marginLeft: "5px" }} onClick={() => initiateManualWithdraw(withdrawAmount)} > Withdraw </Button>
       )
     }
   }
@@ -78,10 +82,10 @@ const Oracle = (props) => {
 
   return (
     <div className="section">
-      <Card style={{ paddingLeft: '15px' }}>
+      <Card style={{ paddingLeft: '20px' }}>
         <div className="row">
-          <div className="col" style={{ paddingTop: '15px' }}><h4> Oracle </h4> <p> {props.formatData(true, oracleLinkBalance, "LINK", true)} </p></div>
-          <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh" >&#709;</Button></div>
+        <div className="col" style={{ paddingTop: '15px' }}><Text fontSize={28}>Oracle </Text> <Text.p>{props.formatData(true, oracleLinkBalance, "LINK", true)} </Text.p></div>
+          <div className="col-auto"> <Button.Outline onClick={toggle} size={"small"} className="button-sh" icon="ArrowDropDown" icononly /></div>
         </div>
         <Collapse isOpen={isOpen}>
           <CardBody>
@@ -101,52 +105,51 @@ const Oracle = (props) => {
               <TabPane tabId="1">
                 <Form style={{ paddingTop: '10px' }}>
                   <FormGroup className="oracle-col" >
-                    <p>Oracle Withdrawals will trigger when <strong> {parameters && props.formatData(true, parameters.value[4], "LINK", false)} </strong> has been earned </p>
+                    <Text.p>Oracle Withdrawals will trigger when <strong> {parameters && props.formatData(true, parameters.value[4], "LINK", false)} </strong> has been earned </Text.p>
                   </FormGroup>
                   <Row form >
                     <Col md={4}>
                       <FormGroup className="oracle-col">
-                        <p>STORE</p>
-                        <strong> {parameters && parameters.value[1]} % </strong>
-                        <p></p>
-                        <p> Store LINK within Flannel </p>
-                        <p></p>
+                        <Text.p>STORE</Text.p>
+                        <Text.p fontWeight={"bold"}> {parameters && parameters.value[1]} % </Text.p>
+                        <Text.p></Text.p>
+                        <Text.p> Store LINK within Flannel </Text.p>
+                        <Text.p></Text.p>
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup className="oracle-col">
-                        <p>EARN</p>
-                        <strong> {parameters && parameters.value[2]} % </strong>
-                        <p></p>
-                        <p> Allocate LINK to generate interest </p>
+                        <Text.p>EARN</Text.p>
+                        <Text.p fontWeight={"bold"}>  {parameters && parameters.value[2]} % </Text.p>
+                        <Text.p></Text.p>
+                        <Text.p> Allocate LINK to generate interest </Text.p>
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup className="oracle-col">
-                        <p>TOP-UP</p>
-                        <strong> {parameters && parameters.value[3]} % </strong>
-                        <p></p>
-                        <p> Keep your node topped-up </p>
+                        <Text.p>TOP-UP</Text.p>
+                        <Text.p fontWeight={"bold"}> {parameters && parameters.value[3]} % </Text.p>
+                        <Text.p></Text.p>
+                        <Text.p> Keep your node topped-up </Text.p>
                       </FormGroup>
                     </Col>
                   </Row>
                 </Form>
               </TabPane>
               <TabPane tabId="2">
-                <p></p>
-                <p><strong> Manual Oracle Withdraw </strong></p>
-                <p> Initiate a withdrawal from your Oracle contract, to distribute within Flannel and access its additional features. </p>
+                <Text.p></Text.p>
+                <Text.p fontWeight={"bold"}> Manual Oracle Withdraw </Text.p>
+                <Text.p> Initiate a withdrawal from your Oracle contract, to distribute within Flannel and access its additional features. </Text.p>
                 <Row >
-                  <Col sm="12" style={{ paddingRight: '30px', paddingBottom: '15px' }}>
-                    <Input placeholder="Withdraw Amount" type="text" name="withdrawAmount" value={withdrawAmount} onChange={updateField} />
-                    <FormText color="muted"> Withdraw in LINK </FormText>
-                  </Col>
-                </Row>
-                <Row >
-                  <Col sm="12" style={{ paddingRight: '30px' }}>
-                    <Button color="primary" onClick={() => initiateManualWithdraw(withdrawAmount)} > Withdraw </Button>
-                    {getTxStatus()}
-                  </Col>
+                  <Flex>
+                  <Box p={3} width={1 / 2} >
+                  <Input placeholder="Withdraw Amount" type="text" name="withdrawAmount" value={withdrawAmount} onChange={updateField} />
+                  <FormText color="muted"> Withdraw in LINK </FormText>
+                  </Box>
+                  <Box p={3} width={1 / 2} >
+                  {buttonStatus()}
+                  </Box>
+                  </Flex>
                 </Row>
               </TabPane>
             </TabContent>

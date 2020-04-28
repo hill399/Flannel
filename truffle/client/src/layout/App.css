@@ -1,5 +1,5 @@
 .App {
-  background: #e6ffff;
+  background:  #f2f2f2;
 }
 
 .landing {
@@ -76,6 +76,29 @@
   padding-top: 10px;
   background: white;
   margin: 10px 5px 20px 5px;
+}
+
+.withdraw-col {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #b3c6ff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+  background: white;
+  margin: 10px 5px 10px 5px;
+}
+
+.panel-col {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #b3c6ff;
+  padding-top: 10px;
+  background: white;
+  margin: 10px 5px 10px 5px;
 }
 
 .button-sh {

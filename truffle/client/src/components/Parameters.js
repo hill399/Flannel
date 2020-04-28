@@ -5,7 +5,7 @@ import { Input, Text, Button, Loader, Flex, Box, Card, Radio, Field } from 'rimb
 
 import '../layout/App.css'
 
-const Admin = (props) => {
+const Parameters = (props) => {
   // UI state keys
   const [activeTab, setActiveTab] = useState('1');
   const [isOpen, setIsOpen] = useState(false);
@@ -180,45 +180,92 @@ const Admin = (props) => {
   return (
     <div>
       <Flex>
-        <Box width={1 / 2}>
-          <Card className="balance-col">
-            <Text fontSize={26}> {addresses && addresses.value[0]} </Text>
+        <Box width={1 / 3}>
+          <Card className="panel-col">
+            <Text.p fontWeight={"bold"}> Oracle </Text.p>
+            <Field label="Withdraw Threshold:">
+              <Input placeholder="Withdraw Threshold" type="text" required={true} name="linkThreshold" value={newParams.linkThreshold} onChange={updateNewParameters} />
+            </Field>
             <Text.p />
-            <Text fontSize={16} > ORACLE ADDRESS </Text>
+            <Field label="Withdraw to Store Allocation:">
+              <Input placeholder="Store %" type="text" required={true} name="pcUntouched" value={newParams.pcUntouched} onChange={updateNewParameters} />
+            </Field>
+            <Text.p />
+            <Field label="Withdraw to Earn Allocation:">
+              <Input placeholder="Earn %" type="text" required={true} name="pcAave" value={newParams.pcAave} onChange={updateNewParameters} />
+            </Field>
+            <Text.p />
+            <Field label="Withdraw to Top-Up Allocation:">
+              <Input placeholder="Top-Up %" type="text" required={true} name="pcTopUp" value={newParams.pcTopUp} onChange={updateNewParameters} />
+            </Field>
+            <Text.p />
+            <Text.p fontWeight={"bold"}> Top-Up </Text.p>
+            <Field label="Node Balance Threshold:">
+              <Input placeholder="Node Balance Threshold" type="text" required={true} name="ethThreshold" value={newParams.ethThreshold} onChange={updateNewParameters} />
+            </Field>
+            <Text.p />
+            <Field label="Node Top-Up Amount:">
+              <Input placeholder="Top-Up Amount" type="text" required={true} name="ethTopUp" value={newParams.ethTopUp} onChange={updateNewParameters} />
+            </Field>
+            <Text.p />
+            <Text.p fontWeight={"bold"}> Earn </Text.p>
+            <Field label="Deposit to Aave Threshold:">
+              <Input placeholder="Earn Threshold" type="text" required={true} name="aaveThreshold" value={newParams.aaveThreshold} onChange={updateNewParameters} />
+            </Field>
+            <Text.p />
+            <Button color="primary" onClick={initiateParameterUpdate} > Apply </Button>
+            {getTxStatus(2)}
           </Card>
         </Box>
-        <Box width={1 / 2}>
-          <Card className="balance-col">
-            <Text fontSize={26}> {addresses && addresses.value[1]}   </Text>
+        <Box width={1 / 3}>
+          <Card className="panel-col">
+            <Text.p fontWeight={"bold"}> Oracle </Text.p>
+            <Field label="Withdraw Threshold:">
+              <Text.p required={true}> {(parameters && props.formatData(true, parameters.value[4], "LINK", true))}  </Text.p>
+            </Field>
             <Text.p />
-            <Text fontSize={16} > NODE ADDRESS </Text>
+            <Field label="Withdraw to Store Allocation:">
+              <Text.p required={true}> {(parameters && parameters.value[1])}%  </Text.p>
+            </Field>
+            <Text.p />
+            <Field label="Withdraw to Earn Allocation:">
+              <Text.p required={true}> {(parameters && parameters.value[2])}%  </Text.p>
+            </Field>
+            <Text.p />
+            <Field label="Withdraw to Top-Up Allocation:">
+              <Text.p required={true}> {(parameters && parameters.value[3])}% </Text.p>
+            </Field>
+            <Text.p />
+            <Text.p fontWeight={"bold"}> Top-Up </Text.p>
+            <Field label="Node Balance Threshold:">
+              <Text.p required={true}> {(parameters && props.formatData(true, parameters.value[5], "ETH", true))}  </Text.p>
+            </Field>
+            <Text.p />
+            <Field label="Node Top-Up Amount:">
+              <Text.p required={true}> {(parameters && props.formatData(true, parameters.value[7], "LINK", true))}  </Text.p>
+            </Field>
+            <Text.p />
+            <Text.p fontWeight={"bold"}> Earn </Text.p>
+            <Field label="Deposit to Aave Threshold:">
+              <Text.p required={true}> {(parameters && props.formatData(true, parameters.value[6], "LINK", true))}  </Text.p>
+            </Field>
+          </Card>
+        </Box>
+        <Box width={1 / 3}>
+          <Card className="panel-col">
+            <Text.p fontWeight={"bold"}> Modify Automatic Parameters </Text.p>
+            <Text.p> Change how Flannels automated functions behave by modifying the parameters below. Change how deposits are split between functions,
+                      how top-ups are triggered and the threshold in which to deposit LINK to generate interest-bearing aLINK. </Text.p>
+
           </Card>
         </Box>
       </Flex>
-      <Flex>
-        <Box width={1 / 2}>
-          <Card className="panel-col">
-            <Text.p fontWeight={"bold"}> Revert Oracle Ownership </Text.p>
-            <p> Pass the ownership of your Oracle contract back to the owner of Flannel, useful if you wish to upgrade/remove Flannel functionality.</p>
-            <Button color="danger" onClick={() => initiateRevertOwnership()}> Revert Ownership </Button>
-            {getTxStatus(1)}
-          </Card>
-        </Box>
-        <Box width={1 / 2}>
-          <Card className="panel-col">
-            <Text.p fontWeight={"bold"}> Change Contract Addresses </Text.p>
-            <Input placeholder="New Oracle Address" type="text" name="oracleAddress" value={newAddress.oracleAddress} onChange={updateField} />
-            <Input placeholder="New Node Address" type="text" name="nodeAddress" value={newAddress.nodeAddress} onChange={updateField} />
-            <Button color="primary" onClick={() => initiateAddressUpdate(newAddress.oracleAddress, newAddress.nodeAddress)} > Update </Button>
-            {getTxStatus(0)}
-          </Card>
-        </Box>
-      </Flex >
+
     </div >
   )
 }
 
-export default Admin;
+export default Parameters;
 
 /*
 <Card style={{ paddingLeft: '20px' }}>
@@ -253,7 +300,7 @@ export default Admin;
             <Form>
               <FormGroup>
                 <Text.p fontWeight={"bold"}> Change Contract Addresses </Text.p>
-               <Input placeholder="New Oracle Address" type="text" name="oracleAddress" value={newAddress.oracleAddress} onChange={updateField} />
+                <Input placeholder="New Oracle Address" type="text" name="oracleAddress" value={newAddress.oracleAddress} onChange={updateField} />
                 <Text.p> Current Oracle Address: {addresses && addresses.value[0]}  </Text.p>
                 <p></p>
                 <Input placeholder="New Node Address" type="text" name="nodeAddress" value={newAddress.nodeAddress} onChange={updateField} />

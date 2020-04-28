@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect } from "react"
-import { Collapse, Button, CardBody, Card, Table, Label } from 'reactstrap';
-
+import { Collapse, Button, CardBody, Label } from 'reactstrap';
+import { Card, Table, Flex, Box } from 'rimble-ui';
 import '../layout/App.css'
 
-const History = (props) => {
+const Activity = (props) => {
     // UI state keys
     const [isOpen, setIsOpen] = useState(true);
 
@@ -47,7 +47,7 @@ const History = (props) => {
                     if (block != null && block.transactions != null) {
                         block.transactions.forEach(function (e) {
                             if (account === e.from || account === e.to) {
-                                let newTx = { timestamp: block.timestamp, from: e.from, input: e.input };
+                                let newTx = { timestamp: block.timestamp, from: e.from, input: e.input, hash: e.hash };
                                 txArray.data.push(newTx);
                             }
                         })
@@ -55,6 +55,13 @@ const History = (props) => {
                 })
             }
         })
+
+        if (txArray.data.length < 8) {
+            for (let i = txArray.data.length; i <= 7; i++) {
+                txArray.data.push({ timestamp: i, from: '0', input: '0', hash: '0' })
+            }
+        }
+
 
         return txArray;
     }
@@ -106,16 +113,32 @@ const History = (props) => {
     // Function to produce dynamic table elements
 
     const PersonRow = (props) => {
-        let dateObj = new Date(props.data.timestamp * 1000);
-        let utcString = dateObj.toUTCString();
 
-        return (
-            <tr>
-                <th scope="row">{utcString}</th>
-                <td> {addressLookup(props.data.from)} </td>
-                <td> {funcLookup(props.data.input)} </td>
-            </tr>
-        );
+        if (props.data.hash === 0) {
+            let dateObj = new Date(props.data.timestamp * 1000);
+            let utcString = dateObj.toUTCString();
+
+            let newLink = "https://ropsten.etherscan.io/tx/" + props.data.hash
+            let shortHash = props.data.hash.slice(0, 8) + "..." + props.data.hash.slice(48)
+
+            return (
+                <tr>
+                    <th scope="row">{utcString}</th>
+                    <td> {addressLookup(props.data.from)} </td>
+                    <td> {funcLookup(props.data.input)} </td>
+                    <td> <a href={newLink} target="_blank"> {shortHash} </a> </td>
+                </tr>
+            );
+        } else {
+            return (
+                <tr>
+                    <th> </th>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            );
+        }
     }
 
     // Variable to hold dynamic mapped JSX elements
@@ -125,14 +148,15 @@ const History = (props) => {
     })
 
     return (
-        <div className="section">
-            <Card style={{ paddingLeft: '20px' }}>
-                <div className="row">
-                    <div className="col" style={{ paddingTop: '15px' }}><h4> History </h4></div>
-                    <div className="col-auto"> <Button outline color="primary" size="sm" onClick={toggle} className="button-sh"> &#709; </Button></div>
-                </div>
-                <Collapse isOpen={isOpen}>
-                    <CardBody>
+        <div>
+            <Flex>
+                <Box width={1 / 2}>
+                    <Card className="balance-col">
+                        USAGE GRAPH
+                    </Card>
+                </Box>
+                <Box width={1 / 2}>
+                    <Card className="balance-col">
                         <Label> Last 50 Blocks </Label>
                         <Table style={{ paddingRight: '10px' }} >
                             <thead>
@@ -140,17 +164,18 @@ const History = (props) => {
                                     <th> # </th>
                                     <th> From </th>
                                     <th> Function </th>
+                                    <th> Hash </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {rows}
                             </tbody>
                         </Table>
-                    </CardBody>
-                </Collapse>
-            </Card>
-        </div>
+                    </Card >
+                </Box>
+            </Flex>
+        </div >
     )
 }
 
-export default History;
+export default Activity;
